@@ -255,7 +255,7 @@
   #invoiceDetailOverlay     { z-index: 99 !important; }
   #settingsOverlay          { z-index: 102 !important; }
   #clinicalConfigOverlay    { z-index: 104 !important; background: rgba(11,42,39,0.65) !important; }
-  #pinModalOverlay          { z-index: 106 !important; background: rgba(11,42,39,0.65) !important; }
+  #pinModalOverlay          { z-index: 120 !important; background: rgba(11,42,39,0.65) !important; }
 
   .xray-gallery-grid {
     display: grid;
@@ -1767,6 +1767,66 @@
   #view-library:not(.managing) #libShelfNav{ display:none; }
   #view-library:not(.managing) .lib-navrow{ justify-content:flex-end; }
   #view-library.is-music .lib-navrow, body.guest #view-library:not(.managing) .lib-navrow{ display:none; }
+
+  /* ===== Library · folder buttons + group dropdown ===== */
+  .lib-grouprow{ display:flex; align-items:center; gap:10px; margin:-4px 0 14px; }
+  .lib-grouprow label{ font-size:13px; font-weight:700; color:var(--lb-soft); white-space:nowrap; }
+  .lib-grouprow select{ flex:0 1 380px; min-width:0; height:40px; padding:0 36px 0 14px; border-radius:999px; border:1px solid var(--lb-line); background:var(--lb-card)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23475569' stroke-width='2'/%3E%3C/svg%3E") right 14px center no-repeat;
+    -webkit-appearance:none; appearance:none; font-size:13.5px; font-weight:700; color:var(--lb-ink); cursor:pointer; box-shadow:0 4px 12px -10px rgba(15,23,42,.5); }
+  .lib-grouprow select:focus{ outline:none; border-color:var(--lb-acc); }
+  @media (max-width:600px){ .lib-grouprow select{ flex:1; } }
+  /* ===== 📰 Articles (Google Docs) ===== */
+  .art-bar{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .art-chips{ display:flex; gap:6px; flex-wrap:wrap; }
+  .art-chips .chip[aria-pressed="true"]{ background:#0F766E; border-color:#0F766E; color:#fff; }
+  .art-acts{ display:flex; gap:6px; }
+  .art-btn{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--lb-line); background:var(--lb-card); color:var(--lb-ink); border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .art-btn:hover{ border-color:#94A3B8; }
+  .art-btn.acc{ background:var(--lb-acc); border-color:var(--lb-acc); color:#fff; }
+  .art-grp{ background:var(--lb-card); border:1px solid var(--lb-line); border-radius:18px; margin-bottom:14px; overflow:hidden; box-shadow:0 6px 18px -16px rgba(15,23,42,.4); }
+  .art-grp-h{ display:flex; align-items:center; gap:10px; padding:12px 16px; background:linear-gradient(90deg,#F0FDFA,#fff); border-bottom:1px solid var(--lb-line); }
+  .art-grp-h h3{ margin:0; font-size:15px; font-weight:800; color:#115E59; font-family:'Noto Sans Khmer','Sora',sans-serif; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .art-grp-h .n{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; background:#CCFBF1; color:#115E59; border-radius:999px; padding:1px 9px; }
+  .art-grp-h .gt{ border:0; background:none; cursor:pointer; font-size:13px; padding:3px 6px; border-radius:8px; color:var(--lb-soft); }
+  .art-grp-h .gt:hover{ background:#E2E8F0; }
+  .art-list{ list-style:none; margin:0; padding:4px 0; }
+  .art-titles{ list-style:none; margin:0; padding:0; background:var(--lb-card); border:1px solid var(--lb-line); border-radius:16px; overflow:hidden; }
+  .art-titles li:last-child .art-row{ border-bottom:0; }
+  .art-cur{ display:flex; align-items:center; gap:6px; font-weight:800; color:#115E59; font-size:14px; }
+  .art-cur .gt{ border:0; background:none; cursor:pointer; font-size:13px; padding:3px 6px; border-radius:8px; color:var(--lb-soft); }
+  .art-cur .gt:hover{ background:#E2E8F0; }
+  .art-row{ display:flex; align-items:center; gap:12px; width:100%; border:0; background:none; text-align:left; padding:11px 16px; cursor:pointer; font-family:inherit; color:var(--lb-ink); border-bottom:1px solid #F1F5F9; }
+  .art-list li:last-child .art-row{ border-bottom:0; }
+  .art-row:hover{ background:#F8FAFC; }
+  .art-row .no{ flex:0 0 26px; height:26px; border-radius:8px; background:#F1F5F9; color:var(--lb-soft); font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .art-row .tt{ flex:1; min-width:0; font-family:'Noto Sans Khmer','Sora',sans-serif; font-size:14.5px; font-weight:700; line-height:1.6; }
+  .art-row .dt{ flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--lb-dim); }
+  .art-row .ck{ flex:0 0 auto; color:var(--lb-acc); font-weight:800; }
+  .art-row .cv{ flex:0 0 auto; color:#CBD5E1; font-size:18px; }
+  .art-row.read .tt{ color:var(--lb-soft); font-weight:600; }
+  .art-empty{ padding:16px; text-align:center; color:var(--lb-dim); font-size:12.5px; }
+  body.guest .art-acts, body.guest .art-grp-h .gt, body.guest .art-cur .gt, body.guest #artReaderEdit, body.guest #artReaderDel{ display:none !important; }
+  #artReaderOverlay{ z-index:110 !important; background:rgba(15,23,42,.72) !important; backdrop-filter:blur(4px); padding:16px !important; }
+  #artEditOverlay, #artGroupOverlay{ z-index:112 !important; background:rgba(15,23,42,.6) !important; }
+  .art-reader{ max-width:820px !important; width:100%; display:flex; flex-direction:column; max-height:calc(100vh - 32px); background:#FCFBF7 !important; }
+  .art-rh-eye{ font-size:12px; font-weight:700; color:var(--ink-dim); }
+  .art-reader-body{ flex:1; overflow-y:auto; padding:26px 34px 40px; }
+  .art-doc{ font-family:'Noto Sans Khmer','Inter',serif; font-size:calc(16px * var(--af-n, 1)); line-height:2; color:#1F2937; max-width:680px; margin:0 auto; }
+  .art-doc h1{ font-family:'Moul','Noto Sans Khmer',serif; font-weight:400; font-size:1.45em; line-height:1.75; color:#0F172A; margin:0 0 6px; }
+  .art-doc .art-meta{ font-size:.78em; color:#94A3B8; margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid #E2E8F0; }
+  .art-doc h2{ font-size:1.22em; font-weight:800; color:#0F766E; margin:1.4em 0 .4em; line-height:1.7; }
+  .art-doc h3{ font-size:1.08em; font-weight:800; color:#0F172A; margin:1.2em 0 .3em; line-height:1.7; }
+  .art-doc p{ margin:0 0 .9em; text-align:justify; white-space:pre-wrap; }
+  .art-doc li{ margin:0 0 .5em 1.4em; white-space:pre-wrap; }
+  .art-doc hr{ border:0; border-top:1px dashed #CBD5E1; margin:1.6em 0; }
+  .art-edit{ max-width:860px !important; width:100%; }
+  .art-edit textarea{ width:100%; min-height:48vh; resize:vertical; font-family:'Noto Sans Khmer','Inter',sans-serif; font-size:14.5px; line-height:1.9; padding:12px 14px; border:1.5px solid var(--border); border-radius:10px; }
+  .art-edit textarea:focus{ outline:none; border-color:var(--primary); }
+  .art-edit .hint{ font-size:11.5px; color:var(--ink-dim); margin-top:6px; line-height:1.7; }
+  .art-edit .hint code{ background:var(--surface-2); padding:1px 6px; border-radius:5px; font-family:'IBM Plex Mono',monospace; }
+  @media (max-width:600px){ .art-reader-body{ padding:18px 16px 30px; } #artReaderOverlay{ padding:6px !important; } .art-reader{ max-height:calc(100vh - 12px); }
+    .art-row{ padding:10px 12px; gap:10px; } .art-row .dt{ display:none; } .art-bar{ flex-direction:column; align-items:stretch; } .art-acts .art-btn{ flex:1; justify-content:center; } }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -2245,7 +2305,11 @@
             <button type="button" class="lib-icbtn" id="libRefreshBtn" title="ទាញបញ្ជីថ្មីពី Google Drive">🔄</button>
           </div>
         </div>
-        <div class="lib-kinds" id="libKinds" role="tablist" aria-label="Library media"></div>
+        <div class="lib-kinds" id="libKinds" role="tablist" aria-label="Library folders"></div>
+        <div class="lib-grouprow" id="libGroupRow" style="display:none;">
+          <label class="kh" for="libGroupSel">📁 ក្រុម</label>
+          <select id="libGroupSel" class="kh"></select>
+        </div>
         <div class="lib-navrow">
           <div class="lib-shelfnav" id="libShelfNav"></div>
           <div class="lib-tools">
@@ -2268,14 +2332,10 @@
         <div id="libBody"></div>
         <details class="cpd-cfg" style="margin-top:16px;">
           <summary class="kh">⚙ កំណត់ Folder Drive របស់បណ្ណាល័យ</summary>
-          <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
-            <input type="text" id="libFolderInput" class="mono" style="flex:1; min-width:220px; height:36px;" placeholder="Folder ID ឬ Link Google Drive">
-            <button type="button" class="btn btn-outline btn-sm kh" id="libFolderSave" style="height:36px;">រក្សាទុក</button>
-          </div>
-          <div class="kh" style="font-size:12px; margin-top:10px; opacity:.8;">🎵 Folder ចម្រៀង</div>
-          <div style="display:flex; gap:8px; margin-top:4px; flex-wrap:wrap;">
-            <input type="text" id="musFolderInput" class="mono" style="flex:1; min-width:220px; height:36px;" placeholder="Folder ID ឬ Link Google Drive (ចម្រៀង)">
-            <button type="button" class="btn btn-outline btn-sm kh" id="musFolderSave" style="height:36px;">រក្សាទុក</button>
+          <div class="kh" style="font-size:12px; margin-top:8px; opacity:.85;">Folder មេ (Library) — Folder នីមួយៗនៅខាងក្នុង = ប៊ូតុងមួយ (Books, Music, អត្ថបទ…)</div>
+          <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+            <input type="text" id="libRootInput" class="mono" style="flex:1; min-width:220px; height:36px;" placeholder="Folder ID ឬ Link Google Drive (Library)">
+            <button type="button" class="btn btn-outline btn-sm kh" id="libRootSave" style="height:36px;">រក្សាទុក</button>
           </div>
         </details>
       </section>
@@ -2747,6 +2807,53 @@
   <button type="button" class="mus-b mus-b-main" data-mus="toggle" id="musMiniPlay" title="ចាក់ / ផ្អាក"></button>
   <button type="button" class="mus-b" data-mus="next" title="បទបន្ទាប់"><svg viewBox="0 0 24 24"><path d="M18 5.5v13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M5 6.2v11.6a.9.9 0 0 0 1.4.75l8.3-5.8a.9.9 0 0 0 0-1.5L6.4 5.45A.9.9 0 0 0 5 6.2z" fill="currentColor"/></svg></button>
   <button type="button" class="mus-b mus-x" data-mus="close" title="បិទចម្រៀង"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+</div>
+<div class="overlay hidden" id="artReaderOverlay">
+  <div class="modal art-reader">
+    <div class="modal-head">
+      <div class="art-rh-l"><span class="art-rh-eye kh">📰 អត្ថបទ</span></div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button type="button" class="btn btn-outline btn-sm" id="artFontDn" title="អក្សរតូច">A−</button>
+        <button type="button" class="btn btn-outline btn-sm" id="artFontUp" title="អក្សរធំ">A+</button>
+        <button type="button" class="btn btn-outline btn-sm kh" id="artReaderEdit">✎ កែ</button>
+        <button type="button" class="btn btn-danger btn-sm kh" id="artReaderDel">🗑</button>
+        <a class="btn btn-outline btn-sm kh" id="artReaderDoc" target="_blank" rel="noopener">🔗 Doc</a>
+        <button class="x" id="closeArtReader">✕</button>
+      </div>
+    </div>
+    <div class="art-reader-body" id="artReaderBody"></div>
+  </div>
+</div>
+<div class="overlay hidden" id="artEditOverlay">
+  <div class="modal art-edit">
+    <div class="modal-head"><h2 class="kh" id="artEditTitle">✎ កែអត្ថបទ</h2><button class="x" id="closeArtEdit">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>ចំណងជើង (Title) *</label><input type="text" id="art_title" class="kh"></div>
+        <div class="field full"><label>ក្រុម (Group)</label><select id="art_group" class="kh"></select></div>
+        <div class="field full"><label>អត្ថបទ (Content)</label><textarea id="art_text" class="kh" placeholder="សរសេរអត្ថបទនៅទីនេះ..."></textarea>
+          <div class="hint kh">ចាប់ផ្តើមបន្ទាត់ដោយ <code># </code> = ចំណងជើងធំ · <code>## </code> = ចំណងជើងតូច · <code>- </code> = ចំណុច។ បន្ទាត់ទទេ = ចែកកថាខណ្ឌ។<br>រក្សាទុកទៅ Google Doc ផ្ទាល់ (អក្សរដិត/ពណ៌ ក្នុង Doc នឹងត្រូវបានដកចេញ ពេលកែខ្លឹមសារ)។</div></div>
+      </div>
+      <div class="form-error kh hidden" id="artEditErr"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline kh" id="artEditCancel">បោះបង់</button>
+        <button type="button" class="btn btn-primary kh" id="artEditSave">💾 រក្សាទុក</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay hidden" id="artGroupOverlay">
+  <div class="modal narrow" style="max-width:420px;">
+    <div class="modal-head"><h2 class="kh" id="artGroupTitle">📁 ក្រុមថ្មី</h2><button class="x" id="closeArtGroup">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>ឈ្មោះក្រុម (Group name)</label><input type="text" id="art_group_name" class="kh" placeholder="ឧ. ព្រះធម៌, ទន្តសាស្ត្រ..."></div>
+      <div class="form-error kh hidden" id="artGroupErr"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline kh" id="artGroupCancel">បោះបង់</button>
+        <button type="button" class="btn btn-primary kh" id="artGroupSave">💾 រក្សាទុក</button>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="overlay hidden" id="libReaderOverlay">
   <div class="modal lib-reader">
@@ -6881,6 +6988,7 @@ const LIB_KINDS = [
   { k:'music',  i:'🎵', kh:'ចម្រៀង', en:'Music' },
   { k:'video',  i:'🎬', kh:'វីដេអូ',  en:'Video' },
   { k:'lesson', i:'🎓', kh:'មេរៀន',  en:'Lessons' },
+  { k:'article',i:'📰', kh:'អត្ថបទ', en:'Articles' },
   { k:'doc',    i:'📄', kh:'ឯកសារ',  en:'Documents' }
 ];
 // leather book colours: [top, bottom, ink]
@@ -6905,7 +7013,7 @@ const libThumbMem = new Map();      // id -> data URL ('' = Drive has no cover)
 
 function libGet(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function libSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
-function libFolderId(){ return libGet(LIB_KEYS.folder, LIB_DEFAULT_FOLDER); }
+function libFolderId(){ const x = libSecOf('media'); return x ? x.id : LIB_DEFAULT_FOLDER; }
 function libHash(str){ let h = 2166136261; for(const ch of String(str)){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return Math.abs(h); }
 function libExt(n){ const m = String(n || '').match(/\.([a-z0-9]{2,5})$/i); return m ? m[1].toLowerCase() : ''; }
 function libLink(url){
@@ -6931,17 +7039,100 @@ function libSize(b){ b = Number(b) || 0; return b >= 1048576 ? (b / 1048576).toF
 function libRecent(){ try{ return JSON.parse(libGet(LIB_KEYS.recent, '[]')) || []; }catch(e){ return []; } }
 function libPushRecent(id){ const r = libRecent().filter(x => x !== id); r.unshift(id); libSet(LIB_KEYS.recent, JSON.stringify(r.slice(0, 14))); }
 
+/* ---------- Library root: every folder inside it is one button (Books, Music, អត្ថបទ, …) ---------- */
+const LIB_ROOT_DEFAULT = '1TC-SL62wTNJhu_l9q87rAWWutjoreIM-';
+const SEC_KEYS = { root:'kep_lib_root_v1', list:'kep_lib_sections_v1', cur:'kep_lib_section_v1' };
+const SEC_DEFAULTS = [
+  { id:'1IX-0IrkonNFzy1GtUGUieSvCIqgLSEtE', name:'Books', kind:'media', count:0 },
+  { id:'1ksgeJ2oeFAIo6IaCwGVONsWgicNa8XJ4', name:'Music', kind:'music', count:0 },
+  { id:'1QFZ1ud_1gxJhFgt_EDQO7WJAJEBJfn1s', name:'អត្ថបទ', kind:'article', count:0 }
+];
+// "អត្ថបទ" contains "បទ" (= song), so an older Code.gs labelled it music — fix the kind by name here too
+function secFixKinds(list){
+  return list.map(x => /អត្ថបទ|article|blog|note|កំណត់ត្រា/i.test(String(x.name || '')) ? Object.assign({}, x, { kind:'article' }) : x);
+}
+let libSections = (() => { try{ const a = JSON.parse(libGet(SEC_KEYS.list, 'null')); if(Array.isArray(a) && a.length) return secFixKinds(a); }catch(e){} return SEC_DEFAULTS.slice(); })();
+let libSecId = libGet(SEC_KEYS.cur, '');
+let secBusy = false, secFetched = false;
+function libRootId(){ return libGet(SEC_KEYS.root, LIB_ROOT_DEFAULT); }
+function libCurSection(){ return libSections.find(x => x.id === libSecId) || libSections[0] || null; }
+function libSecOf(kind){ const c = libCurSection(); if(c && c.kind === kind) return c; return libSections.find(x => x.kind === kind) || null; }
+function secKindToLib(k){ return k === 'music' ? 'music' : k === 'article' ? 'article' : 'book'; }
+function secIcon(x){
+  const n = String(x.name || '');
+  if(x.kind === 'music') return '🎵';
+  if(x.kind === 'article') return '📰';
+  if(/video|វីដេអូ|movie|film/i.test(n)) return '🎬';
+  if(/image|photo|picture|រូប/i.test(n)) return '🖼️';
+  if(/lesson|course|មេរៀន|class/i.test(n)) return '🎓';
+  if(/audio|podcast|សំឡេង|ធម៌/i.test(n)) return '🎧';
+  if(/book|សៀវភៅ/i.test(n)) return '📚';
+  return '📁';
+}
+function libCacheKey(){ return LIB_KEYS.cache + ':' + libFolderId(); }
+// load the right engine's saved list for the chosen folder
+function libLoadSectionCaches(){
+  const sec = libCurSection(); if(!sec) return;
+  libKind = secKindToLib(sec.kind);
+  if(sec.kind === 'media' && (!libData || libData.folderId !== sec.id)){
+    try{ libData = JSON.parse(libGet(libCacheKey(), 'null')); }catch(e){ libData = null; }
+    libShelf = 'all'; libSel.clear();
+  }
+  if(sec.kind === 'music' && (!musData || musData.folderId !== sec.id)){ musData = null; musLoadCache(); musShelf = 'all'; }
+  if(sec.kind === 'article' && (!artData || artData.folderId !== sec.id)){ artData = null; artList = []; artLoadCache(); artGroup = 'all'; }
+}
+function libSelectSection(id, noRender){
+  if(!libSections.some(x => x.id === id)) return;
+  libSecId = id; libSet(SEC_KEYS.cur, id);
+  libManage = false; libQuery = ''; const se = document.getElementById('libSearch'); if(se) se.value = '';
+  libLoadSectionCaches();
+  if(noRender) return;
+  libStatus('');
+  renderLibrary();
+  libEnsureLoaded();
+}
+// fetch the current folder's list once per session
+function libEnsureLoaded(){
+  const sec = libCurSection(); if(!sec) return;
+  if(sec.kind === 'music'){ if(musTried !== sec.id){ musTried = sec.id; musLoad(false); } }
+  else if(sec.kind === 'article'){ if(artTried !== sec.id){ artTried = sec.id; artLoad(false); } }
+  else if(libFetched !== sec.id) loadLibrary(false);
+}
+async function loadSections(force){
+  if(!webAppUrl || secBusy) return;
+  secBusy = true;
+  try{
+    const url = webAppUrl + (webAppUrl.includes('?') ? '&' : '?') + 'action=library&op=sections&folder=' + encodeURIComponent(libRootId()) + (force ? '&refresh=1' : '') + '&_=' + Date.now();
+    const j = JSON.parse(await (await fetch(url)).text());
+    if(!j || j.status !== 'success' || !Array.isArray(j.sections)) throw new Error((j && j.message) || 'sections');
+    if(!j.sections.length){ libStatus('⚠ Folder Library មិនមាន Folder ខាងក្នុងទេ'); return; }
+    const before = (libCurSection() || {}).id;
+    libSections = secFixKinds(j.sections);
+    secFetched = true;
+    libSet(SEC_KEYS.list, JSON.stringify(libSections));
+    if(!libSections.some(x => x.id === before)) libSecId = libSections[0].id;
+    libLoadSectionCaches();
+    if(currentView === 'library'){ renderLibrary(); libEnsureLoaded(); }
+  }catch(e){
+    console.warn('sections', e);   // keep the saved list; Code.gs may still be the old one
+  }finally{ secBusy = false; }
+}
+// group dropdown under the folder buttons; opts = [{v, label, n}]
+function libSetGroups(opts, value){
+  const row = document.getElementById('libGroupRow'), sel = document.getElementById('libGroupSel');
+  if(!opts || opts.length < 2){ row.style.display = 'none'; sel.innerHTML = ''; return; }
+  row.style.display = '';
+  sel.innerHTML = opts.map(o => `<option value="${escHTML(o.v)}"${o.v === value ? ' selected' : ''}>${escHTML(o.label)}  (${o.n})</option>`).join('');
+}
+
 let libIdbLoaded = false;
 function openLibrary(){
   if(!libIdbLoaded){ libIdbLoaded = true; libIdbLoadAll().then(() => { if(currentView === 'library') renderLibrary(); }); }
-  if(!libData){ try{ libData = JSON.parse(libGet(LIB_KEYS.cache, 'null')); }catch(e){ libData = null; } }
-  libKind = libGet(LIB_KEYS.kind, 'book');
-  musLoadCache();
-  document.getElementById('libFolderInput').value = libFolderId();
-  document.getElementById('musFolderInput').value = musFolderId();
+  libLoadSectionCaches();
+  document.getElementById('libRootInput').value = libRootId();
   renderLibrary();
-  if(!libFetched) loadLibrary(false);
-  if(libKind === 'music' && !musTried){ musTried = true; musLoad(false); }
+  libEnsureLoaded();
+  if(!secFetched) loadSections(false);
 }
 
 async function loadLibrary(force){
@@ -6966,9 +7157,10 @@ async function loadLibrary(force){
       return;
     }
     libData = json.library;
-    libFetched = true;
+    libFetched = libFolderId();
+    if(!libData.folderId) libData.folderId = libFolderId();
     if(!(Number(libData.version) >= 2)) setTimeout(() => libStatus('ℹ️ ដើម្បីបង្ហាញគម្របសៀវភៅ និងរៀបចំធ្នើ សូម Update <b>Library.gs</b> (ជំនាន់ 2) ហើយ Deploy “New version”'), 0);
-    libSet(LIB_KEYS.cache, JSON.stringify(libData));
+    libSet(libCacheKey(), JSON.stringify(libData));
     const t = new Date(libData.scannedAt || Date.now());
     st.textContent = `✓ ធ្វើបច្ចុប្បន្នភាព ${fmtYMD(getLocalTodayYMD())} ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
     renderLibrary();
@@ -7160,26 +7352,29 @@ function renderLibrary(){
   document.getElementById('libTotal').textContent = libData ? `${shelves.length} ធ្នើ · ${all.length} ឯកសារ` : '—';
   document.getElementById('libDriveLink').href = libLink('https://drive.google.com/drive/folders/' + libFolderId());
 
-  const counts = {}; LIB_KINDS.forEach(k => counts[k.k] = 0); all.forEach(it => counts[it.kind]++);
-  counts.music = musList.length;
-  document.getElementById('libKinds').innerHTML = LIB_KINDS.map(k => `
-    <button type="button" class="lib-kind" role="tab" data-kind="${k.k}" aria-selected="${k.k === libKind}">
-      <span class="i">${k.i}</span><span class="t kh">${k.kh}</span><span class="n">${counts[k.k] || 0}</span></button>`).join('');
-  view.classList.toggle('is-music', libKind === 'music');
-  if(libKind === 'music'){
-    musRenderView(body);
-    if(!musTried){ musTried = true; musLoad(false); }
-    libSyncBulk(); return;
-  }
+  const cur = libCurSection();
+  libKind = secKindToLib(cur ? cur.kind : 'media');
+  const liveCount = x => x.kind === 'music' && musData && musData.folderId === x.id ? musList.length
+    : x.kind === 'article' && artData && artData.folderId === x.id ? artList.length
+    : x.kind === 'media' && libData && libData.folderId === x.id ? all.length : (x.count || 0);
+  document.getElementById('libKinds').innerHTML = libSections.map(x => `
+    <button type="button" class="lib-kind" role="tab" data-sec="${escHTML(x.id)}" aria-selected="${!!cur && x.id === cur.id}">
+      <span class="i">${secIcon(x)}</span><span class="t kh">${escHTML(x.name)}</span><span class="n">${liveCount(x)}</span></button>`).join('');
+  view.classList.toggle('is-music', libKind === 'music' || libKind === 'article');
+  if(libKind === 'article'){ artRenderView(body); libSyncBulk(); return; }
+  if(libKind === 'music'){ musRenderView(body); libSyncBulk(); return; }
 
-  const ofKind = all.filter(it => it.kind === libKind);
+  const ofKind = all;
   if(libShelf !== 'all' && !shelves.some(s => s.id === libShelf)) libShelf = 'all';
   const shelfCount = id => ofKind.filter(it => it.shelfId === id && match(it)).length;
   document.getElementById('libShelfNav').innerHTML = shelves.length ? [`<button type="button" class="chip kh" data-shelf="all" aria-pressed="${libShelf === 'all'}">🏛 ធ្នើទាំងអស់<span class="chip-n">${ofKind.filter(match).length}</span></button>`]
     .concat(shelves.filter(s => libManage || shelfCount(s.id) || libShelf === s.id).map(s => `<button type="button" class="chip kh" data-shelf="${escHTML(s.id)}" data-drop="${escHTML(s.id)}" aria-pressed="${libShelf === s.id}">📁 ${escHTML(s.name)}<span class="chip-n">${shelfCount(s.id)}</span></button>`)).join('') : '';
+  libSetGroups([{ v:'all', label:'🏛 ធ្នើទាំងអស់', n: ofKind.filter(match).length }]
+    .concat(shelves.filter(sh => shelfCount(sh.id) || libShelf === sh.id).map(sh => ({ v: sh.id, label: '📁 ' + sh.name, n: shelfCount(sh.id) }))), libShelf);
   document.getElementById('libMoveTo').innerHTML = '<option value="">— ជ្រើសធ្នើ —</option>' + shelves.map(s => `<option value="${escHTML(s.id)}">📁 ${escHTML(s.name)}</option>`).join('');
 
   if(!libData){
+    libSetGroups(null);
     body.innerHTML = `<div class="lib-empty-big kh"><div class="lib-spin"></div>កំពុងរៀបចំបណ្ណាល័យ...</div>`;
     libSyncBulk(); return;
   }
@@ -7386,7 +7581,7 @@ async function libRun(label, params, apply){
   try{
     const j = await libApi(params);
     apply(j);
-    libSet(LIB_KEYS.cache, JSON.stringify(libData));
+    libSet(libCacheKey(), JSON.stringify(libData));
     libStatus('✓ ' + label + ' រួចរាល់');
     renderLibrary();
     return j;
@@ -7538,7 +7733,8 @@ const musAudio = new Audio();
 musAudio.preload = 'auto';
 musAudio.volume = Math.min(1, Math.max(0, Number(musPrefs.vol) || 1));
 
-function musFolderId(){ return libGet(MUS_KEYS.folder, MUS_DEFAULT_FOLDER); }
+function musFolderId(){ const x = libSecOf('music'); return x ? x.id : MUS_DEFAULT_FOLDER; }
+function musCacheKey(){ return MUS_KEYS.cache + ':' + musFolderId(); }
 function musSavePrefs(){ libSet(MUS_KEYS.prefs, JSON.stringify(musPrefs)); }
 function musLink(url){
   const email = (musData && musData.ownerEmail) || (libData && libData.ownerEmail) || '';
@@ -7563,7 +7759,7 @@ function musIndex(){
 }
 function musLoadCache(){
   if(musData) return;
-  try{ musData = JSON.parse(libGet(MUS_KEYS.cache, 'null')); }catch(e){ musData = null; }
+  try{ musData = JSON.parse(libGet(musCacheKey(), 'null')); }catch(e){ musData = null; }
   musIndex();
 }
 async function musLoad(force){
@@ -7580,7 +7776,8 @@ async function musLoad(force){
     if(json && json.status === 'error') throw new Error(json.message || 'error');
     if(!json || !json.library) throw new Error('Apps Script មិនទាន់មាន Library.gs');
     musData = json.library; musFetched = true;
-    libSet(MUS_KEYS.cache, JSON.stringify(musData));
+    if(!musData.folderId) musData.folderId = musFolderId();
+    libSet(musCacheKey(), JSON.stringify(musData));
     musIndex();
     st.textContent = `✓ ចម្រៀង ${musList.length} បទ`;
   }catch(e){
@@ -7794,14 +7991,14 @@ function musRenderView(body){
   const nav = document.getElementById('libShelfNav');
   document.getElementById('libDriveLink').href = musLink('https://drive.google.com/drive/folders/' + musFolderId());
   if(!musData){
-    nav.innerHTML = '';
+    nav.innerHTML = ''; libSetGroups(null);
     body.innerHTML = `<div class="lib-empty-big kh"><div class="lib-spin"></div>កំពុងទាញបញ្ជីចម្រៀង...</div>`;
     return;
   }
   const albums = (musData.shelves || []).map(s => ({ id: s.id, name: s.name, n: musList.filter(x => x.albumId === s.id).length })).filter(a => a.n);
-  musShelf = 'all';
-  nav.innerHTML = albums.length > 1 ? [`<button type="button" class="chip kh" data-mshelf="all" aria-pressed="${musShelf === 'all'}">🎶 ទាំងអស់<span class="chip-n">${musList.length}</span></button>`]
-    .concat(albums.map(a => `<button type="button" class="chip kh" data-mshelf="${escHTML(a.id)}" aria-pressed="${musShelf === a.id}">💿 ${escHTML(a.name)}<span class="chip-n">${a.n}</span></button>`)).join('') : '';
+  if(musShelf !== 'all' && !albums.some(a => a.id === musShelf)) musShelf = 'all';
+  nav.innerHTML = '';
+  libSetGroups([{ v:'all', label:'🎶 ចម្រៀងទាំងអស់', n: musList.length }].concat(albums.map(a => ({ v: a.id, label: '💿 ' + a.name, n: a.n }))), musShelf);
   const ids = musVisibleIds();
   const cached = new Set(musCachedIds());
   const q = libQuery.trim();
@@ -7875,7 +8072,8 @@ function musPaint(){
 }
 function musOpenTab(){
   if(appIsLocked && !document.body.classList.contains('guest')){ openGuestLibrary(); }
-  libKind = 'music'; libSet(LIB_KEYS.kind, libKind);
+  const ms = (musData && libSections.find(x => x.id === musData.folderId)) || libSections.find(x => x.kind === 'music');
+  if(ms) libSelectSection(ms.id, true);
   if(currentView !== 'library') showView('library'); else renderLibrary();
 }
 (function initMusic(){
@@ -7927,12 +8125,321 @@ function musOpenTab(){
   syncLock();
 })();
 
+
+/* =====================================================================
+   📰 អត្ថបទ · Articles — Google Docs in a Drive folder (sub-folders = groups).
+   List of titles grouped by group → click to read. Add / edit / delete articles and groups.
+   Reads with GET ?action=articles, writes with POST (articleSave, articleDelete, articleGroupSave, articleGroupDelete).
+   ===================================================================== */
+const ART_DEFAULT_FOLDER = '1QFZ1ud_1gxJhFgt_EDQO7WJAJEBJfn1s';
+const ART_KEYS = { folder:'kep_art_folder_v1', cache:'kep_art_cache_v2', read:'kep_art_read_v1', font:'kep_art_font_v1', group:'kep_art_group_v1' };
+let artData = null, artList = [], artTried = false, artBusy = false, artGroup = libGet(ART_KEYS.group, 'all');
+let artFont = Number(libGet(ART_KEYS.font, '1')) || 1;
+let artEditing = null, artGroupEditing = null, artCurrent = null;
+function artFolderId(){ const x = libSecOf('article'); return x ? x.id : ART_DEFAULT_FOLDER; }
+function artCacheKey(){ return ART_KEYS.cache + ':' + artFolderId(); }
+function artReadSet(){ try{ return new Set(JSON.parse(libGet(ART_KEYS.read, '[]'))); }catch(e){ return new Set(); } }
+function artMarkRead(id){ const s = artReadSet(); s.add(id); libSet(ART_KEYS.read, JSON.stringify([...s].slice(-500))); }
+function artGroups(){ return (artData && artData.groups) || []; }
+function artRootId(){ const g = artGroups().find(x => x.root); return g ? g.id : artFolderId(); }
+function artIndex(){ artList = ((artData && artData.items) || []).slice().sort((a,b) => String(a.title).localeCompare(String(b.title))); }
+function artSaveCache(){ libSet(artCacheKey(), JSON.stringify(artData)); }
+function artLoadCache(){
+  if(artData) return;
+  try{ artData = JSON.parse(libGet(artCacheKey(), 'null')); }catch(e){ artData = null; }
+  artIndex();
+}
+function artText(it){ return (it.blocks || []).map(b => b.t).join('\n'); }
+function artMins(it){ return Math.max(1, Math.round(artText(it).replace(/\s+/g, '').length / 900)); }
+
+async function artLoad(force){
+  const st = document.getElementById('libStatus');
+  if(!webAppUrl){ st.textContent = '⚠ មិនទាន់មាន Google Sheet Sync URL (Apps Script) ក្នុង Settings'; return; }
+  if(artBusy) return;
+  artBusy = true;
+  const btn = document.getElementById('libRefreshBtn'); btn.disabled = true;
+  st.textContent = artData ? '⏳ កំពុងពិនិត្យអត្ថបទថ្មី...' : '⏳ កំពុងទាញអត្ថបទពី Google Docs...';
+  try{
+    const url = webAppUrl + (webAppUrl.includes('?') ? '&' : '?') + 'action=articles&folder=' + encodeURIComponent(artFolderId()) + (force ? '&refresh=1' : '') + '&_=' + Date.now();
+    const raw = await (await fetch(url)).text();
+    let json; try{ json = JSON.parse(raw); }catch(e){
+      const tmp = document.createElement('div'); tmp.innerHTML = raw.replace(/<(script|style)[\s\S]*?<\/\1>/gi, '');
+      throw new Error('Apps Script មានកំហុស · ' + (tmp.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 180));
+    }
+    if(json && json.status === 'error') throw new Error(json.message || 'error');
+    if(!json || !json.articles){ st.innerHTML = '⚠ Apps Script មិនទាន់មានមុខងារអត្ថបទ — សូមដាក់ <b>Code.gs</b> ថ្មី ហើយ Deploy “New version”។'; return; }
+    artData = json.articles;
+    if(!artData.folderId) artData.folderId = artFolderId();
+    if(!Array.isArray(artData.groups)) artData.groups = [{ id: artFolderId(), name: 'ទូទៅ', root: true }];
+    artSaveCache(); artIndex();
+    st.textContent = `✓ អត្ថបទ ${artList.length} · ក្រុម ${artGroups().length}`;
+  }catch(e){
+    st.innerHTML = '⚠ ទាញអត្ថបទមិនបាន៖ ' + escHTML(String(e.message || e)) + (artData ? ' · បង្ហាញបញ្ជីចុងក្រោយ' : '');
+  }finally{
+    artBusy = false; btn.disabled = false;
+    if(currentView === 'library' && libKind === 'article') renderLibrary();
+  }
+}
+
+// POST to Apps Script and read its answer (text/plain → no CORS preflight; the redirect answer is readable)
+async function artPost(action, data){
+  if(!webAppUrl) throw new Error('មិនទាន់មាន Apps Script URL');
+  const res = await fetch(webAppUrl, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, data: Object.assign({ folder: artFolderId() }, data), timestamp: Date.now() }) });
+  const raw = await res.text();
+  let j; try{ j = JSON.parse(raw); }catch(e){ throw new Error('Apps Script មានកំហុស (សូមដាក់ Code.gs ថ្មី ហើយ Deploy)'); }
+  if(!j || j.status !== 'success') throw new Error((j && j.message) || 'error');
+  return j;
+}
+
+function artRenderView(body){
+  document.getElementById('libShelfNav').innerHTML = '';
+  document.getElementById('libDriveLink').href = libLink('https://drive.google.com/drive/folders/' + artFolderId());
+  if(!artData){ libSetGroups(null); body.innerHTML = `<div class="lib-empty-big kh"><div class="lib-spin"></div>កំពុងទាញអត្ថបទ...</div>`; return; }
+  const groups = artGroups();
+  if(artGroup !== 'all' && !groups.some(g => g.id === artGroup)) artGroup = 'all';
+  const q = libQuery.trim().toLowerCase();
+  const match = it => !q || (it.title + ' ' + artText(it)).toLowerCase().includes(q);
+  const inGroup = (it, g) => (it.groupId || artRootId()) === g.id;
+  const read = artReadSet();
+  const cnt = g => artList.filter(it => inGroup(it, g) && match(it)).length;
+  libSetGroups([{ v:'all', label:'📰 អត្ថបទទាំងអស់', n: artList.filter(match).length }]
+    .concat(groups.filter(g => cnt(g) || !g.root || artGroup === g.id).map(g => ({ v: g.id, label: '📁 ' + g.name, n: cnt(g) }))), artGroup);
+
+  const selG = artGroup === 'all' ? null : groups.find(g => g.id === artGroup);
+  let html = `<div class="art-bar">
+      <div class="art-cur kh">${selG ? '📁 ' + escHTML(selG.name) + (selG.root ? '' : `
+        <button type="button" class="gt" data-aact="editgroup" data-gid="${escHTML(selG.id)}" title="ប្តូរឈ្មោះក្រុម">✎</button>
+        <button type="button" class="gt" data-aact="delgroup" data-gid="${escHTML(selG.id)}" title="លុបក្រុម">🗑</button>`) : ''}</div>
+      <div class="art-acts">
+        <button type="button" class="art-btn acc kh" data-aact="new">＋ អត្ថបទថ្មី</button>
+        <button type="button" class="art-btn kh" data-aact="newgroup">＋ ក្រុមថ្មី</button>
+      </div>
+    </div>`;
+
+  const items = artList.filter(it => match(it) && (!selG || inGroup(it, selG)));
+  if(items.length){
+    html += `<ul class="art-titles">${items.map(it => `<li>
+      <button type="button" class="art-row${read.has(it.id) ? ' read' : ''}" data-art="${escHTML(it.id)}">
+        <span class="tt">${escHTML(it.title)}</span><span class="cv">›</span>
+      </button></li>`).join('')}</ul>`;
+  } else {
+    html += `<div class="lib-empty-big kh"><div>📰</div>${q ? 'រកមិនឃើញអត្ថបទត្រូវនឹងការស្វែងរក' : (selG ? 'ក្រុមនេះមិនទាន់មានអត្ថបទ' : 'មិនទាន់មានអត្ថបទ')}<br><span style="opacity:.7; font-size:12px;">ចុច “＋ អត្ថបទថ្មី” ឬដាក់ Google Doc ចូល Folder អត្ថបទ រួចចុច 🔄</span></div>`;
+  }
+  body.innerHTML = html;
+}
+
+// Doc paragraphs → reading HTML
+function artBlocksHTML(it){
+  const out = []; let first = true;
+  (it.blocks || []).forEach(b => {
+    const t = String(b.t || '');
+    if(!t.trim()) return;
+    if(first){ first = false; if(b.h === 'title' || t.trim() === String(it.title).trim()) return; }
+    if(t.replace(/[_\-—=\\\s]/g, '').length === 0 && t.trim().length >= 4){ out.push('<hr>'); return; }
+    const e = escHTML(t.replace(/\\_/g, '_'));
+    if(b.h === 'title' || b.h === 1) out.push(`<h2>${e}</h2>`);
+    else if(b.h >= 2 && b.h <= 6) out.push(`<h3>${e}</h3>`);
+    else if(b.h === 'li') out.push(`<li>${e}</li>`);
+    else if(/^\s*៙/.test(t)) out.push(`<h2>${escHTML(t.trim())}</h2>`);
+    else if(/^\s*[០-៩0-9]{1,2}\s*[\.\)]\s*\S/.test(t) && t.trim().length < 90) out.push(`<h3>${escHTML(t.trim())}</h3>`);
+    else out.push(`<p>${e.replace(/^\s+/, '')}</p>`);
+  });
+  return out.join('');
+}
+// Doc paragraphs → editor text (# / ## / - marks keep headings and lists when saved back)
+function artBlocksToText(it){
+  const out = []; let first = true;
+  (it.blocks || []).forEach(b => {
+    const t = String(b.t || '').replace(/\s+$/, '');
+    if(!t.trim()) return;
+    if(first){ first = false; if(b.h === 'title' || t.trim() === String(it.title).trim()) return; }
+    if(b.h === 'title' || b.h === 1) out.push('# ' + t.trim());
+    else if(b.h >= 2 && b.h <= 6) out.push('## ' + t.trim());
+    else if(b.h === 'li') out.push('- ' + t.trim());
+    else out.push(t.replace(/^\s+/, ''));
+  });
+  return out.join('\n\n');
+}
+
+function artOpen(id){
+  const it = artList.find(x => x.id === id); if(!it) return;
+  artCurrent = id;
+  artMarkRead(id);
+  const g = artGroups().find(x => x.id === (it.groupId || artRootId()));
+  document.getElementById('artReaderDoc').href = libLink('https://docs.google.com/document/d/' + id + '/edit');
+  const body = document.getElementById('artReaderBody');
+  body.innerHTML = `<article class="art-doc" style="--af-n:${artFont}">
+      <h1>${escHTML(it.title)}</h1>
+      <div class="art-meta kh">${g ? '📁 ' + escHTML(g.name) + ' · ' : ''}កែចុងក្រោយ ${escHTML(fmtYMD(String(it.modified || '').slice(0, 10)))} · ⏱ អាន ${artMins(it)} នាទី</div>
+      ${artBlocksHTML(it) || '<p style="color:#94A3B8;">(អត្ថបទទទេ)</p>'}
+    </article>`;
+  body.scrollTop = 0;
+  document.getElementById('artReaderOverlay').classList.remove('hidden');
+}
+function artClose(){
+  document.getElementById('artReaderOverlay').classList.add('hidden');
+  artCurrent = null;
+  if(currentView === 'library' && libKind === 'article') renderLibrary();
+}
+function artSetFont(d){
+  artFont = Math.max(0.8, Math.min(1.6, Math.round((artFont + d) * 10) / 10));
+  libSet(ART_KEYS.font, String(artFont));
+  const a = document.querySelector('#artReaderBody .art-doc'); if(a) a.style.setProperty('--af-n', artFont);
+}
+
+/* ---------- add / edit / delete article ---------- */
+function artErr(id, msg){ const e = document.getElementById(id); e.textContent = msg || ''; e.classList.toggle('hidden', !msg); }
+function artGroupOptions(sel){
+  return artGroups().map(g => `<option value="${escHTML(g.id)}"${g.id === sel ? ' selected' : ''}>📁 ${escHTML(g.name)}</option>`).join('');
+}
+function artEditOpen(id){
+  const it = id ? artList.find(x => x.id === id) : null;
+  artEditing = it ? it.id : null;
+  document.getElementById('artEditTitle').textContent = it ? '✎ កែអត្ថបទ' : '＋ អត្ថបទថ្មី';
+  document.getElementById('art_title').value = it ? it.title : '';
+  const gSel = it ? (it.groupId || artRootId()) : (artGroup !== 'all' ? artGroup : artRootId());
+  document.getElementById('art_group').innerHTML = artGroupOptions(gSel);
+  const ta = document.getElementById('art_text');
+  ta.value = it ? artBlocksToText(it) : '';
+  ta.dataset.orig = ta.value;
+  artErr('artEditErr', '');
+  document.getElementById('artEditOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById(it ? 'art_text' : 'art_title').focus(), 60);
+}
+function artEditClose(){ document.getElementById('artEditOverlay').classList.add('hidden'); artEditing = null; }
+async function artEditSave(){
+  const title = document.getElementById('art_title').value.trim();
+  const groupId = document.getElementById('art_group').value;
+  const ta = document.getElementById('art_text');
+  if(!title){ artErr('artEditErr', 'សូមបញ្ចូលចំណងជើង'); return; }
+  const data = { id: artEditing || '', title, groupId };
+  if(!artEditing || ta.value !== ta.dataset.orig) data.text = ta.value;      // only rewrite the Doc body when the text changed
+  const btn = document.getElementById('artEditSave');
+  btn.disabled = true; btn.textContent = '⏳ កំពុងរក្សាទុក...';
+  try{
+    const j = await artPost('articleSave', data);
+    const item = j.item;
+    artData.items = (artData.items || []).filter(x => x.id !== item.id).concat([item]);
+    artSaveCache(); artIndex();
+    const wasOpen = artCurrent;
+    artEditClose();
+    renderLibrary();
+    libStatus('✓ បានរក្សាទុក “' + escHTML(item.title) + '” ទៅ Google Doc');
+    if(wasOpen || !data.id) artOpen(item.id);
+  }catch(e){
+    artErr('artEditErr', '⚠ រក្សាទុកមិនបាន៖ ' + String(e.message || e));
+  }finally{
+    btn.disabled = false; btn.textContent = '💾 រក្សាទុក';
+  }
+}
+function artDelete(id){
+  const it = artList.find(x => x.id === id); if(!it) return;
+  requestClinicPin(() => showConfirm(`លុបអត្ថបទ “${it.title}” មែនទេ?\n(Doc ទៅ Trash ក្នុង Google Drive · អាចយកមកវិញបានក្នុង ៣០ ថ្ងៃ)`, async () => {
+    libStatus('⏳ កំពុងលុប...');
+    try{
+      await artPost('articleDelete', { id });
+      artData.items = (artData.items || []).filter(x => x.id !== id);
+      artSaveCache(); artIndex();
+      if(artCurrent === id) artClose(); else renderLibrary();
+      libStatus('✓ បានលុប “' + escHTML(it.title) + '”');
+    }catch(e){ libStatus('⚠ លុបមិនបាន៖ ' + escHTML(String(e.message || e))); }
+  }));
+}
+
+/* ---------- groups ---------- */
+function artGroupOpen(id){
+  const g = id ? artGroups().find(x => x.id === id) : null;
+  artGroupEditing = g ? g.id : null;
+  document.getElementById('artGroupTitle').textContent = g ? '✎ ប្តូរឈ្មោះក្រុម' : '📁 ក្រុមថ្មី';
+  document.getElementById('art_group_name').value = g ? g.name : '';
+  artErr('artGroupErr', '');
+  document.getElementById('artGroupOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('art_group_name').focus(), 60);
+}
+function artGroupClose(){ document.getElementById('artGroupOverlay').classList.add('hidden'); artGroupEditing = null; }
+async function artGroupSave(){
+  const name = document.getElementById('art_group_name').value.trim();
+  if(!name){ artErr('artGroupErr', 'សូមបញ្ចូលឈ្មោះក្រុម'); return; }
+  const btn = document.getElementById('artGroupSave');
+  btn.disabled = true; btn.textContent = '⏳...';
+  try{
+    const j = await artPost('articleGroupSave', { id: artGroupEditing || '', name });
+    const g = j.group;
+    const old = artGroups().find(x => x.id === g.id);
+    if(old) old.name = g.name; else artData.groups.push(g);
+    const root = artData.groups.filter(x => x.root), rest = artData.groups.filter(x => !x.root).sort((a,b) => a.name.localeCompare(b.name));
+    artData.groups = root.concat(rest);
+    artSaveCache();
+    const editorOpen = !document.getElementById('artEditOverlay').classList.contains('hidden');
+    artGroupClose();
+    if(editorOpen) document.getElementById('art_group').innerHTML = artGroupOptions(g.id);
+    else { artGroup = g.id; libSet(ART_KEYS.group, artGroup); }
+    renderLibrary();
+  }catch(e){
+    artErr('artGroupErr', '⚠ ' + String(e.message || e));
+  }finally{
+    btn.disabled = false; btn.textContent = '💾 រក្សាទុក';
+  }
+}
+function artGroupDelete(id){
+  const g = artGroups().find(x => x.id === id); if(!g) return;
+  const n = artList.filter(it => it.groupId === id).length;
+  if(n){ alert(`ក្រុម “${g.name}” នៅមានអត្ថបទ ${n}។ សូមផ្លាស់អត្ថបទទៅក្រុមផ្សេង ឬលុបវាជាមុនសិន។`); return; }
+  requestClinicPin(() => showConfirm(`លុបក្រុម “${g.name}” មែនទេ?`, async () => {
+    try{
+      await artPost('articleGroupDelete', { id });
+      artData.groups = artGroups().filter(x => x.id !== id);
+      if(artGroup === id){ artGroup = 'all'; libSet(ART_KEYS.group, artGroup); }
+      artSaveCache(); renderLibrary();
+      libStatus('✓ បានលុបក្រុម “' + escHTML(g.name) + '”');
+    }catch(e){ libStatus('⚠ លុបក្រុមមិនបាន៖ ' + escHTML(String(e.message || e))); }
+  }));
+}
+
+(function initArticles(){
+  document.addEventListener('click', e => {
+    if(!e.target.closest('#libBody')) return;
+    const row = e.target.closest('[data-art]');
+    if(row){ artOpen(row.dataset.art); return; }
+    const chip = e.target.closest('[data-agroup]');
+    if(chip){ artGroup = chip.dataset.agroup; libSet(ART_KEYS.group, artGroup); renderLibrary(); return; }
+    const act = e.target.closest('[data-aact]');
+    if(!act) return;
+    const a = act.dataset.aact;
+    if(a === 'new') artEditOpen(null);
+    else if(a === 'newgroup') artGroupOpen(null);
+    else if(a === 'editgroup') artGroupOpen(act.dataset.gid);
+    else if(a === 'delgroup') artGroupDelete(act.dataset.gid);
+  });
+  document.getElementById('closeArtReader').addEventListener('click', artClose);
+  document.getElementById('artReaderOverlay').addEventListener('click', e => { if(e.target.id === 'artReaderOverlay') artClose(); });
+  document.getElementById('artFontUp').addEventListener('click', () => artSetFont(0.1));
+  document.getElementById('artFontDn').addEventListener('click', () => artSetFont(-0.1));
+  document.getElementById('artReaderEdit').addEventListener('click', () => { if(artCurrent) artEditOpen(artCurrent); });
+  document.getElementById('artReaderDel').addEventListener('click', () => { if(artCurrent) artDelete(artCurrent); });
+  document.getElementById('closeArtEdit').addEventListener('click', artEditClose);
+  document.getElementById('artEditCancel').addEventListener('click', artEditClose);
+  document.getElementById('artEditSave').addEventListener('click', artEditSave);
+  document.getElementById('art_group').addEventListener('change', () => {});
+  document.getElementById('closeArtGroup').addEventListener('click', artGroupClose);
+  document.getElementById('artGroupCancel').addEventListener('click', artGroupClose);
+  document.getElementById('artGroupSave').addEventListener('click', artGroupSave);
+  document.getElementById('art_group_name').addEventListener('keydown', e => { if(e.key === 'Enter') artGroupSave(); });
+  document.addEventListener('keydown', e => {
+    if(e.key !== 'Escape') return;
+    if(!document.getElementById('artGroupOverlay').classList.contains('hidden')) artGroupClose();
+    else if(!document.getElementById('artEditOverlay').classList.contains('hidden')) artEditClose();
+    else if(!document.getElementById('artReaderOverlay').classList.contains('hidden')) artClose();
+  });
+})();
+
 (function initLibrary(){
   const v = document.getElementById('view-library');
   if(!v) return;
   v.addEventListener('click', e => {
-    const k = e.target.closest('[data-kind]');
-    if(k){ libKind = k.dataset.kind; libSet(LIB_KEYS.kind, libKind); libShelf = 'all'; libSel.clear(); renderLibrary(); return; }
+    const k = e.target.closest('[data-sec]');
+    if(k){ libSelectSection(k.dataset.sec); return; }
     const se = e.target.closest('[data-shelf-edit]');
     if(se){ libEditOpen('shelf', se.dataset.shelfEdit); return; }
     const sd = e.target.closest('[data-shelf-del]');
@@ -7996,7 +8503,14 @@ function musOpenTab(){
 
   let t = null;
   document.getElementById('libSearch').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { libQuery = e.target.value; renderLibrary(); }, 180); });
-  document.getElementById('libRefreshBtn').addEventListener('click', () => libKind === 'music' ? musLoad(true) : loadLibrary(true));
+  document.getElementById('libRefreshBtn').addEventListener('click', () => { loadSections(true); libKind === 'music' ? musLoad(true) : libKind === 'article' ? artLoad(true) : loadLibrary(true); });
+  document.getElementById('libGroupSel').addEventListener('change', e => {
+    const v = e.target.value;
+    if(libKind === 'music') musShelf = v;
+    else if(libKind === 'article'){ artGroup = v; libSet(ART_KEYS.group, v); }
+    else libShelf = v;
+    renderLibrary();
+  });
   document.getElementById('libManageBtn').addEventListener('click', () => { libManage = !libManage; libSel.clear(); renderLibrary(); });
   document.getElementById('libNewShelfBtn').addEventListener('click', () => libEditOpen('newShelf', null));
   document.getElementById('libMoveBtn').addEventListener('click', () => {
@@ -8010,21 +8524,14 @@ function musOpenTab(){
     libSyncBulk();
   });
   document.getElementById('libSelClearBtn').addEventListener('click', () => { libSel.clear(); document.querySelectorAll('#libBody .is-sel').forEach(x => x.classList.remove('is-sel')); libSyncBulk(); });
-  document.getElementById('libFolderSave').addEventListener('click', () => {
-    const raw = document.getElementById('libFolderInput').value.trim();
+  document.getElementById('libRootSave').addEventListener('click', () => {
+    const raw = document.getElementById('libRootInput').value.trim();
     const m = raw.match(/folders\/([A-Za-z0-9_-]{10,})/) || raw.match(/^([A-Za-z0-9_-]{10,})$/);
-    if(!m){ alert('Folder ID ឬ Link មិនត្រឹមត្រូវ'); return; }
-    libSet(LIB_KEYS.folder, m[1]); libData = null; libSet(LIB_KEYS.cache, 'null');
-    document.getElementById('libFolderInput').value = m[1];
-    renderLibrary(); loadLibrary(true);
-  });
-  document.getElementById('musFolderSave').addEventListener('click', () => {
-    const raw = document.getElementById('musFolderInput').value.trim();
-    const m = raw.match(/folders\/([A-Za-z0-9_-]{10,})/) || raw.match(/^([A-Za-z0-9_-]{10,})$/);
-    if(!m){ libStatus('⚠ Folder ID ឬ Link ចម្រៀងមិនត្រឹមត្រូវ'); return; }
-    libSet(MUS_KEYS.folder, m[1]); libSet(MUS_KEYS.cache, 'null'); musData = null; musIndex();
-    document.getElementById('musFolderInput').value = m[1];
-    libKind = 'music'; libSet(LIB_KEYS.kind, libKind); renderLibrary(); musLoad(true);
+    if(!m){ libStatus('⚠ Folder ID ឬ Link មិនត្រឹមត្រូវ'); return; }
+    libSet(SEC_KEYS.root, m[1]);
+    document.getElementById('libRootInput').value = m[1];
+    libStatus('⏳ កំពុងអាន Folder ក្នុង Library...');
+    loadSections(true);
   });
   document.getElementById('closeLibReader').addEventListener('click', libCloseReader);
   document.getElementById('libReaderOverlay').addEventListener('click', e => { if(e.target.id === 'libReaderOverlay') libCloseReader(); });
