@@ -1762,6 +1762,11 @@
     .mus-mini{ left:8px; right:8px; width:auto; bottom:calc(8px + env(safe-area-inset-bottom, 0px)); }
     .mus-mini .mus-prev{ display:none; }
   }
+
+  /* ===== Library · no shelf-folder chips (only while arranging, as drag targets) ===== */
+  #view-library:not(.managing) #libShelfNav{ display:none; }
+  #view-library:not(.managing) .lib-navrow{ justify-content:flex-end; }
+  #view-library.is-music .lib-navrow, body.guest #view-library:not(.managing) .lib-navrow{ display:none; }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -7794,7 +7799,7 @@ function musRenderView(body){
     return;
   }
   const albums = (musData.shelves || []).map(s => ({ id: s.id, name: s.name, n: musList.filter(x => x.albumId === s.id).length })).filter(a => a.n);
-  if(musShelf !== 'all' && !albums.some(a => a.id === musShelf)) musShelf = 'all';
+  musShelf = 'all';
   nav.innerHTML = albums.length > 1 ? [`<button type="button" class="chip kh" data-mshelf="all" aria-pressed="${musShelf === 'all'}">🎶 ទាំងអស់<span class="chip-n">${musList.length}</span></button>`]
     .concat(albums.map(a => `<button type="button" class="chip kh" data-mshelf="${escHTML(a.id)}" aria-pressed="${musShelf === a.id}">💿 ${escHTML(a.name)}<span class="chip-n">${a.n}</span></button>`)).join('') : '';
   const ids = musVisibleIds();
