@@ -1648,6 +1648,120 @@
 
   #view-labo .lab-chips{ flex-wrap:wrap; overflow-x:visible; }
   @media (max-width:760px){ #view-labo .lab-chips .chip{ padding:5px 10px; font-size:12px; } }
+
+  /* ===== 🎵 Music player ===== */
+  #view-library.is-music .lib-tools, #view-library.is-music .lib-bulk{ display:none !important; }
+  .mus-now{ --g1:#334155; --g2:#0F172A; position:relative; display:flex; gap:22px; align-items:center; padding:22px; border-radius:22px; margin-bottom:22px; overflow:hidden; color:#fff;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--g1) 55%, #0B1220), color-mix(in srgb, var(--g2) 35%, #070B14)); box-shadow:0 22px 44px -26px rgba(15,23,42,.75); isolation:isolate; }
+  .mus-now::before{ content:''; position:absolute; inset:-40% -10% auto auto; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, color-mix(in srgb, var(--g1) 70%, transparent), transparent 70%); opacity:.55; z-index:-1; }
+  .mus-now-art{ flex:0 0 132px; width:132px; height:132px; border-radius:18px; display:flex; align-items:center; justify-content:center; position:relative;
+    background:linear-gradient(150deg, var(--g1), var(--g2)); box-shadow:0 16px 30px -14px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.14); }
+  .mus-note{ font-size:58px; line-height:1; color:rgba(255,255,255,.92); text-shadow:0 4px 14px rgba(0,0,0,.3); }
+  .mus-now-art .mus-eq{ position:absolute; bottom:12px; left:50%; transform:translateX(-50%); }
+  .mus-now-main{ flex:1; min-width:0; }
+  .mus-now-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.18em; opacity:.6; }
+  .mus-now-t{ font-family:'Sora','Noto Sans Khmer',sans-serif; font-size:21px; font-weight:800; line-height:1.3; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mus-now-a{ font-size:12.5px; opacity:.72; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mus-now.is-empty .mus-now-t{ font-size:17px; opacity:.9; }
+  .mus-seek{ display:flex; align-items:center; gap:10px; margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(255,255,255,.7); }
+  .mus-seek input{ flex:1; min-width:0; }
+  .mus-now input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:99px; border:0; padding:0; box-shadow:none; cursor:pointer;
+    background:linear-gradient(90deg, #fff var(--p, 0%), rgba(255,255,255,.22) var(--p, 0%)); }
+  .mus-now input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.4); }
+  .mus-now input[type=range]::-moz-range-thumb{ width:14px; height:14px; border:0; border-radius:50%; background:#fff; }
+  .mus-ctrls{ display:flex; align-items:center; gap:8px; margin-top:12px; }
+  .mus-b{ position:relative; width:42px; height:42px; border-radius:50%; border:0; background:transparent; color:#fff; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; padding:0; transition:background .15s, transform .12s, opacity .15s; }
+  .mus-b svg{ width:22px; height:22px; }
+  .mus-b:hover{ background:rgba(255,255,255,.12); }
+  .mus-b:active{ transform:scale(.92); }
+  .mus-b-main{ width:54px; height:54px; background:#fff; color:#0F172A; box-shadow:0 10px 22px -10px rgba(0,0,0,.6); }
+  .mus-b-main:hover{ background:#fff; transform:scale(1.05); }
+  .mus-b-main svg{ width:26px; height:26px; }
+  .mus-b-sm svg{ width:18px; height:18px; }
+  .mus-b-sm{ opacity:.5; }
+  .mus-b-sm.on{ opacity:1; color:#5EEAD4; }
+  .mus-b-sm.on::after{ content:''; position:absolute; bottom:4px; left:50%; width:4px; height:4px; margin-left:-2px; border-radius:50%; background:#5EEAD4; }
+  .mus-b-sm b{ display:none; position:absolute; top:7px; right:6px; font-size:9px; font-weight:800; background:#5EEAD4; color:#0F172A; border-radius:99px; width:12px; height:12px; line-height:12px; text-align:center; }
+  .mus-b-sm.one b{ display:block; }
+  .mus-now.is-loading .mus-b-main{ animation:musPulse 1s ease-in-out infinite; }
+  @keyframes musPulse{ 50%{ opacity:.55; } }
+  .mus-vol{ display:flex; align-items:center; gap:6px; margin-left:auto; color:rgba(255,255,255,.75); cursor:pointer; }
+  .mus-vol svg{ width:18px; height:18px; flex-shrink:0; }
+  .mus-vol input{ width:90px; }
+  .mus-msg{ font-size:12px; color:#FDE68A; margin-top:6px; min-height:0; }
+  .mus-msg:empty{ display:none; }
+
+  .mus-eq{ display:inline-flex; align-items:flex-end; gap:2px; height:14px; }
+  .mus-eq i{ width:3px; height:30%; border-radius:2px; background:currentColor; opacity:0; }
+  .is-playing .mus-eq i{ opacity:1; animation:musEq .9s ease-in-out infinite; }
+  .is-playing .mus-eq i:nth-child(2){ animation-delay:-.3s; } .is-playing .mus-eq i:nth-child(3){ animation-delay:-.6s; } .is-playing .mus-eq i:nth-child(4){ animation-delay:-.15s; }
+  @keyframes musEq{ 0%,100%{ height:25%; } 50%{ height:100%; } }
+  .mus-now .mus-eq{ height:22px; gap:3px; color:#fff; } .mus-now .mus-eq i{ width:4px; }
+  .mus-now.is-playing .mus-note{ display:none; }
+
+  .mus-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:0 0 10px; }
+  .mus-head h3{ margin:0; font-family:'Sora','Noto Sans Khmer',sans-serif; font-size:17px; font-weight:800; color:var(--lb-ink); }
+  .mus-head h3 span{ font-size:12px; font-weight:600; color:var(--lb-dim); margin-left:6px; font-family:'IBM Plex Mono',monospace; }
+  .mus-head-a{ display:flex; gap:8px; }
+  .mus-pill{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--lb-line); background:var(--lb-card); color:var(--lb-ink); border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .mus-pill svg{ width:14px; height:14px; }
+  .mus-pill:hover{ border-color:#94A3B8; }
+  .mus-pill-acc{ background:var(--lb-acc); border-color:var(--lb-acc); color:#fff; }
+  .mus-pill-acc:hover{ border-color:var(--lb-acc); filter:brightness(1.08); }
+  .mus-pill:disabled{ opacity:.45; cursor:default; }
+
+  .mus-list{ background:var(--lb-card); border:1px solid var(--lb-line); border-radius:18px; padding:6px; display:flex; flex-direction:column; }
+  .mus-row{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; border:0; background:transparent; padding:8px 10px; border-radius:12px; cursor:pointer; font-family:inherit; color:var(--lb-ink); min-width:0; }
+  .mus-row + .mus-row{ margin-top:1px; }
+  .mus-row:hover{ background:#F1F5F9; }
+  .mus-row-n{ flex:0 0 22px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--lb-dim); }
+  .mus-row-art{ flex:0 0 40px; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; position:relative; font-size:17px; color:var(--gi, #fff);
+    background:linear-gradient(150deg, var(--g1), var(--g2)); }
+  .mus-row-art .mus-eq{ position:absolute; inset:0; margin:auto; justify-content:center; align-items:center; height:16px; width:100%; color:#fff; }
+  .mus-row.is-playing .mus-row-art{ font-size:0; }
+  .mus-row.is-playing .mus-row-art::before{ content:''; position:absolute; inset:0; border-radius:inherit; background:rgba(15,23,42,.35); }
+  .mus-row-tt{ flex:1; min-width:0; display:flex; flex-direction:column; }
+  .mus-row-tt b{ font-size:13.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mus-row-tt small{ font-size:11px; color:var(--lb-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+  .mus-row.is-cur{ background:color-mix(in srgb, var(--lb-acc) 9%, transparent); }
+  .mus-row.is-cur .mus-row-tt b, .mus-row.is-cur .mus-row-n{ color:var(--lb-acc); }
+  .mus-row-off{ flex:0 0 auto; width:18px; height:18px; border-radius:50%; background:#CCFBF1; color:#0F766E; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .mus-row-sz{ flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--lb-dim); }
+
+  /* mini player (other pages) */
+  .mus-mini{ position:fixed; right:16px; bottom:16px; z-index:95; width:min(390px, calc(100vw - 32px)); display:flex; align-items:center; gap:4px; padding:8px 8px 8px 8px; border-radius:16px; overflow:hidden;
+    background:rgba(15,23,42,.94); color:#fff; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 18px 40px -16px rgba(2,6,23,.7); animation:musIn .25s ease; }
+  @keyframes musIn{ from{ transform:translateY(20px); opacity:0; } }
+  body.mus-lock .mus-mini{ z-index:1000; }
+  .mus-mini.hidden{ display:none; }
+  .mus-mini-bar{ position:absolute; left:0; right:0; bottom:0; height:3px; background:rgba(255,255,255,.12); }
+  .mus-mini-bar i{ display:block; height:100%; width:0; background:#5EEAD4; }
+  .mus-mini-art{ flex:0 0 42px; width:42px; height:42px; border-radius:10px; border:0; cursor:pointer; color:#fff; font-size:18px; display:flex; align-items:center; justify-content:center; padding:0;
+    background:linear-gradient(150deg, var(--g1, #334155), var(--g2, #0F172A)); position:relative; }
+  .mus-mini-art .mus-eq{ position:absolute; inset:0; margin:auto; width:100%; justify-content:center; align-items:center; height:16px; }
+  .mus-mini.is-playing .mus-mini-art{ font-size:0; }
+  .mus-mini-tt{ flex:1; min-width:0; display:flex; flex-direction:column; align-items:flex-start; border:0; background:none; color:#fff; cursor:pointer; padding:0 6px; text-align:left; font-family:inherit; }
+  .mus-mini-tt b{ font-size:13px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mus-mini-tt small{ font-size:11px; opacity:.6; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mus-mini .mus-b{ width:36px; height:36px; flex-shrink:0; }
+  .mus-mini .mus-b svg{ width:18px; height:18px; }
+  .mus-mini .mus-b-main{ width:40px; height:40px; }
+  .mus-mini .mus-b-main svg{ width:20px; height:20px; }
+  .mus-mini .mus-x{ opacity:.55; } .mus-mini .mus-x svg{ width:15px; height:15px; }
+  .mus-mini.is-loading .mus-b-main{ animation:musPulse 1s ease-in-out infinite; }
+  body.mus-on .wrap{ padding-bottom:90px; }
+
+  @media (max-width:600px){
+    .mus-now{ flex-direction:column; align-items:stretch; gap:14px; padding:18px 16px; border-radius:18px; }
+    .mus-now-art{ display:none; }
+    .mus-now-t{ font-size:17px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+    .mus-ctrls{ justify-content:space-between; gap:2px; }
+    .mus-vol{ display:none; }
+    .mus-row{ gap:10px; padding:8px 6px; }
+    .mus-row-n, .mus-row-sz{ display:none; }
+    .mus-mini{ left:8px; right:8px; width:auto; bottom:calc(8px + env(safe-area-inset-bottom, 0px)); }
+    .mus-mini .mus-prev{ display:none; }
+  }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -2153,6 +2267,11 @@
             <input type="text" id="libFolderInput" class="mono" style="flex:1; min-width:220px; height:36px;" placeholder="Folder ID ឬ Link Google Drive">
             <button type="button" class="btn btn-outline btn-sm kh" id="libFolderSave" style="height:36px;">រក្សាទុក</button>
           </div>
+          <div class="kh" style="font-size:12px; margin-top:10px; opacity:.8;">🎵 Folder ចម្រៀង</div>
+          <div style="display:flex; gap:8px; margin-top:4px; flex-wrap:wrap;">
+            <input type="text" id="musFolderInput" class="mono" style="flex:1; min-width:220px; height:36px;" placeholder="Folder ID ឬ Link Google Drive (ចម្រៀង)">
+            <button type="button" class="btn btn-outline btn-sm kh" id="musFolderSave" style="height:36px;">រក្សាទុក</button>
+          </div>
         </details>
       </section>
 
@@ -2615,6 +2734,15 @@
 </div>
 
 <!-- Library reader -->
+<div id="musMini" class="mus-mini hidden" role="region" aria-label="Music player">
+  <div class="mus-mini-bar"><i id="musMiniBar"></i></div>
+  <button type="button" class="mus-mini-art" id="musMiniArt" data-mus="open" title="បើកបញ្ជីចម្រៀង">♪<span class="mus-eq"><i></i><i></i><i></i></span></button>
+  <button type="button" class="mus-mini-tt" data-mus="open" title="បើកបញ្ជីចម្រៀង"><b class="kh" id="musMiniT"></b><small class="kh" id="musMiniA"></small></button>
+  <button type="button" class="mus-b mus-prev" data-mus="prev" title="បទមុន"><svg viewBox="0 0 24 24"><path d="M6 5.5v13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M19 6.2v11.6a.9.9 0 0 1-1.4.75L9.3 12.75a.9.9 0 0 1 0-1.5l8.3-5.8A.9.9 0 0 1 19 6.2z" fill="currentColor"/></svg></button>
+  <button type="button" class="mus-b mus-b-main" data-mus="toggle" id="musMiniPlay" title="ចាក់ / ផ្អាក"></button>
+  <button type="button" class="mus-b" data-mus="next" title="បទបន្ទាប់"><svg viewBox="0 0 24 24"><path d="M18 5.5v13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M5 6.2v11.6a.9.9 0 0 0 1.4.75l8.3-5.8a.9.9 0 0 0 0-1.5L6.4 5.45A.9.9 0 0 0 5 6.2z" fill="currentColor"/></svg></button>
+  <button type="button" class="mus-b mus-x" data-mus="close" title="បិទចម្រៀង"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+</div>
 <div class="overlay hidden" id="libReaderOverlay">
   <div class="modal lib-reader">
     <div class="modal-head">
@@ -6745,6 +6873,7 @@ const LIB_KINDS = [
   { k:'book',   i:'📚', kh:'សៀវភៅ',  en:'Books' },
   { k:'image',  i:'🖼️', kh:'រូបភាព', en:'Images' },
   { k:'audio',  i:'🎧', kh:'សំឡេង',  en:'Audio' },
+  { k:'music',  i:'🎵', kh:'ចម្រៀង', en:'Music' },
   { k:'video',  i:'🎬', kh:'វីដេអូ',  en:'Video' },
   { k:'lesson', i:'🎓', kh:'មេរៀន',  en:'Lessons' },
   { k:'doc',    i:'📄', kh:'ឯកសារ',  en:'Documents' }
@@ -6761,6 +6890,7 @@ const LIB_SPINES = [
   ['#6B4226','#43281A','#F1DFB4'], ['#2B2B2B','#141414','#D9C27A'], ['#1B5E63','#0E3B3F','#F0E2B6'], ['#5B2A4E','#3A1631','#EED9B0'],
   ['#E8DCC2','#C9B992','#3A2A14'], ['#A33A2A','#702416','#F6E6C0'], ['#34495E','#1F2D3A','#F0DFA8'], ['#7A6A2E','#4F4419','#FAF0CC']
 ];
+let musTried = false;
 let libData = null, libIndex = new Map(), libKind = 'book', libShelf = 'all', libQuery = '', libBusy = false, libFetched = false;
 const libExpanded = new Set();
 const LIB_SHELF_LIMIT = 40;
@@ -6801,9 +6931,12 @@ function openLibrary(){
   if(!libIdbLoaded){ libIdbLoaded = true; libIdbLoadAll().then(() => { if(currentView === 'library') renderLibrary(); }); }
   if(!libData){ try{ libData = JSON.parse(libGet(LIB_KEYS.cache, 'null')); }catch(e){ libData = null; } }
   libKind = libGet(LIB_KEYS.kind, 'book');
+  musLoadCache();
   document.getElementById('libFolderInput').value = libFolderId();
+  document.getElementById('musFolderInput').value = musFolderId();
   renderLibrary();
   if(!libFetched) loadLibrary(false);
+  if(libKind === 'music' && !musTried){ musTried = true; musLoad(false); }
 }
 
 async function loadLibrary(force){
@@ -6989,7 +7122,7 @@ function libContinueHTML(items){
 }
 function libCardHTML(it){
   const h = libHash(it.id), p = LIB_SPINES[h % LIB_SPINES.length];
-  const kd = LIB_KINDS.find(k => k.k === it.kind) || LIB_KINDS[5];
+  const kd = LIB_KINDS.find(k => k.k === it.kind) || LIB_KINDS.find(k => k.k === 'doc');
   const ext = libExt(it.name).toUpperCase();
   const sel = libSel.has(it.id) ? ' is-sel' : '', drag = libManage ? ' draggable="true"' : '';
   const meta = [it.shelf + (it.path ? ' / ' + it.path : ''), libSize(it.size), it.modified ? fmtYMD(String(it.modified).slice(0, 10)) : ''].filter(Boolean).map(escHTML).join(' · ');
@@ -7023,9 +7156,16 @@ function renderLibrary(){
   document.getElementById('libDriveLink').href = libLink('https://drive.google.com/drive/folders/' + libFolderId());
 
   const counts = {}; LIB_KINDS.forEach(k => counts[k.k] = 0); all.forEach(it => counts[it.kind]++);
+  counts.music = musList.length;
   document.getElementById('libKinds').innerHTML = LIB_KINDS.map(k => `
     <button type="button" class="lib-kind" role="tab" data-kind="${k.k}" aria-selected="${k.k === libKind}">
       <span class="i">${k.i}</span><span class="t kh">${k.kh}</span><span class="n">${counts[k.k] || 0}</span></button>`).join('');
+  view.classList.toggle('is-music', libKind === 'music');
+  if(libKind === 'music'){
+    musRenderView(body);
+    if(!musTried){ musTried = true; musLoad(false); }
+    libSyncBulk(); return;
+  }
 
   const ofKind = all.filter(it => it.kind === libKind);
   if(libShelf !== 'all' && !shelves.some(s => s.id === libShelf)) libShelf = 'all';
@@ -7074,7 +7214,7 @@ function libOpen(id){
   const it = libIndex.get(id); if(!it) return;
   libPushRecent(id);
   const ext = libExt(it.name);
-  const kd = LIB_KINDS.find(k => k.k === it.kind) || LIB_KINDS[5];
+  const kd = LIB_KINDS.find(k => k.k === it.kind) || LIB_KINDS.find(k => k.k === 'doc');
   const viewUrl = libLink('https://drive.google.com/file/d/' + id + '/view');
   document.getElementById('libReaderOverlay').dataset.id = id;
   document.getElementById('libReaderTitle').textContent = kd.i + ' ' + it.title;
@@ -7223,8 +7363,10 @@ function libCloseReader(){
 /* ---------- managing: Apps Script calls ---------- */
 async function libApi(params, quiet){
   if(!webAppUrl) throw new Error('មិនទាន់មាន Apps Script URL');
+  const folder = params.folder || libFolderId();
+  params = Object.assign({}, params); delete params.folder;
   const qs = Object.entries(params).map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('');
-  const url = webAppUrl + (webAppUrl.includes('?') ? '&' : '?') + 'action=library&folder=' + encodeURIComponent(libFolderId()) + qs + '&_=' + Date.now();
+  const url = webAppUrl + (webAppUrl.includes('?') ? '&' : '?') + 'action=library&folder=' + encodeURIComponent(folder) + qs + '&_=' + Date.now();
   const res = await fetch(url);
   const raw = await res.text();
   let j; try{ j = JSON.parse(raw); }catch(e){ throw new Error('Apps Script មានកំហុស'); }
@@ -7363,6 +7505,423 @@ window.addEventListener('resize', () => {
     const c = libCols(); if(c !== libFitW){ libFitW = c; renderLibrary(); }
   }, 200);
 });
+/* =====================================================================
+   🎵 ចម្រៀង · Music player — songs come from their own Google Drive folder
+   (each sub-folder = one album/playlist). Listing + bytes come from Library.gs
+   (action=library&folder=…); playback tries Drive's direct link first and falls
+   back to streaming the file through Apps Script. Recent songs are kept on the
+   device (IndexedDB) so they replay instantly / offline.
+   ===================================================================== */
+const MUS_DEFAULT_FOLDER = '1ksgeJ2oeFAIo6IaCwGVONsWgicNa8XJ4';
+const MUS_KEYS = { folder:'kep_mus_folder_v1', cache:'kep_mus_cache_v1', prefs:'kep_mus_prefs_v1', cached:'kep_mus_cached' };
+const MUS_CACHE_MAX = 25;
+const MUS_IC = {
+  play:  '<svg viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.2-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>',
+  pause: '<svg viewBox="0 0 24 24"><rect x="6.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg>',
+  prev:  '<svg viewBox="0 0 24 24"><path d="M6 5.5v13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M19 6.2v11.6a.9.9 0 0 1-1.4.75L9.3 12.75a.9.9 0 0 1 0-1.5l8.3-5.8A.9.9 0 0 1 19 6.2z" fill="currentColor"/></svg>',
+  next:  '<svg viewBox="0 0 24 24"><path d="M18 5.5v13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M5 6.2v11.6a.9.9 0 0 0 1.4.75l8.3-5.8a.9.9 0 0 0 0-1.5L6.4 5.45A.9.9 0 0 0 5 6.2z" fill="currentColor"/></svg>',
+  shuf:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h4v4M4 20 20 4M20 16v4h-4M15 15l5 5M4 4l5 5"/></svg>',
+  rep:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>',
+  close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  vol:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'
+};
+let musData = null, musList = [], musById = new Map(), musBusy = false, musFetched = false, musShelf = 'all';
+let musQueue = [], musBase = [], musIdx = -1, musToken = 0, musDirect = null, musObjUrl = '', musMsg = '', musProbing = false, musSeeking = false, musErrRun = 0;
+const musPending = new Map();
+let musPrefs = (() => { try{ return Object.assign({ shuffle:false, repeat:'all', vol:1 }, JSON.parse(libGet(MUS_KEYS.prefs, '{}')) || {}); }catch(e){ return { shuffle:false, repeat:'all', vol:1 }; } })();
+const musAudio = new Audio();
+musAudio.preload = 'auto';
+musAudio.volume = Math.min(1, Math.max(0, Number(musPrefs.vol) || 1));
+
+function musFolderId(){ return libGet(MUS_KEYS.folder, MUS_DEFAULT_FOLDER); }
+function musSavePrefs(){ libSet(MUS_KEYS.prefs, JSON.stringify(musPrefs)); }
+function musLink(url){
+  const email = (musData && musData.ownerEmail) || (libData && libData.ownerEmail) || '';
+  return email ? url + (url.includes('?') ? '&' : '?') + 'authuser=' + encodeURIComponent(email) : url;
+}
+function musTime(s){ s = Math.max(0, Math.floor(Number(s) || 0)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = String(s % 60).padStart(2, '0'); return h ? h + ':' + String(m).padStart(2, '0') + ':' + x : m + ':' + x; }
+function musCur(){ return musIdx >= 0 ? musById.get(musQueue[musIdx]) || null : null; }
+function musCachedIds(){ try{ return JSON.parse(libGet(MUS_KEYS.cached, '[]')) || []; }catch(e){ return []; } }
+function musGrad(id){ const g = LIB_GRADS[libHash(id) % LIB_GRADS.length]; return `--g1:${g[0]};--g2:${g[1]};--gi:${g[2]}`; }
+
+function musIndex(){
+  musList = []; musById = new Map();
+  ((musData && musData.shelves) || []).forEach(sh => (sh.items || []).forEach(it => {
+    const e = libExt(it.name), m = it.mime || '';
+    const isAudio = m.startsWith('audio/') || /^(mp3|m4a|wav|ogg|oga|aac|flac|opus|weba|wma|amr)$/.test(e);
+    const isVideo = m.startsWith('video/') || /^(mp4|m4v|webm|mov)$/.test(e);
+    if(!isAudio && !isVideo) return;
+    const s = Object.assign({}, it, { title: libCleanTitle(it.name), album: sh.name + (it.path ? ' / ' + it.path : ''), albumId: sh.id, video: !isAudio });
+    musList.push(s); musById.set(s.id, s);
+  }));
+  musList.sort((a, b) => a.album.localeCompare(b.album) || a.title.localeCompare(b.title));
+}
+function musLoadCache(){
+  if(musData) return;
+  try{ musData = JSON.parse(libGet(MUS_KEYS.cache, 'null')); }catch(e){ musData = null; }
+  musIndex();
+}
+async function musLoad(force){
+  const st = document.getElementById('libStatus');
+  if(!webAppUrl){ st.textContent = '⚠ មិនទាន់មាន Google Sheet Sync URL (Apps Script) ក្នុង Settings'; return; }
+  if(musBusy) return;
+  musBusy = true;
+  const btn = document.getElementById('libRefreshBtn'); btn.disabled = true;
+  st.textContent = musData ? '⏳ កំពុងពិនិត្យបទចម្រៀងថ្មី...' : '⏳ កំពុងទាញបញ្ជីចម្រៀងពី Google Drive...';
+  try{
+    const url = webAppUrl + (webAppUrl.includes('?') ? '&' : '?') + 'action=library&folder=' + encodeURIComponent(musFolderId()) + (force ? '&refresh=1' : '') + '&_=' + Date.now();
+    const raw = await (await fetch(url)).text();
+    let json; try{ json = JSON.parse(raw); }catch(e){ throw new Error('Apps Script មានកំហុស'); }
+    if(json && json.status === 'error') throw new Error(json.message || 'error');
+    if(!json || !json.library) throw new Error('Apps Script មិនទាន់មាន Library.gs');
+    musData = json.library; musFetched = true;
+    libSet(MUS_KEYS.cache, JSON.stringify(musData));
+    musIndex();
+    st.textContent = `✓ ចម្រៀង ${musList.length} បទ`;
+  }catch(e){
+    st.innerHTML = '⚠ ទាញបញ្ជីចម្រៀងមិនបាន៖ ' + escHTML(String(e.message || e)) + (musData ? ' · បង្ហាញបញ្ជីចុងក្រោយ' : '');
+  }finally{
+    musBusy = false; btn.disabled = false;
+    if(currentView === 'library' && libKind === 'music') renderLibrary();
+  }
+}
+
+/* ---------- getting the bytes ---------- */
+async function musIdbPut(id, blob){
+  const db = await libIdbOpen(); if(!db) return;
+  try{
+    const st = db.transaction('books', 'readwrite').objectStore('books');
+    st.put(blob, 'mus:' + id);
+    let ids = musCachedIds().filter(x => x !== id); ids.unshift(id);
+    ids.slice(MUS_CACHE_MAX).forEach(old => { try{ st.delete('mus:' + old); }catch(e){} });
+    libSet(MUS_KEYS.cached, JSON.stringify(ids.slice(0, MUS_CACHE_MAX)));
+  }catch(e){}
+}
+async function musIdbGet(id){ return libIdbGetBook('mus:' + id); }
+function musFetchViaScript(song, onProg){
+  if(musPending.has(song.id)) return musPending.get(song.id);
+  const p = (async () => {
+    const chunks = []; let parts = 1;
+    for(let i = 0; i < parts; i++){
+      const j = await libApi({ op: 'file', id: song.id, part: i, folder: musFolderId() });
+      parts = j.parts || 1;
+      chunks.push(libB64(j.data || ''));
+      if(onProg) onProg(i + 1, parts);
+    }
+    const blob = new Blob(chunks, { type: song.mime || 'audio/mpeg' });
+    musIdbPut(song.id, blob);
+    return blob;
+  })();
+  musPending.set(song.id, p);
+  p.then(() => musPending.delete(song.id), () => musPending.delete(song.id));
+  return p;
+}
+function musTryDirect(song){
+  return new Promise(res => {
+    let done = false;
+    const fin = ok => { if(done) return; done = true; clearTimeout(t); musAudio.removeEventListener('canplay', okH); musAudio.removeEventListener('error', erH); musProbing = false; res(ok); };
+    const okH = () => fin(true), erH = () => fin(false);
+    musProbing = true;
+    musAudio.addEventListener('canplay', okH); musAudio.addEventListener('error', erH);
+    const t = setTimeout(() => fin(false), 12000);
+    musAudio.src = musLink('https://drive.google.com/uc?export=download&id=' + encodeURIComponent(song.id));
+    musAudio.load();
+  });
+}
+function musSetBlob(blob){
+  if(musObjUrl) URL.revokeObjectURL(musObjUrl);
+  musObjUrl = URL.createObjectURL(blob);
+  musAudio.src = musObjUrl;
+}
+
+/* ---------- queue & transport ---------- */
+function musShuffled(ids, firstId){
+  const a = ids.filter(x => x !== firstId);
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return firstId ? [firstId].concat(a) : a;
+}
+let musUnlocked = false;
+function musUnlock(){      // called inside the tap → lets iOS/Safari play later after async loading
+  if(musUnlocked) return; musUnlocked = true;
+  try{ musAudio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='; const pr = musAudio.play(); if(pr) pr.catch(() => {}); }catch(e){}
+}
+function musStart(ids, startId, forceShuffle){
+  if(!ids.length) return;
+  musUnlock();
+  if(forceShuffle){ musPrefs.shuffle = true; musSavePrefs(); }
+  musBase = ids.slice();
+  const first = startId || (musPrefs.shuffle ? ids[Math.floor(Math.random() * ids.length)] : ids[0]);
+  musQueue = musPrefs.shuffle ? musShuffled(ids, first) : ids.slice();
+  musErrRun = 0;
+  musPlayAt(musQueue.indexOf(first));
+}
+async function musPlayAt(i){
+  if(i < 0 || i >= musQueue.length) return;
+  musIdx = i;
+  const song = musCur(); if(!song) return;
+  const tok = ++musToken;
+  musAudio.pause();
+  musMsg = '⏳ កំពុងបើក...';
+  musMediaSession(song);
+  musPaint();
+  try{
+    const cached = await musIdbGet(song.id);
+    if(tok !== musToken) return;
+    if(cached && (!song.size || cached.size === Number(song.size))){
+      musSetBlob(cached);
+    } else {
+      let ok = false;
+      if(musDirect !== false){
+        ok = await musTryDirect(song);
+        if(tok !== musToken) return;
+        if(!ok && musDirect === null) musDirect = false;   // this browser can't stream from Drive → use Apps Script from now on
+        if(ok) musDirect = true;
+      }
+      if(!ok){
+        musMsg = '⏳ កំពុងទាញបទចម្រៀង...'; musPaint();
+        const blob = await musFetchViaScript(song, (n, t) => { if(tok === musToken && t > 1){ musMsg = `⏳ កំពុងទាញបទចម្រៀង ${Math.round(n / t * 100)}%`; musPaint(); } });
+        if(tok !== musToken) return;
+        musSetBlob(blob);
+      }
+    }
+    musMsg = '';
+    await musAudio.play().catch(() => {});
+    musErrRun = 0;
+    musPaint();
+    musPrefetch();
+  }catch(e){
+    if(tok !== musToken) return;
+    musMsg = '⚠ មិនអាចចាក់បទនេះបាន៖ ' + String(e.message || e).slice(0, 120);
+    musPaint();
+    if(++musErrRun < Math.min(4, musQueue.length)) setTimeout(() => { if(tok === musToken) musNext(true); }, 1800);
+  }
+}
+function musPrefetch(){
+  if(musDirect !== false || musQueue.length < 2) return;
+  const nxId = musQueue[(musIdx + 1) % musQueue.length];
+  const nx = musById.get(nxId);
+  if(!nx || musCachedIds().includes(nxId) || Number(nx.size) > 40 * 1048576) return;
+  musFetchViaScript(nx).catch(() => {});
+}
+function musToggle(){
+  if(!musCur()){ const ids = musVisibleIds(); if(ids.length) musStart(ids); return; }
+  if(musMsg && !musAudio.src) return;
+  if(musAudio.paused) musAudio.play().catch(() => {}); else musAudio.pause();
+}
+function musNext(auto){
+  if(!musQueue.length) return;
+  if(musIdx + 1 < musQueue.length) return musPlayAt(musIdx + 1);
+  if(musPrefs.repeat === 'all' || !auto){
+    if(musPrefs.shuffle) musQueue = musShuffled(musBase, null);
+    return musPlayAt(0);
+  }
+  musAudio.pause(); musAudio.currentTime = 0; musPaint();
+}
+function musPrev(){
+  if(!musQueue.length) return;
+  if(musAudio.currentTime > 3){ musAudio.currentTime = 0; return; }
+  musPlayAt(musIdx > 0 ? musIdx - 1 : musQueue.length - 1);
+}
+function musStop(){
+  musToken++; musAudio.pause(); musAudio.removeAttribute('src'); musAudio.load();
+  if(musObjUrl){ URL.revokeObjectURL(musObjUrl); musObjUrl = ''; }
+  musQueue = []; musBase = []; musIdx = -1; musMsg = '';
+  if('mediaSession' in navigator) try{ navigator.mediaSession.metadata = null; }catch(e){}
+  musPaint();
+}
+function musSetShuffle(on){
+  musPrefs.shuffle = on; musSavePrefs();
+  const cur = musQueue[musIdx];
+  if(cur){ musQueue = on ? musShuffled(musBase, cur) : musBase.slice(); musIdx = musQueue.indexOf(cur); }
+  musPaint();
+}
+function musCycleRepeat(){ musPrefs.repeat = musPrefs.repeat === 'all' ? 'one' : musPrefs.repeat === 'one' ? 'off' : 'all'; musSavePrefs(); musPaint(); }
+function musMediaSession(song){
+  if(!('mediaSession' in navigator)) return;
+  try{
+    navigator.mediaSession.metadata = new MediaMetadata({ title: song.title, artist: song.album, album: 'KEP Library · ចម្រៀង' });
+    navigator.mediaSession.setActionHandler('play', () => musAudio.play());
+    navigator.mediaSession.setActionHandler('pause', () => musAudio.pause());
+    navigator.mediaSession.setActionHandler('previoustrack', musPrev);
+    navigator.mediaSession.setActionHandler('nexttrack', () => musNext(false));
+    navigator.mediaSession.setActionHandler('seekto', d => { if(d && d.seekTime != null) musAudio.currentTime = d.seekTime; });
+  }catch(e){}
+}
+musAudio.addEventListener('ended', () => {
+  if(musPrefs.repeat === 'one'){ musAudio.currentTime = 0; musAudio.play().catch(() => {}); }
+  else musNext(true);
+});
+['play', 'pause', 'loadedmetadata', 'durationchange'].forEach(t => musAudio.addEventListener(t, musPaint));
+musAudio.addEventListener('timeupdate', musPaintTime);
+musAudio.addEventListener('error', () => {
+  if(musProbing || !musAudio.getAttribute('src') || !musCur()) return;
+  musMsg = '⚠ ឯកសារនេះចាក់មិនបាន (ទម្រង់មិនគាំទ្រ)'; musPaint();
+  const tok = musToken;
+  if(++musErrRun < Math.min(4, musQueue.length)) setTimeout(() => { if(tok === musToken) musNext(true); }, 1800);
+});
+
+/* ---------- rendering ---------- */
+function musVisibleIds(){
+  const q = libQuery.trim().toLowerCase();
+  return musList.filter(s => (!q || (s.title + ' ' + s.album + ' ' + s.name).toLowerCase().includes(q)) && (musShelf === 'all' || s.albumId === musShelf)).map(s => s.id);
+}
+function musNowHTML(){
+  return `<div class="mus-now" id="musNow">
+    <div class="mus-now-art" id="musNowArt"><span class="mus-eq"><i></i><i></i><i></i><i></i></span><span class="mus-note">♪</span></div>
+    <div class="mus-now-main">
+      <div class="mus-now-eyebrow">NOW PLAYING</div>
+      <div class="mus-now-t kh" id="musNowT"></div>
+      <div class="mus-now-a kh" id="musNowA"></div>
+      <div class="mus-seek"><span id="musCurT">0:00</span><input type="range" id="musSeek" min="0" max="1000" value="0" step="1" aria-label="Seek"><span id="musDurT">0:00</span></div>
+      <div class="mus-ctrls">
+        <button type="button" class="mus-b mus-b-sm" data-mus="shuffle" id="musShufBtn" title="ចាក់ចៃដន្យ · Shuffle">${MUS_IC.shuf}</button>
+        <button type="button" class="mus-b" data-mus="prev" title="បទមុន">${MUS_IC.prev}</button>
+        <button type="button" class="mus-b mus-b-main" data-mus="toggle" id="musPlayBtn" title="ចាក់ / ផ្អាក">${MUS_IC.play}</button>
+        <button type="button" class="mus-b" data-mus="next" title="បទបន្ទាប់">${MUS_IC.next}</button>
+        <button type="button" class="mus-b mus-b-sm" data-mus="repeat" id="musRepBtn" title="ចាក់ឡើងវិញ · Repeat">${MUS_IC.rep}<b id="musRep1">1</b></button>
+        <label class="mus-vol" title="កម្រិតសំឡេង">${MUS_IC.vol}<input type="range" id="musVol" min="0" max="100" value="${Math.round(musAudio.volume * 100)}" style="--p:${Math.round(musAudio.volume * 100)}%" aria-label="Volume"></label>
+      </div>
+      <div class="mus-msg kh" id="musMsg"></div>
+    </div>
+  </div>`;
+}
+function musRenderView(body){
+  const nav = document.getElementById('libShelfNav');
+  document.getElementById('libDriveLink').href = musLink('https://drive.google.com/drive/folders/' + musFolderId());
+  if(!musData){
+    nav.innerHTML = '';
+    body.innerHTML = `<div class="lib-empty-big kh"><div class="lib-spin"></div>កំពុងទាញបញ្ជីចម្រៀង...</div>`;
+    return;
+  }
+  const albums = (musData.shelves || []).map(s => ({ id: s.id, name: s.name, n: musList.filter(x => x.albumId === s.id).length })).filter(a => a.n);
+  if(musShelf !== 'all' && !albums.some(a => a.id === musShelf)) musShelf = 'all';
+  nav.innerHTML = albums.length > 1 ? [`<button type="button" class="chip kh" data-mshelf="all" aria-pressed="${musShelf === 'all'}">🎶 ទាំងអស់<span class="chip-n">${musList.length}</span></button>`]
+    .concat(albums.map(a => `<button type="button" class="chip kh" data-mshelf="${escHTML(a.id)}" aria-pressed="${musShelf === a.id}">💿 ${escHTML(a.name)}<span class="chip-n">${a.n}</span></button>`)).join('') : '';
+  const ids = musVisibleIds();
+  const cached = new Set(musCachedIds());
+  const q = libQuery.trim();
+  const shName = musShelf !== 'all' ? (albums.find(a => a.id === musShelf) || {}).name : '';
+  const rows = ids.map((id, i) => { const s = musById.get(id); return `
+    <button type="button" class="mus-row" data-song="${escHTML(id)}">
+      <span class="mus-row-n">${i + 1}</span>
+      <span class="mus-row-art" style="${musGrad(id)}">${s.video ? '🎬' : '♪'}<span class="mus-eq"><i></i><i></i><i></i></span></span>
+      <span class="mus-row-tt"><b class="kh">${escHTML(s.title)}</b><small class="kh">${escHTML(s.album)}</small></span>
+      ${cached.has(id) ? '<span class="mus-row-off" title="មានក្នុងឧបករណ៍នេះ · Offline">✓</span>' : ''}
+      <span class="mus-row-sz">${escHTML(String(s.ext || libExt(s.name)).toUpperCase())}${s.size ? ' · ' + libSize(s.size) : ''}</span>
+    </button>`; }).join('');
+  body.innerHTML = musNowHTML() + `
+    <div class="mus-head">
+      <h3 class="kh">${q ? '🔍 “' + escHTML(q) + '”' : shName ? '💿 ' + escHTML(shName) : '🎶 ចម្រៀងទាំងអស់'} <span>${ids.length} បទ</span></h3>
+      <div class="mus-head-a">
+        <button type="button" class="mus-pill mus-pill-acc kh" data-mus="playall"${ids.length ? '' : ' disabled'}>${MUS_IC.play} ចាក់ទាំងអស់</button>
+        <button type="button" class="mus-pill kh" data-mus="shuffleall"${ids.length ? '' : ' disabled'}>${MUS_IC.shuf} ចៃដន្យ</button>
+      </div>
+    </div>
+    ${ids.length ? `<div class="mus-list">${rows}</div>` : `<div class="lib-empty-big kh"><div>🎵</div>${q ? 'រកមិនឃើញបទត្រូវនឹងការស្វែងរក' : 'មិនទាន់មានបទចម្រៀងក្នុង Folder'}<br><span style="opacity:.7; font-size:12px;">ដាក់ឯកសារ MP3 / M4A ចូល Folder ចម្រៀងក្នុង Google Drive រួចចុច 🔄</span></div>`}`;
+  musPaint();
+}
+function musPaintTime(){
+  const d = musAudio.duration, c = musAudio.currentTime;
+  const pct = isFinite(d) && d > 0 ? c / d : 0;
+  const bar = document.getElementById('musMiniBar'); if(bar) bar.style.width = (pct * 100).toFixed(2) + '%';
+  const seek = document.getElementById('musSeek');
+  if(seek && !musSeeking){ seek.value = Math.round(pct * 1000); seek.style.setProperty('--p', (pct * 100).toFixed(2) + '%'); }
+  const ct = document.getElementById('musCurT'); if(ct) ct.textContent = musTime(c);
+  const dt = document.getElementById('musDurT'); if(dt) dt.textContent = isFinite(d) ? musTime(d) : '0:00';
+  if('mediaSession' in navigator && isFinite(d) && d > 0) try{ navigator.mediaSession.setPositionState({ duration: d, position: Math.min(c, d), playbackRate: musAudio.playbackRate || 1 }); }catch(e){}
+}
+function musPaint(){
+  const s = musCur();
+  const playing = !!s && !musAudio.paused && !musMsg.startsWith('⏳');
+  const loading = !!s && musMsg.startsWith('⏳');
+  const onMusicTab = currentView === 'library' && libKind === 'music';
+  // mini player (everywhere except the music tab itself)
+  const mini = document.getElementById('musMini');
+  const showMini = !!s && (!onMusicTab || document.body.classList.contains('mus-lock'));
+  mini.classList.toggle('hidden', !showMini);
+  document.body.classList.toggle('mus-on', showMini);
+  if(s){
+    document.getElementById('musMiniT').textContent = s.title;
+    document.getElementById('musMiniA').textContent = musMsg || s.album;
+    document.getElementById('musMiniArt').setAttribute('style', musGrad(s.id));
+    document.getElementById('musMiniPlay').innerHTML = playing ? MUS_IC.pause : MUS_IC.play;
+    mini.classList.toggle('is-playing', playing);
+    mini.classList.toggle('is-loading', loading);
+  }
+  // big card on the music tab
+  const now = document.getElementById('musNow');
+  if(now){
+    now.classList.toggle('is-playing', playing); now.classList.toggle('is-loading', loading); now.classList.toggle('is-empty', !s);
+    if(s) now.setAttribute('style', musGrad(s.id)); else now.removeAttribute('style');
+    document.getElementById('musNowT').textContent = s ? s.title : 'ជ្រើសបទចម្រៀង ដើម្បីចាប់ផ្តើម';
+    document.getElementById('musNowA').textContent = s ? '💿 ' + s.album + (musQueue.length > 1 ? `  ·  ${musIdx + 1} / ${musQueue.length}` : '') : 'ចុចលើបទណាមួយ ឬ “ចាក់ទាំងអស់”';
+    document.getElementById('musPlayBtn').innerHTML = playing ? MUS_IC.pause : MUS_IC.play;
+    document.getElementById('musShufBtn').classList.toggle('on', !!musPrefs.shuffle);
+    const rb = document.getElementById('musRepBtn');
+    rb.classList.toggle('on', musPrefs.repeat !== 'off'); rb.classList.toggle('one', musPrefs.repeat === 'one');
+    rb.title = musPrefs.repeat === 'one' ? 'ចាក់បទនេះម្តងហើយម្តងទៀត' : musPrefs.repeat === 'all' ? 'ចាក់ទាំងបញ្ជីម្តងទៀត' : 'មិនចាក់ឡើងវិញ';
+    const m = document.getElementById('musMsg'); m.textContent = musMsg && !musMsg.startsWith('⏳') ? musMsg : '';
+  }
+  document.querySelectorAll('#libBody .mus-row').forEach(r => {
+    const cur = !!s && r.dataset.song === s.id;
+    r.classList.toggle('is-cur', cur); r.classList.toggle('is-playing', cur && playing);
+  });
+  musPaintTime();
+}
+function musOpenTab(){
+  if(appIsLocked && !document.body.classList.contains('guest')){ openGuestLibrary(); }
+  libKind = 'music'; libSet(LIB_KEYS.kind, libKind);
+  if(currentView !== 'library') showView('library'); else renderLibrary();
+}
+(function initMusic(){
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-mus]');
+    if(b){
+      const a = b.dataset.mus;
+      if(a === 'toggle') musToggle();
+      else if(a === 'next') musNext(false);
+      else if(a === 'prev') musPrev();
+      else if(a === 'shuffle') musSetShuffle(!musPrefs.shuffle);
+      else if(a === 'repeat') musCycleRepeat();
+      else if(a === 'close') musStop();
+      else if(a === 'open') musOpenTab();
+      else if(a === 'playall') musStart(musVisibleIds(), null, false);
+      else if(a === 'shuffleall') musStart(musVisibleIds(), null, true);
+      return;
+    }
+    const r = e.target.closest('#libBody [data-song]');
+    if(r){
+      const s = musCur();
+      if(s && s.id === r.dataset.song){ musToggle(); return; }
+      musStart(musVisibleIds(), r.dataset.song);
+      return;
+    }
+    const sh = e.target.closest('#libShelfNav [data-mshelf]');
+    if(sh){ musShelf = sh.dataset.mshelf; renderLibrary(); }
+  });
+  document.addEventListener('input', e => {
+    if(e.target.id === 'musSeek'){
+      musSeeking = true;
+      const d = musAudio.duration; e.target.style.setProperty('--p', (e.target.value / 10) + '%');
+      if(isFinite(d)) document.getElementById('musCurT').textContent = musTime(d * e.target.value / 1000);
+    } else if(e.target.id === 'musVol'){
+      e.target.style.setProperty('--p', e.target.value + '%'); musAudio.volume = e.target.value / 100; musPrefs.vol = musAudio.volume; musSavePrefs();
+    }
+  });
+  document.addEventListener('change', e => {
+    if(e.target.id === 'musSeek'){
+      const d = musAudio.duration;
+      if(isFinite(d) && d > 0) musAudio.currentTime = d * e.target.value / 1000;
+      musSeeking = false; musPaintTime();
+    }
+  });
+  // keep the mini player usable on the lock screen (above the lock overlay, below nothing else)
+  const lock = document.getElementById('appLockOverlay');
+  const syncLock = () => { document.body.classList.toggle('mus-lock', lock.style.display !== 'none'); if(musCur()) musPaint(); };
+  new MutationObserver(syncLock).observe(lock, { attributes: true, attributeFilter: ['style'] });
+  syncLock();
+})();
+
 (function initLibrary(){
   const v = document.getElementById('view-library');
   if(!v) return;
@@ -7432,7 +7991,7 @@ window.addEventListener('resize', () => {
 
   let t = null;
   document.getElementById('libSearch').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { libQuery = e.target.value; renderLibrary(); }, 180); });
-  document.getElementById('libRefreshBtn').addEventListener('click', () => loadLibrary(true));
+  document.getElementById('libRefreshBtn').addEventListener('click', () => libKind === 'music' ? musLoad(true) : loadLibrary(true));
   document.getElementById('libManageBtn').addEventListener('click', () => { libManage = !libManage; libSel.clear(); renderLibrary(); });
   document.getElementById('libNewShelfBtn').addEventListener('click', () => libEditOpen('newShelf', null));
   document.getElementById('libMoveBtn').addEventListener('click', () => {
@@ -7453,6 +8012,14 @@ window.addEventListener('resize', () => {
     libSet(LIB_KEYS.folder, m[1]); libData = null; libSet(LIB_KEYS.cache, 'null');
     document.getElementById('libFolderInput').value = m[1];
     renderLibrary(); loadLibrary(true);
+  });
+  document.getElementById('musFolderSave').addEventListener('click', () => {
+    const raw = document.getElementById('musFolderInput').value.trim();
+    const m = raw.match(/folders\/([A-Za-z0-9_-]{10,})/) || raw.match(/^([A-Za-z0-9_-]{10,})$/);
+    if(!m){ libStatus('⚠ Folder ID ឬ Link ចម្រៀងមិនត្រឹមត្រូវ'); return; }
+    libSet(MUS_KEYS.folder, m[1]); libSet(MUS_KEYS.cache, 'null'); musData = null; musIndex();
+    document.getElementById('musFolderInput').value = m[1];
+    libKind = 'music'; libSet(LIB_KEYS.kind, libKind); renderLibrary(); musLoad(true);
   });
   document.getElementById('closeLibReader').addEventListener('click', libCloseReader);
   document.getElementById('libReaderOverlay').addEventListener('click', e => { if(e.target.id === 'libReaderOverlay') libCloseReader(); });
@@ -9041,6 +9608,7 @@ function showView(key){
   syncNav();
   closeSidebarDrawer();
   window.scrollTo(0, 0);
+  try{ musPaint(); }catch(e){}
 }
 
 function updateShell(){
