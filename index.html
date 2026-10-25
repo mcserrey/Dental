@@ -1162,6 +1162,123 @@
     .cpd-item .p{ grid-column:2; justify-self:start; }
   }
 
+  /* ===== Library · ឃ្លាំងឯកសារ + ហ៊ុន ===== */
+  body.guest .lib-kind[data-sec="__vault"], body.guest .lib-kind[data-sec="1I994Hw9wi2OotQA21Ibp_1aqSHGDsigR"]{ display:none !important; }
+  .vs-bar{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+  .vs-crumbs{ display:flex; gap:4px; align-items:center; flex-wrap:wrap; flex:1; min-width:180px; font-size:13px; }
+  .vs-crumbs button{ border:0; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:4px 10px; cursor:pointer; font-weight:600; color:var(--ink); }
+  .vs-crumbs button:last-child{ background:#EEF2FF; border-color:#C7D2FE; color:#3730A3; }
+  .vs-crumbs i{ opacity:.45; font-style:normal; }
+  .vs-list{ border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--surface); }
+  .vs-row{ display:grid; grid-template-columns:34px 1fr auto; gap:10px; align-items:center; padding:9px 12px; border-bottom:1px solid var(--border-soft); cursor:pointer; text-decoration:none; color:inherit; }
+  .vs-row:last-child{ border-bottom:0; } .vs-row:hover{ background:rgba(99,102,241,.06); }
+  .vs-row .i{ font-size:22px; text-align:center; }
+  .vs-row .t{ font-size:13.5px; font-weight:600; word-break:break-word; line-height:1.3; }
+  .vs-row .m{ font-size:11.5px; color:var(--ink-dim); margin-top:2px; }
+  .vs-act{ display:flex; gap:4px; }
+  .vs-act button{ border:1px solid var(--border); background:var(--surface); border-radius:8px; width:32px; height:32px; cursor:pointer; font-size:14px; }
+  .vs-act button:hover{ background:#EEF2FF; } .vs-act button.del:hover{ background:#FEE2E2; }
+  .vs-empty{ padding:30px 14px; text-align:center; color:var(--ink-dim); }
+  .vs-err{ padding:14px; border-radius:12px; background:#FEF2F2; color:#991B1B; font-size:13px; line-height:1.5; }
+  .stk-sum{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-bottom:12px; }
+  .stk-sum > div{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px 12px; }
+  .stk-sum .l{ font-size:11px; color:var(--ink-dim); } .stk-sum .v{ font-family:'IBM Plex Mono',monospace; font-weight:800; font-size:16px; margin-top:2px; }
+  .stk-sum .pos{ color:#16A34A; } .stk-sum .neg{ color:#DC2626; }
+  .stk-list{ display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:10px; }
+  .stk-card{ border:1px solid var(--border); border-radius:14px; background:var(--surface); padding:12px; }
+  .stk-card.buy{ border-color:#86EFAC; box-shadow:0 0 0 2px rgba(34,197,94,.15); }
+  .stk-h{ display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .stk-tk{ font-family:'IBM Plex Mono',monospace; font-weight:800; font-size:18px; } .stk-nm{ font-size:12px; color:var(--ink-dim); }
+  .stk-chip{ font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; }
+  .stk-chip.buy{ background:#DCFCE7; color:#166534; } .stk-chip.wait{ background:#FEF3C7; color:#92400E; }
+  .stk-chip.done{ background:#DBEAFE; color:#1E40AF; } .stk-chip.none{ background:#F1F5F9; color:#475569; }
+  .stk-g{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:10px; }
+  .stk-g > div{ background:var(--bg,#F8FAFC); border-radius:8px; padding:6px 8px; }
+  .stk-g .l{ font-size:10.5px; color:var(--ink-dim); } .stk-g .v{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px; word-break:break-all; }
+  .stk-tg{ margin-top:8px; padding:8px 10px; border-radius:10px; background:#F5F3FF; border:1px solid #DDD6FE; font-size:12.5px; line-height:1.55; }
+  .stk-tg b{ font-family:'IBM Plex Mono',monospace; }
+  .stk-ft{ display:flex; gap:6px; margin-top:8px; justify-content:flex-end; }
+  .stk-imgs{ display:flex; gap:8px; overflow-x:auto; padding:4px 0; }
+  .stk-imgs a{ flex:0 0 auto; width:110px; height:150px; border-radius:10px; overflow:hidden; border:1px solid var(--border); background:#F1F5F9; display:block; }
+  .stk-imgs img{ width:100%; height:100%; object-fit:cover; }
+  .vs-form{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .vs-form label{ font-size:12px; color:var(--ink-soft); display:block; } .vs-form input, .vs-form select{ width:100%; height:36px; margin-top:3px; }
+  .vs-form .full{ grid-column:1 / -1; }
+  .vs-scan{ width:100%; border-collapse:collapse; font-size:12px; } .vs-scan th{ text-align:left; font-weight:600; color:var(--ink-dim); padding:3px 4px; }
+  .vs-scan td{ padding:3px 2px; } .vs-scan input[type=text], .vs-scan input[type=number], .vs-scan select{ width:100%; height:30px; min-width:54px; }
+  @media (max-width:600px){ .stk-g{ grid-template-columns:repeat(2,1fr); } .vs-form{ grid-template-columns:1fr; } }
+
+  .vs-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .vs-title{ font-size:17px; font-weight:800; } .vs-tools{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .vs-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; }
+  .vs-card{ position:relative; background:var(--surface); border:1px solid var(--border); border-radius:16px; cursor:pointer; display:flex; flex-direction:column; transition:box-shadow .15s, transform .15s; }
+  .vs-card:hover{ box-shadow:0 6px 18px rgba(0,0,0,.10); transform:translateY(-1px); }
+  .vs-th{ height:112px; margin:8px; border-radius:12px; background:#FDF3E3; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .vs-th.file{ background:#F1F5F9; } .vs-ficon{ font-size:44px; }
+  .vs-th img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .vs-cb{ padding:2px 12px 12px; } .vs-cn{ font-weight:700; font-size:14px; line-height:1.3; max-height:2.7em; overflow:hidden; word-break:break-word; }
+  .vs-cm{ font-size:11.5px; color:var(--ink-dim); margin-top:5px; }
+  .vs-more{ position:absolute; top:12px; right:12px; z-index:2; width:28px; height:28px; border-radius:50%; border:0; background:rgba(255,255,255,.92); box-shadow:0 1px 4px rgba(0,0,0,.18); cursor:pointer; font-size:16px; line-height:1; font-weight:800; }
+  @media (max-width:600px){ .vs-grid{ grid-template-columns:repeat(2,1fr); gap:10px; } .vs-th{ height:92px; } }
+
+  /* ===== ភាគហ៊ុន (shares) layout ===== */
+  .stk-top{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:12px; }
+  .stk-top > div{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 14px; min-width:0; }
+  .stk-top > .first{ background:#FFFBEB; border-color:#FDE68A; }
+  .stk-top .l{ font-size:12px; color:var(--ink-dim); } .stk-top .s{ font-size:11.5px; color:var(--ink-dim); margin-top:4px; }
+  .stk-top .v{ font-family:'IBM Plex Mono',monospace; font-weight:800; font-size:22px; margin-top:4px; word-break:break-all; }
+  .stk-alloc, .stk-src{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:12px; }
+  .stk-bar{ display:flex; height:14px; border-radius:7px; overflow:hidden; margin:10px 0 8px; background:#E5E7EB; }
+  .stk-bar i{ display:block; height:100%; }
+  .stk-leg{ display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; }
+  .dot{ display:inline-block; width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
+  .stk-goal{ background:#F5F3FF; border:1px solid #DDD6FE; border-radius:12px; padding:9px 12px; margin-bottom:12px; font-size:12.5px; line-height:1.6; }
+  .stk-tbl{ border:1px solid var(--border); border-radius:14px; overflow-x:auto; background:var(--surface); margin-bottom:12px; }
+  .stk-tbl-in{ min-width:780px; }
+  .stk-sh{ font-weight:800; font-size:14px !important; } .stk-pp{ font-size:10.5px; color:var(--ink-dim); margin-top:2px; font-weight:500; }
+  .stk-tr{ display:grid; grid-template-columns:minmax(140px,1.5fr) .8fr 1fr 1fr 1fr 1.1fr; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border-soft); }
+  .stk-tr.head{ background:rgba(34,197,94,.10); font-size:12px; font-weight:700; color:#166534; }
+  .stk-tr.foot{ background:rgba(0,0,0,.035); font-weight:700; border-bottom:0; }
+  .stk-tr .num{ text-align:right; font-family:'IBM Plex Mono',monospace; font-size:13px; }
+  .stk-pct{ display:flex; align-items:center; gap:6px; justify-content:flex-end; }
+  .stk-mini{ width:44px; height:5px; border-radius:3px; background:#E5E7EB; overflow:hidden; flex:0 0 auto; } .stk-mini i{ display:block; height:100%; }
+  .stk-tg2{ padding:5px 14px 10px 31px; font-size:12.5px; line-height:1.55; background:#FAF8FF; border-bottom:1px solid var(--border-soft); }
+  .stk-ra{ display:flex; gap:4px; justify-content:flex-end; }
+  .stk-ra button{ border:1px solid var(--border); background:var(--surface); border-radius:8px; width:28px; height:28px; cursor:pointer; font-size:12px; }
+  .stk-rate{ border:1px solid #FDE68A; background:#FEF9C3; border-radius:999px; padding:5px 12px; font-weight:700; font-size:12.5px; cursor:pointer; color:#854D0E; }
+  .stk-goalbtn{ border:1px solid var(--border); background:var(--surface); border-radius:8px; width:24px; height:24px; cursor:pointer; font-size:12px; padding:0; line-height:1; }
+  .stk-goalbtn:hover{ background:#F5F3FF; }
+  .stk-gbar{ display:inline-block; vertical-align:middle; width:90px; height:7px; border-radius:4px; background:#E5E7EB; overflow:hidden; }
+  .stk-gbar i{ display:block; height:100%; background:#7C3AED; border-radius:4px; }
+  .stk-chip{ font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+  .stk-chip.buy{ background:#DCFCE7; color:#166534; } .stk-chip.wait{ background:#FEF3C7; color:#92400E; } .stk-chip.done{ background:#DBEAFE; color:#1E40AF; }
+  .stk-imgs{ display:flex; gap:8px; overflow-x:auto; padding:8px 0 2px; }
+  .stk-imgs a{ flex:0 0 auto; width:120px; height:84px; border-radius:10px; overflow:hidden; border:1px solid var(--border); background:#F1F5F9; display:block; cursor:zoom-in; }
+  .stk-imgs img{ width:100%; height:100%; object-fit:cover; }
+  @media (max-width:700px){ .stk-top{ grid-template-columns:1fr 1fr; } .stk-top .v{ font-size:17px; } }
+
+  /* ===== CPD · Expire + Countdown ===== */
+  .cpd-tab .x{ font-size:10.5px; opacity:.9; margin-left:6px; font-weight:700; }
+  .cpd-exp{ border:1px solid; border-radius:14px; padding:12px 14px; margin-bottom:14px; }
+  .cpd-exp.ok{ background:linear-gradient(120deg,#F0FDF4,#ECFDF5); border-color:#BBF7D0; color:#166534; }
+  .cpd-exp.warn{ background:linear-gradient(120deg,#FFFBEB,#FEF3C7); border-color:#FDE68A; color:#92400E; }
+  .cpd-exp.danger, .cpd-exp.dead{ background:linear-gradient(120deg,#FEF2F2,#FEE2E2); border-color:#FECACA; color:#B91C1C; }
+  .cpd-exp.done, .cpd-exp.none{ background:#F8FAFC; border-color:#E2E8F0; color:#475569; }
+  .cpd-exp-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+  .cpd-exp-head b{ font-size:13.5px; }
+  .cpd-exp-chip{ font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px; background:#fff; border:1px solid currentColor; }
+  .cpd-exp-date{ font-size:12px; margin-top:6px; color:var(--ink-soft); }
+  .cpd-exp-date b{ font-family:'IBM Plex Mono',monospace; font-size:15px; color:inherit; }
+  .cpd-exp-seg{ display:grid; grid-template-columns:repeat(2,minmax(0,140px)); gap:6px; margin-top:10px; }
+  .cpd-exp-seg > div{ background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:10px; padding:7px 2px; text-align:center; }
+  .cpd-exp-seg b{ display:block; font-size:21px; line-height:1.1; font-family:'IBM Plex Mono',monospace; }
+  .cpd-exp-seg span{ font-size:10.5px; color:var(--ink-dim); }
+  .cpd-exp-sum{ margin-top:8px; font-size:12.5px; }
+  .cpd-exp-edit{ margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12px; color:var(--ink-soft); }
+  .cpd-exp-edit input[type=date]{ height:32px; font-weight:600; }
+  @media (max-width:600px){ .cpd-exp-seg{ gap:4px; } .cpd-exp-seg b{ font-size:16px; } .cpd-exp-seg span{ font-size:9.5px; } }
+  body.guest-cpd #cpdOverlay .cpd-exp-edit{ display:none; }
+
   /* ===== CPD · Professional Dental License ===== */
   .cpd-tab.passed{ border-color:#86EFAC; background:#F0FDF4; color:#166534; }
   .cpd-tab.passed[aria-pressed="true"]{ background:#16A34A; border-color:#16A34A; color:#fff; }
@@ -2891,6 +3008,21 @@
         <span style="flex:1;"></span>
         <button type="button" class="btn btn-outline kh" id="libEditCancel">បោះបង់</button>
         <button type="button" class="btn btn-primary kh" id="libEditSave">💾 រក្សាទុក</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ឃ្លាំងឯកសារ / ហ៊ុន : shared dialog -->
+<div class="overlay hidden" id="vsDlg" style="z-index:1100 !important;">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-head"><h2 class="kh" id="vsDlgTitle"></h2><button class="x" id="vsDlgX">✕</button></div>
+    <div class="modal-body">
+      <div id="vsDlgBody"></div>
+      <div class="kh" id="vsDlgErr" style="color:#B91C1C; font-size:12px; margin-top:8px;"></div>
+      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+        <button type="button" class="btn btn-outline kh" id="vsDlgCancel">បោះបង់</button>
+        <button type="button" class="btn btn-primary kh" id="vsDlgOk">យល់ព្រម</button>
       </div>
     </div>
   </div>
@@ -6793,12 +6925,118 @@ document.querySelectorAll('.cfg-tab-btn').forEach(btn => {
 /* =====================================================================
    🎓 CPD tracker — certificates in a Google Drive folder (read by CPD.gs in Apps Script)
    ===================================================================== */
-const CPD_DEFAULT_FOLDER = '1W-KK_yBfqqugU_N-s6bawseoQaDXS-3c';
-const CPD_KEYS = { folder:'kep_cpd_folder_v1', cache:'kep_cpd_cache_v1', targets:'kep_cpd_targets_v1', tab:'kep_cpd_tab_v1' };
+const CPD_OLD_FOLDER = '1W-KK_yBfqqugU_N-s6bawseoQaDXS-3c';      // previous folder (auto-migrated)
+const CPD_DEFAULT_FOLDER = '1nVIlNvNJRJVlsK_J2TLrF8Dt62jN8a1l';  // new CPD folder
+const CPD_KEYS = { folder:'kep_cpd_folder_v1', cache:'kep_cpd_cache_v1', targets:'kep_cpd_targets_v1', tab:'kep_cpd_tab_v1', expires:'kep_cpd_expires_v1' };
 let cpdData = null, cpdTab = '', cpdBusy = false;
 function cpdGet(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function cpdSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
-function cpdFolderId(){ return cpdGet(CPD_KEYS.folder, CPD_DEFAULT_FOLDER); }
+function cpdFolderId(){
+  const v = cpdGet(CPD_KEYS.folder, CPD_DEFAULT_FOLDER);
+  if(v === CPD_OLD_FOLDER){            // still on the old default → switch to the new folder and drop the old cache
+    cpdSet(CPD_KEYS.folder, CPD_DEFAULT_FOLDER); cpdSet(CPD_KEYS.cache, 'null'); cpdSet(CPD_KEYS.tab, '');
+    return CPD_DEFAULT_FOLDER;
+  }
+  return v;
+}
+
+/* ---------- Expire + countdown (date comes from the folder name e.g. 31-12-2027, or set by hand) ---------- */
+function cpdExpMap(){ try{ return JSON.parse(cpdGet(CPD_KEYS.expires, '{}')) || {}; }catch(e){ return {}; } }
+function cpdPad(n){ return String(n).padStart(2, '0'); }
+function cpdYMDof(d){ return d.getFullYear() + '-' + cpdPad(d.getMonth() + 1) + '-' + cpdPad(d.getDate()); }
+function cpdDMYof(d){ return cpdPad(d.getDate()) + '-' + cpdPad(d.getMonth() + 1) + '-' + d.getFullYear(); }
+function cpdExpireFromName(name){
+  const t = String(name || '');
+  let y, mo, d, m = t.match(/(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})/);
+  if(m){ d = +m[1]; mo = +m[2]; y = +m[3]; }
+  else{
+    m = t.match(/(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+    if(!m) return null;
+    y = +m[1]; mo = +m[2]; d = +m[3];
+  }
+  if(mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  const dt = new Date(y, mo - 1, d, 23, 59, 59);
+  return dt.getMonth() === mo - 1 ? dt : null;
+}
+// priority: set by hand → folder name → license "valid" date
+function cpdExpireFor(f){
+  const man = cpdExpMap()[f.name];
+  const mm = man && String(man).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(mm) return { date:new Date(+mm[1], +mm[2] - 1, +mm[3], 23, 59, 59), src:'manual' };
+  const a = cpdExpireFromName(f.name);
+  if(a) return { date:a, src:'name' };
+  const v = f.license && f.license.valid;
+  if(v){
+    let d = cpdExpireFromName(v);
+    if(!d && /\d{1,2}\D{0,3}[A-Za-z]{3,}\D{0,3}\d{4}/.test(v)){ d = cpdParseDate(v); if(d) d.setHours(23, 59, 59, 0); }
+    if(d) return { date:d, src:'license' };
+  }
+  return null;
+}
+function cpdBreak(from, to){          // calendar-aware years / months / days / h / m / s between two dates
+  let y = to.getFullYear() - from.getFullYear(), m = to.getMonth() - from.getMonth(), d = to.getDate() - from.getDate();
+  let h = to.getHours() - from.getHours(), mi = to.getMinutes() - from.getMinutes(), s = to.getSeconds() - from.getSeconds();
+  if(s < 0){ s += 60; mi--; }
+  if(mi < 0){ mi += 60; h--; }
+  if(h < 0){ h += 24; d--; }
+  if(d < 0){ d += new Date(to.getFullYear(), to.getMonth(), 0).getDate(); m--; }
+  if(m < 0){ m += 12; y--; }
+  return { y, m, d, h, mi, s, days:Math.floor((to - from) / 86400000) };
+}
+function cpdYM(b){ return { y:b.y, m:b.m }; }   // years + months only (days ignored)
+function cpdYMText(ym, past){
+  const t = [ym.y ? ym.y + ' ឆ្នាំ' : '', ym.m ? ym.m + ' ខែ' : ''].filter(Boolean).join(' ');
+  return past ? (t || 'ក្រោម ១ ខែ') : (t ? 'នៅសល់ ' + t + ' ទើបផុតកំណត់' : 'នៅសល់ក្រោម ១ ខែ ទើបផុតកំណត់');
+}
+let cpdTickT = null;
+function cpdTick(){
+  const card = document.getElementById('cpdExp'), ov = document.getElementById('cpdOverlay');
+  if(!card || !ov || ov.classList.contains('hidden')){ clearInterval(cpdTickT); cpdTickT = null; return; }
+  const exp = new Date(+card.dataset.exp), lic = card.dataset.lic === '1', now = new Date();
+  let cls, chip, html;
+  if(exp > now){
+    const b = cpdBreak(now, exp);
+    cls = b.days <= 30 ? 'danger' : b.days <= 180 ? 'warn' : 'ok';
+    chip = b.days <= 30 ? '⚠ ជិតផុតណាស់' : b.days <= 180 ? '⚠ ជិតផុតកំណត់' : '✅ នៅមានសុពលភាព';
+    const ym = cpdYM(b);
+    html = `<div class="cpd-exp-seg">${[[ym.y, 'ឆ្នាំ'], [ym.m, 'ខែ']].map(([v, l]) => `<div><b>${cpdPad(v)}</b><span class="kh">${l}</span></div>`).join('')}</div>
+      <div class="cpd-exp-sum kh">⏳ ${cpdYMText(ym)}</div>`;
+  }else{
+    const ym = cpdYM(cpdBreak(exp, now));
+    cls = lic ? 'done' : 'dead';
+    chip = lic ? '📁 រយៈពេលនេះបានបញ្ចប់' : '⛔ ផុតកំណត់ហើយ';
+    html = `<div class="cpd-exp-sum kh" style="font-size:14px;">ផុតកំណត់មកហើយ <b>${cpdYMText(ym, true)}</b></div>`;
+  }
+  card.className = 'cpd-exp ' + cls;
+  document.getElementById('cpdExpChip').textContent = chip;
+  document.getElementById('cpdExpBody').innerHTML = html;
+}
+function cpdExpireCard(f){
+  const ex = cpdExpireFor(f), man = !!cpdExpMap()[f.name];
+  const edit = `<div class="cpd-exp-edit kh">📅 កំណត់ថ្ងៃផុតកំណត់៖
+      <input type="date" id="cpdExpInput" class="mono" value="${ex ? cpdYMDof(ex.date) : ''}">
+      ${man ? '<button type="button" class="btn btn-outline btn-sm kh" id="cpdExpReset">↺ ស្វ័យប្រវត្តិ</button>' : ''}</div>`;
+  if(!ex) return `<div class="cpd-exp none">
+      <div class="cpd-exp-head"><b class="kh">⏳ ផុតកំណត់ · Expire</b><span class="cpd-exp-chip kh">មិនទាន់កំណត់</span></div>
+      <div class="cpd-exp-sum kh">Folder នេះគ្មានថ្ងៃក្នុងឈ្មោះ (ឧ. 31-12-2027) — សូមជ្រើសថ្ងៃផុតកំណត់ខាងក្រោម</div>${edit}</div>`;
+  const srcTxt = ex.src === 'manual' ? '✎ កំណត់ដោយខ្លួនឯង' : ex.src === 'name' ? '📁 យកពីឈ្មោះ Folder' : '🪪 យកពីអាជ្ញាបណ្ណ';
+  return `<div class="cpd-exp ok" id="cpdExp" data-exp="${ex.date.getTime()}" data-lic="${f.license ? 1 : 0}">
+      <div class="cpd-exp-head"><b class="kh">⏳ ផុតកំណត់ · Expire</b><span class="cpd-exp-chip kh" id="cpdExpChip"></span></div>
+      <div class="cpd-exp-date kh">ថ្ងៃផុតកំណត់៖ <b>${cpdDMYof(ex.date)}</b> · ${srcTxt}</div>
+      <div id="cpdExpBody"></div>${edit}</div>`;
+}
+function cpdBindExpire(f){
+  const inp = document.getElementById('cpdExpInput');
+  if(inp) inp.addEventListener('change', () => {
+    const t = cpdExpMap();
+    if(/^\d{4}-\d{2}-\d{2}$/.test(inp.value)) t[f.name] = inp.value; else delete t[f.name];
+    cpdSet(CPD_KEYS.expires, JSON.stringify(t)); renderCpd();
+  });
+  const rs = document.getElementById('cpdExpReset');
+  if(rs) rs.addEventListener('click', () => { const t = cpdExpMap(); delete t[f.name]; cpdSet(CPD_KEYS.expires, JSON.stringify(t)); renderCpd(); });
+  clearInterval(cpdTickT); cpdTickT = null;
+  if(document.getElementById('cpdExp')){ cpdTick(); cpdTickT = setInterval(cpdTick, 60000); }
+}
 function cpdTargets(){ try{ return JSON.parse(cpdGet(CPD_KEYS.targets, '{}')) || {}; }catch(e){ return {}; } }
 function cpdTargetFor(name){ const t = cpdTargets()[name]; return t > 0 ? t : 60; }
 function cpdParseDate(s){
@@ -6895,7 +7133,7 @@ function renderCpd(){
     const avail = folders.find(f => /available/i.test(f.name));
     cpdTab = (avail || folders.slice().sort((a,b) => b.files.length - a.files.length)[0]).name;
   }
-  tabs.innerHTML = folders.map(f => `<button type="button" class="cpd-tab kh${f.license ? ' passed' : ''}" data-name="${escHTML(f.name)}" aria-pressed="${f.name === cpdTab}">${f.license ? '🪪' : '📁'} ${escHTML(f.name)}<span class="n">${f.license ? '✓ PASS' : num2(f.total)}</span></button>`).join('');
+  tabs.innerHTML = folders.map(f => `<button type="button" class="cpd-tab kh${f.license ? ' passed' : ''}" data-name="${escHTML(f.name)}" aria-pressed="${f.name === cpdTab}">${f.license ? '🪪' : '📁'} ${escHTML(f.name)}<span class="n">${f.license ? '✓ PASS' : num2(f.total)}</span>${(() => { const e = cpdExpireFor(f); if(!e) return ''; const now = new Date(); if(e.date <= now) return `<span class="x">⛔ផុត</span>`; const ym = cpdYM(cpdBreak(now, e.date)); return `<span class="x">⏳${ym.y ? ym.y + 'ឆ្នាំ' : ''}${ym.m ? ym.m + 'ខែ' : ''}${!ym.y && !ym.m ? '<1ខែ' : ''}</span>`; })()}</button>`).join('');
   tabs.querySelectorAll('.cpd-tab').forEach(b => b.addEventListener('click', () => { cpdTab = b.dataset.name; cpdSet(CPD_KEYS.tab, cpdTab); renderCpd(); }));
 
   const f = folders.find(x => x.name === cpdTab);
@@ -6954,6 +7192,7 @@ function renderCpd(){
                : remain ? `នៅខ្វះ ${remain} CPD ទៀត ទើបគ្រប់ ${target}` : `✅ គ្រប់ចំនួន CPD ហើយ (${total} / ${target})`}</div>
       </div>
     </div>
+    ${cpdExpireCard(f)}
     <div class="kh" style="font-size:11.5px; color:var(--ink-dim); margin-bottom:8px;">🔐 ឯកសារបើកបានតែពេល Browser ចូល Google Account ${cpdData && cpdData.ownerEmail ? '<b>' + escHTML(cpdData.ownerEmail) + '</b>' : 'ម្ចាស់ Folder'} ប៉ុណ្ណោះ</div>
     ${zero ? `<div class="kh" style="font-size:12px; color:#B45309; margin-bottom:8px;">⚠ ${zero} ឯកសាររកមិនឃើញលេខ CPD — អាចកែក្នុង Tab “CPD” របស់ Google Sheet (Column manual)</div>` : ''}
     <div class="cpd-list">
@@ -6967,6 +7206,7 @@ function renderCpd(){
           <a href="${escHTML(cpdLink(x.url))}" target="_blank" rel="noopener" title="បើកក្នុង Drive${cpdData && cpdData.ownerEmail ? ' (' + escHTML(cpdData.ownerEmail) + ')' : ''}">🔗</a>
         </div>`).join('') : `<div class="empty-state kh" style="padding:18px;">${lic ? 'Folder នេះមានតែអាជ្ញាបណ្ណ (មិនមានវិញ្ញាបនបត្រ CPD ផ្សេង)' : 'Folder នេះមិនមានវិញ្ញាបនបត្រទេ'}</div>`}
     </div>`;
+  cpdBindExpire(f);
   document.getElementById('cpdTargetInput').addEventListener('change', e => {
     const v = parseFloat(e.target.value);
     const t = cpdTargets(); if(v > 0) t[f.name] = v; else delete t[f.name];
@@ -7048,10 +7288,19 @@ const SEC_DEFAULTS = [
   { id:'1QFZ1ud_1gxJhFgt_EDQO7WJAJEBJfn1s', name:'អត្ថបទ', kind:'article', count:0 }
 ];
 // "អត្ថបទ" contains "បទ" (= song), so an older Code.gs labelled it music — fix the kind by name here too
+const LIB_STOCK_FOLDER = '1I994Hw9wi2OotQA21Ibp_1aqSHGDsigR';   // ហ៊ុន · stock screenshots
+const LIB_VAULT_URL = 'https://drive.google.com/drive/my-drive?dmr=1&ec=wgc-drive-%5Bmodule%5D-goto';   // ឃ្លាំងឯកសារ · My Drive
+const SEC_EXTRAS = [
+  { id:'__vault', name:'ឃ្លាំងឯកសារ', kind:'vault', count:0, url:LIB_VAULT_URL },
+  { id:LIB_STOCK_FOLDER, name:'ហ៊ុន', kind:'stock', count:0 }
+];
 function secFixKinds(list){
-  return list.map(x => /អត្ថបទ|article|blog|note|កំណត់ត្រា/i.test(String(x.name || '')) ? Object.assign({}, x, { kind:'article' }) : x);
+  const out = list.filter(x => x && x.id !== '__vault').map(x => x.id === LIB_STOCK_FOLDER ? Object.assign({}, x, { name:'ហ៊ុន', kind:'stock' })
+    : /អត្ថបទ|article|blog|note|កំណត់ត្រា/i.test(String(x.name || '')) ? Object.assign({}, x, { kind:'article' }) : x);
+  SEC_EXTRAS.forEach(ex => { if(!out.some(x => x.id === ex.id)) out.push(Object.assign({}, ex)); });
+  return out;
 }
-let libSections = (() => { try{ const a = JSON.parse(libGet(SEC_KEYS.list, 'null')); if(Array.isArray(a) && a.length) return secFixKinds(a); }catch(e){} return SEC_DEFAULTS.slice(); })();
+let libSections = (() => { try{ const a = JSON.parse(libGet(SEC_KEYS.list, 'null')); if(Array.isArray(a) && a.length) return secFixKinds(a); }catch(e){} return secFixKinds(SEC_DEFAULTS.slice()); })();
 let libSecId = libGet(SEC_KEYS.cur, '');
 let secBusy = false, secFetched = false;
 function libRootId(){ return libGet(SEC_KEYS.root, LIB_ROOT_DEFAULT); }
@@ -7060,6 +7309,8 @@ function libSecOf(kind){ const c = libCurSection(); if(c && c.kind === kind) ret
 function secKindToLib(k){ return k === 'music' ? 'music' : k === 'article' ? 'article' : 'book'; }
 function secIcon(x){
   const n = String(x.name || '');
+  if(x.kind === 'vault') return '🗄️';
+  if(x.kind === 'stock') return '📈';
   if(x.kind === 'music') return '🎵';
   if(x.kind === 'article') return '📰';
   if(/video|វីដេអូ|movie|film/i.test(n)) return '🎬';
@@ -7094,6 +7345,8 @@ function libSelectSection(id, noRender){
 // fetch the current folder's list once per session
 function libEnsureLoaded(){
   const sec = libCurSection(); if(!sec) return;
+  if(sec.kind === 'vault'){ if(!vault.data && !vault.busy) vaultLoad(); return; }
+  if(sec.kind === 'stock'){ if(!stkTried && !stkBusy && !document.body.classList.contains('guest')) setTimeout(stockScan, 0); return; }
   if(sec.kind === 'music'){ if(musTried !== sec.id){ musTried = sec.id; musLoad(false); } }
   else if(sec.kind === 'article'){ if(artTried !== sec.id){ artTried = sec.id; artLoad(false); } }
   else if(libFetched !== sec.id) loadLibrary(false);
@@ -7337,6 +7590,460 @@ function libCardHTML(it){
       <span class="lib-ck">✓</span></div>`;
 }
 
+/* =====================================================================
+   🗄️ ឃ្លាំងឯកសារ (Drive file manager)  +  📈 ហ៊ុន (stock analysis from screenshots)
+   backend: VaultStock.gs  (action=vault / action=stock)
+   ===================================================================== */
+const vault = { folder:'root', data:null, busy:false, err:'' };
+let vsDlgOk = null;
+function vsDlg(title, bodyHTML, okText, onOk){
+  document.getElementById('vsDlgTitle').textContent = title;
+  document.getElementById('vsDlgBody').innerHTML = bodyHTML;
+  document.getElementById('vsDlgErr').textContent = '';
+  document.getElementById('vsDlgOk').textContent = okText || 'យល់ព្រម';
+  document.getElementById('vsDlgOk').style.display = '';
+  vsDlgOk = onOk;
+  document.getElementById('vsDlg').classList.remove('hidden');
+  const f = document.querySelector('#vsDlgBody input[type=text], #vsDlgBody input[type=number]'); if(f) setTimeout(() => f.focus(), 50);
+}
+function vsDlgClose(){ document.getElementById('vsDlg').classList.add('hidden'); vsDlgOk = null; }
+document.getElementById('vsDlgX').addEventListener('click', vsDlgClose);
+document.getElementById('vsDlgCancel').addEventListener('click', vsDlgClose);
+document.getElementById('vsDlgOk').addEventListener('click', () => {
+  if(!vsDlgOk) return;
+  const err = vsDlgOk();
+  if(err){ document.getElementById('vsDlgErr').textContent = err; } else vsDlgClose();
+});
+document.getElementById('vsDlg').addEventListener('keydown', e => { if(e.key === 'Enter' && e.target.tagName === 'INPUT'){ e.preventDefault(); document.getElementById('vsDlgOk').click(); } });
+
+async function vsApi(action, params){
+  if(!webAppUrl) throw new Error('មិនទាន់មាន Apps Script URL ក្នុង Settings');
+  const qs = Object.entries(params).map(([k, v]) => '&' + k + '=' + encodeURIComponent(v)).join('');
+  const res = await fetch(webAppUrl + (webAppUrl.includes('?') ? '&' : '?') + 'action=' + action + qs + '&_=' + Date.now());
+  const raw = await res.text();
+  let j; try{ j = JSON.parse(raw); }catch(e){ throw new Error('Apps Script មានកំហុស ឬមិនទាន់មាន VaultStock.gs'); }
+  if(!j || j.status === 'error') throw new Error((j && j.message) || 'error');
+  if(!j.done) throw new Error('Apps Script មិនទាន់មាន VaultStock.gs — សូមបន្ថែម រួច Deploy “New version”');
+  return j;
+}
+function vsIsVisible(kind){ const c = libCurSection(); return currentView === 'library' && c && c.kind === kind; }
+
+/* ---------------------------- ឃ្លាំងឯកសារ ---------------------------- */
+async function vaultLoad(folder){
+  if(document.body.classList.contains('guest')) return;
+  if(vault.busy) return;
+  if(folder) vault.folder = folder;
+  vault.busy = true; vault.err = '';
+  if(vsIsVisible('vault')) renderLibrary();
+  try{
+    const j = vault.folder === 'search' ? await vsApi('vault', { op:'search', q:vault.q || '' }) : await vsApi('vault', { op:'list', folder:vault.folder });
+    vault.data = j.vault;
+    if(j.vault && j.vault.folder && j.vault.folder.id !== 'search') vault.folder = j.vault.folder.isRoot ? 'root' : j.vault.folder.id;
+  }catch(e){ vault.err = String(e.message || e); }
+  vault.busy = false;
+  if(vsIsVisible('vault')) renderLibrary();
+}
+function vsIcon(x){
+  if(x.folder) return '📁';
+  const k = libKindOf(x), kd = LIB_KINDS.find(y => y.k === k);
+  if(/google-apps\.document/.test(x.mime || '')) return '📝';
+  if(/google-apps\.spreadsheet/.test(x.mime || '')) return '📊';
+  if(/google-apps\.presentation/.test(x.mime || '')) return '📽️';
+  return kd ? kd.i : '📄';
+}
+function vsDate(iso){ const d = new Date(iso); return isNaN(d) ? '' : cpdPad(d.getDate()) + '-' + cpdPad(d.getMonth() + 1) + '-' + d.getFullYear(); }
+const VS_FOLDER_SVG = '<svg viewBox="0 0 64 52" width="64" height="52" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4-4h16l6 7h26a4 4 0 0 1 4 4v29a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#F2B632"/><path d="M4 18h56v25a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#FACC4B"/></svg>';
+function vaultRender(body){
+  document.getElementById('libTotal').textContent = 'ឃ្លាំងឯកសារ · Google Drive';
+  document.getElementById('libDriveLink').href = libLink(LIB_VAULT_URL);
+  if(document.body.classList.contains('guest')){ body.innerHTML = '<div class="vs-err kh">🔒 សូមបញ្ចូល PIN ដើម្បីប្រើឃ្លាំងឯកសារ</div>'; return; }
+  if(vault.err){ body.innerHTML = `<div class="vs-err kh">⚠ ${escHTML(vault.err)}<div style="margin-top:8px;"><button type="button" class="btn btn-outline btn-sm kh" data-vgo="${escHTML(vault.folder)}">🔄 ព្យាយាមម្តងទៀត</button></div></div>`; return; }
+  const d = vault.data;
+  if(!d){ body.innerHTML = '<div class="lib-empty-big kh"><div class="lib-spin"></div>កំពុងបើកឃ្លាំងឯកសារ...</div>'; return; }
+  const q = libQuery.trim().toLowerCase(), ok = x => !q || String(x.name).toLowerCase().includes(q);
+  const folders = d.folders.filter(ok), files = d.files.filter(ok);
+  const nested = (d.path || []).length > 0 || d.search;
+  const crumbs = nested ? `<div class="vs-crumbs kh" style="margin-bottom:10px;"><button type="button" data-vgo="root">🗄️ ឃ្លាំងឯកសារ</button>${(d.path || []).map(c => `<i>›</i><button type="button" data-vgo="${escHTML(c.id)}">${escHTML(c.name)}</button>`).join('')}${d.search ? `<i>›</i><button type="button">${escHTML(d.folder.name)}</button>` : ''}</div>` : '';
+  const card = (x, isF) => {
+    let th;
+    if(isF) th = VS_FOLDER_SVG;
+    else{
+      const it = Object.assign({}, x, { kind:libKindOf(x) });
+      th = `<span class="vs-ficon">${vsIcon(x)}</span>${libThumbImg(it, 400).replace('<img ', '<img style="opacity:1" ')}`;
+    }
+    return `<div class="vs-card" ${isF ? `data-vgo="${escHTML(x.id)}"` : `data-vopen="${escHTML(x.id)}"`} tabindex="0" role="button" title="${escHTML(x.name)}">
+        <button type="button" class="vs-more" data-vmenu="${escHTML(x.id)}" title="ជម្រើស" aria-label="ជម្រើស">⋯</button>
+        <div class="vs-th${isF ? '' : ' file'}">${th}</div>
+        <div class="vs-cb"><div class="vs-cn kh">${escHTML(x.name)}</div><div class="vs-cm kh">${[isF ? 'Folder' : libSize(x.size), vsDate(x.modified)].filter(Boolean).map(escHTML).join(' · ')}</div></div>
+      </div>`;
+  };
+  body.innerHTML = `<div class="vs-head">
+      <div class="vs-title kh">ឃ្លាំងឯកសារ</div>
+      <div class="vs-tools">
+        <button type="button" class="btn btn-outline btn-sm kh" data-vnew="1">＋ Folder</button>
+        <label class="btn btn-primary btn-sm kh" for="vsFile" style="cursor:pointer;">⬆ ផ្ទុកឡើង</label><input type="file" id="vsFile" multiple hidden>
+        <button type="button" class="btn btn-outline btn-sm" data-vgo="${escHTML(d.search ? 'root' : vault.folder)}" title="Refresh">🔄</button>
+      </div></div>${crumbs}
+    ${folders.length + files.length ? `<div class="vs-grid">${folders.map(x => card(x, true)).join('')}${files.map(x => card(x, false)).join('')}</div>`
+      : `<div class="vs-empty kh"><div style="font-size:38px;">📂</div>${q ? 'រកមិនឃើញ “' + escHTML(libQuery) + '”' : 'Folder នេះទទេ — ចុច “⬆ ផ្ទុកឡើង” ឬ “＋ Folder”'}</div>`}`;
+}
+function vaultMenu(id){
+  const it = vsFindItem(id); if(!it) return;
+  vsDlg(it.name, `<div style="display:grid; gap:8px;">
+      <button type="button" class="btn btn-outline kh" id="vmRen">✎ ប្តូរឈ្មោះ</button>
+      <button type="button" class="btn btn-outline kh" id="vmMov">📁 ផ្លាស់ទី</button>
+      <button type="button" class="btn btn-outline kh" id="vmDel" style="color:#B91C1C;">🗑 លុប</button></div>`, 'បិទ', () => {});
+  document.getElementById('vsDlgOk').style.display = 'none';
+  const go = fn => () => { vsDlgClose(); fn(id); };
+  document.getElementById('vmRen').onclick = go(vaultRename);
+  document.getElementById('vmMov').onclick = go(vaultMove);
+  document.getElementById('vmDel').onclick = go(vaultTrash);
+}
+async function vaultUpload(fileList){
+  const files = [...(fileList || [])]; if(!files.length) return;
+  if(!webAppUrl){ libStatus('⚠ មិនទាន់មាន Apps Script URL'); return; }
+  const MAX = 12 * 1024 * 1024; let okN = 0;
+  for(let i = 0; i < files.length; i++){
+    const f = files[i];
+    if(f.size > MAX){ libStatus(`⚠ “${escHTML(f.name)}” ធំជាង ១២ MB — រំលង`); continue; }
+    libStatus(`⏳ កំពុងផ្ទុកឡើង ${i + 1}/${files.length}៖ ${escHTML(f.name)}`);
+    try{
+      const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = () => rej(new Error('អានឯកសារមិនបាន')); r.readAsDataURL(f); });
+      const resp = await fetch(webAppUrl, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+        body:JSON.stringify({ action:'vault', op:'upload', folder:vault.folder, name:f.name, mime:f.type || 'application/octet-stream', data:b64 }) });
+      let j; try{ j = JSON.parse(await resp.text()); }catch(e){ throw new Error('Apps Script មិនទាន់មាន doPost hook (សូមមើលការណែនាំ VaultStock.gs)'); }
+      if(!j || j.status !== 'success' || !j.done) throw new Error((j && j.message) || 'ផ្ទុកឡើងមិនបាន');
+      okN++;
+    }catch(e){ libStatus(`⚠ ផ្ទុកឡើង “${escHTML(f.name)}” មិនបាន៖ ${escHTML(String(e.message || e))}`); await new Promise(r => setTimeout(r, 1800)); }
+  }
+  if(okN) libStatus(`✓ ផ្ទុកឡើង ${okN} ឯកសារ រួចរាល់`);
+  vaultLoad();
+}
+function vsFindItem(id){ const d = vault.data; if(!d) return null; return d.folders.find(x => x.id === id) || d.files.find(x => x.id === id) || null; }
+async function vaultRun(label, params, after){
+  libStatus('⏳ ' + label + '...');
+  try{ const j = await vsApi('vault', params); libStatus('✓ ' + label + ' រួចរាល់'); if(after) after(j); await vaultLoad(); }
+  catch(e){ libStatus('⚠ ' + label + ' មិនបាន៖ ' + escHTML(String(e.message || e))); }
+}
+function vaultNewFolder(){
+  vsDlg('➕ Folder ថ្មី', '<label class="kh" style="font-size:12px;">ឈ្មោះ Folder</label><input type="text" id="vsName" class="kh" style="width:100%; height:38px;">', 'បង្កើត', () => {
+    const name = document.getElementById('vsName').value.trim(); if(!name) return 'សូមបញ្ចូលឈ្មោះ';
+    vaultRun('បង្កើត Folder “' + name + '”', { op:'mkdir', folder:vault.folder, name });
+  });
+}
+function vaultRename(id){
+  const it = vsFindItem(id); if(!it) return;
+  vsDlg('✎ ប្តូរឈ្មោះ', `<input type="text" id="vsName" class="kh" style="width:100%; height:38px;" value="${escHTML(it.name)}">`, 'រក្សាទុក', () => {
+    const name = document.getElementById('vsName').value.trim(); if(!name) return 'សូមបញ្ចូលឈ្មោះ';
+    if(name === it.name) return;
+    vaultRun('ប្តូរឈ្មោះ', { op:'rename', id, name });
+  });
+}
+function vaultMove(id){
+  const it = vsFindItem(id), d = vault.data; if(!it || !d) return;
+  const parent = (d.path || []).length > 1 ? d.path[d.path.length - 2].id : 'root';
+  const opts = (d.folder.isRoot ? [] : [`<option value="${escHTML(parent)}">⬆ Folder ខាងលើ (${(d.path || []).length > 1 ? escHTML(d.path[d.path.length - 2].name) : 'My Drive'})</option>`])
+    .concat(d.folders.filter(f => f.id !== id).map(f => `<option value="${escHTML(f.id)}">📁 ${escHTML(f.name)}</option>`));
+  if(!opts.length){ libStatus('⚠ គ្មាន Folder ផ្សេងដើម្បីផ្លាស់ទៅ — សូមបង្កើត Folder ថ្មីសិន'); return; }
+  vsDlg('📁 ផ្លាស់ទី “' + it.name + '”', `<label class="kh" style="font-size:12px;">ផ្លាស់ទៅ</label><select id="vsTo" class="kh" style="width:100%; height:38px;">${opts.join('')}</select>`, 'ផ្លាស់ទី', () => {
+    vaultRun('ផ្លាស់ទី', { op:'move', id, to:document.getElementById('vsTo').value });
+  });
+}
+function vaultTrash(id){
+  const it = vsFindItem(id); if(!it) return;
+  requestClinicPin(() => showConfirm(`លុប “${it.name}”? (ទៅធុងសំរាម Drive)`, () => vaultRun('លុប', { op:'trash', id })));
+}
+function vaultOpenFile(id){
+  const it = vsFindItem(id); if(!it) return;
+  const x = Object.assign({}, it, { shelf:'ឃ្លាំងឯកសារ', path:'' });
+  x.kind = libKindOf(x); x.title = libCleanTitle(x.name);
+  if(/google-apps|^$/.test(x.mime || '') || x.kind === 'doc'){ window.open(libLink(it.url), '_blank', 'noopener'); return; }
+  libIndex.set(x.id, x); libOpen(x.id);
+}
+
+/* ---------------------------- ហ៊ុន ---------------------------- */
+const STK_KEY = 'kep_stock_v1';
+let stk = (() => { const d = { holdings:[], done:{}, images:[], imgData:{}, targets:{}, scannedAt:'', rate:4100, hist:[] }; try{ const a = JSON.parse(localStorage.getItem(STK_KEY) || 'null'); if(a && Array.isArray(a.holdings)) return Object.assign(d, a); }catch(e){} return d; })();
+let stkBusy = false, stkMsg = '', stkImgs = false;
+function stkSave(){ try{ localStorage.setItem(STK_KEY, JSON.stringify(stk)); }catch(e){} }
+const stkFx = n => Number(n).toLocaleString('en-US', { maximumFractionDigits:2 });
+const stkMoney = (v, cur) => cur === 'USD' ? '$' + stkFx(v) : stkFx(v) + ' ៛';
+const stkRate = () => +stk.rate > 0 ? +stk.rate : 4100;
+const stkKHR = (v, cur) => cur === 'USD' ? v * stkRate() : v;
+const STK_COLORS = ['#2E9E3A', '#2563EB', '#D99A1E', '#B91C1C', '#6D3FE0', '#1E88B5', '#0F9D58', '#DB2777', '#64748B'];
+function stkCalc(h){
+  const shares = +h.shares || 0, tp = +h.targetPrice || 0, ts = +h.targetShares || 0;
+  let value = +h.value || 0, price = +h.price || 0, cost = +h.cost || 0;
+  if(!value && shares && price) value = shares * price;
+  if(!price && shares && value) price = value / shares;
+  const pl = cost ? value - cost : 0, plPct = cost ? pl / cost * 100 : 0;
+  const toBuy = ts > 0 ? Math.max(0, ts - shares) : 0;
+  let state = 'none';
+  if(ts > 0 && toBuy === 0) state = 'done';
+  else if(tp > 0 && price > 0) state = price <= tp ? 'buy' : 'wait';
+  else if(ts > 0) state = 'wait';
+  const goalPct = ts > 0 ? Math.min(100, shares / ts * 100) : 0;
+  return { goalPct, shares, price, tp, ts, value, cost, pl, plPct, toBuy, buyCost:toBuy * price, atTarget:toBuy * tp, gap: tp > 0 && price > tp ? (price - tp) / price * 100 : 0, state };
+}
+function stkTotal(){ return stk.holdings.reduce((a, h) => a + stkKHR(stkCalc(h).value, h.cur || 'KHR'), 0); }
+function stkSnap(){            // remember the total at each update → "ប្រែប្រួលថ្ងៃនេះ"
+  const v = Math.round(stkTotal()); if(!v) return;
+  const last = stk.hist[stk.hist.length - 1];
+  if(last && last.v === v) return;
+  stk.hist.push({ t:new Date().toISOString(), v }); if(stk.hist.length > 150) stk.hist = stk.hist.slice(-150);
+}
+function stkCommit(){ stkSnap(); stkSave(); stkRerender(); }
+function stkDayChange(){
+  if(stk.dayPct !== null && stk.dayPct !== undefined) return { pct:stk.dayPct, at:stk.dayAt };
+  const h = stk.hist; if(h.length < 2) return null;
+  const last = h[h.length - 1], d0 = new Date(); d0.setHours(0, 0, 0, 0);
+  let base = null; for(let i = h.length - 2; i >= 0; i--){ if(new Date(h[i].t) < d0){ base = h[i]; break; } }
+  if(!base) base = h[h.length - 2];
+  return { pct:(last.v - base.v) / base.v * 100, at:last.t };
+}
+function stkStamp(iso){ const d = new Date(iso); return isNaN(d) ? '' : d.getFullYear() + '-' + cpdPad(d.getMonth() + 1) + '-' + cpdPad(d.getDate()) + ' · ' + cpdPad(d.getHours()) + ':' + cpdPad(d.getMinutes()); }
+function stockRender(body){
+  const cur = libCurSection();
+  document.getElementById('libTotal').textContent = `ភាគហ៊ុន · ${stk.holdings.length} មុខ`;
+  document.getElementById('libDriveLink').href = libLink('https://drive.google.com/drive/folders/' + (cur ? cur.id : LIB_STOCK_FOLDER));
+  if(document.body.classList.contains('guest')){ body.innerHTML = '<div class="vs-err kh">🔒 សូមបញ្ចូល PIN ដើម្បីមើលភាគហ៊ុន</div>'; return; }
+  const q = libQuery.trim().toLowerCase();
+  const all = stk.holdings.map(h => ({ h, c:stkCalc(h) })).sort((a, b) => stkKHR(b.c.value, b.h.cur) - stkKHR(a.c.value, a.h.cur));
+  all.forEach((x, i) => { x.col = STK_COLORS[i % STK_COLORS.length]; });
+  const list = all.filter(x => !q || (x.h.ticker + ' ' + (x.h.name || '')).toLowerCase().includes(q));
+  const totV = all.reduce((a, x) => a + stkKHR(x.c.value, x.h.cur), 0);
+  const seen = all.filter(x => x.c.cost > 0);
+  const totC = seen.reduce((a, x) => a + stkKHR(x.c.cost, x.h.cur), 0), seenV = seen.reduce((a, x) => a + stkKHR(x.c.value, x.h.cur), 0);
+  const pl = seenV - totC, plPct = totC ? pl / totC * 100 : 0;
+  const dc = stkDayChange();   // from the screenshot (“ថ្ងៃនេះ”) when present
+  const need = all.reduce((a, x) => a + stkKHR(x.c.buyCost, x.h.cur), 0);
+  const last = stk.hist[stk.hist.length - 1];
+  const imgs = stk.images || [];
+  const top = `<div class="stk-top kh">
+      <div class="first"><div class="l">តម្លៃភាគហ៊ុនសរុប</div><div class="v">${stkFx(totV)} ៛</div><div class="s">= $${(totV / stkRate()).toFixed(2)}</div></div>
+      <div><div class="l">ប្រែប្រួលថ្ងៃនេះ</div><div class="v" style="color:${dc ? (dc.pct >= 0 ? '#16A34A' : '#DC2626') : 'inherit'};">${dc ? (dc.pct >= 0 ? '+' : '') + dc.pct.toFixed(2) + '%' : '—'}</div><div class="s">${dc ? stkStamp(dc.at) : 'មិនទាន់មានទិន្នន័យប្រៀបធៀប'}</div></div>
+      <div><div class="l">ចំណេញ (មុខដែលឃើញ)</div><div class="v" style="color:${!totC ? 'inherit' : pl >= 0 ? '#16A34A' : '#DC2626'};">${totC ? (pl >= 0 ? '+' : '') + stkFx(pl) + ' ៛' : '—'}</div><div class="s">${totC ? (plPct >= 0 ? '+' : '') + plPct.toFixed(2) + '% លើទុនទិញ ' + stkFx(totC) + ' ៛' : 'បញ្ចូល “ទឹកប្រាក់ទិញ” ដើម្បីគណនា'}</div></div>
+      <div><div class="l">ចំនួនមុខហ៊ុន</div><div class="v">${all.length}</div><div class="s">${stk.dayCount ? stk.dayCount + ' រូប · ocr' : 'មិនទាន់មានរូប'}</div></div>
+    </div>`;
+  const alloc = totV ? `<div class="stk-alloc kh"><div style="display:flex; justify-content:space-between; gap:8px; align-items:baseline;"><b>ចែកតាមមុខហ៊ុន</b><span style="font-size:11.5px; color:var(--ink-dim);">តាមតម្លៃបច្ចុប្បន្ន</span></div>
+      <div class="stk-bar">${all.filter(x => x.c.value > 0).map(x => `<i style="width:${stkKHR(x.c.value, x.h.cur) / totV * 100}%; background:${x.col};" title="${escHTML(x.h.ticker)}"></i>`).join('')}</div>
+      <div class="stk-leg">${all.filter(x => x.c.value > 0).map(x => `<span><span class="dot" style="background:${x.col};"></span>${escHTML(x.h.ticker)} <span class="mono" style="color:var(--ink-dim);">${(stkKHR(x.c.value, x.h.cur) / totV * 100).toFixed(1)}%</span></span>`).join('')}</div></div>` : '';
+  const withGoal = all.filter(x => x.c.ts > 0 && x.c.shares);
+  const goal = all.some(x => x.c.ts > 0) ? `<div class="stk-goal kh">🎯 <b>គោលដៅទិញ</b> · ${all.filter(x => x.c.ts > 0).length} មុខ${withGoal.length ? ' · នៅខ្វះសរុប <b>' + stkFx(withGoal.reduce((a, x) => a + x.c.toBuy, 0)) + '</b> ហ៊ុន' + (need ? ' ≈ <b>' + stkFx(need) + ' ៛</b>' : '') : ''}</div>` : '';
+  const chip = { buy:'🟢 ទិញបាន', wait:'⏳ រង់ចាំ', done:'✅ គ្រប់គោលដៅ', none:'' };
+  const rows = list.map(({ h, c, col }) => {
+    const cu = h.cur || 'KHR', up = c.pl >= 0, w = Math.min(100, Math.abs(c.plPct) * 2.2);
+    let tg = '';
+    if(c.ts > 0){
+      tg = `🎯 គោលដៅ <b>${stkFx(c.ts)}</b> ហ៊ុន · កាន់ <b>${c.shares ? stkFx(c.shares) : '?'}</b>`;
+      if(c.shares){
+        tg += ` · <b>${stkPct(c.goalPct)}%</b> <span class="stk-gbar"><i style="width:${Math.max(c.goalPct, c.goalPct > 0 ? 1.5 : 0)}%;"></i></span> · `;
+        tg += c.toBuy > 0 ? `នៅខ្វះ <b>${stkFx(c.toBuy)}</b> ហ៊ុន${c.price > 0 ? ' ≈ ' + stkMoney(c.buyCost, cu) : ''}` : '✅ គ្រប់គោលដៅហើយ';
+      } else tg += ' · <span style="opacity:.75;">រូបមិនមានចំនួនហ៊ុន — ចុច 🎯 ដើម្បីបញ្ចូលចំនួនដែលកាន់</span>';
+    }
+    return `<div class="stk-tr">
+        <div><div style="display:flex; gap:7px; align-items:center;"><span class="dot" style="background:${col};"></span><b class="mono" style="font-size:14px;">${escHTML(h.ticker)}</b>${c.state === 'done' ? '<span class="stk-chip kh done">✅ គ្រប់គោលដៅ</span>' : c.ts > 0 ? `<span class="stk-chip kh wait">🎯 ${stkPct(c.goalPct)}%</span>` : ''}<button type="button" class="stk-goalbtn" data-sgoal="${escHTML(h.id)}" title="កំណត់គោលដៅទិញ" aria-label="កំណត់គោលដៅទិញ">🎯</button></div>
+          <div class="kh" style="font-size:12px; color:var(--ink-dim); margin-top:2px;">${escHTML(h.name || '')}</div></div>
+        <div class="num stk-sh">${c.shares ? stkFx(c.shares) : '—'}</div>
+        <div class="num">${c.cost ? stkMoney(c.cost, cu) : '—'}</div>
+        <div class="num">${stkMoney(c.value, cu)}${c.price ? `<div class="stk-pp">${stkMoney(c.price, cu)} / ហ៊ុន</div>` : ''}</div>
+        <div class="num" style="color:${!c.cost ? 'inherit' : up ? '#16A34A' : '#DC2626'};">${c.cost ? (up ? '+' : '−') + stkMoney(Math.abs(c.pl), cu) : '—'}</div>
+        <div class="stk-pct num" style="color:${!c.cost ? 'inherit' : up ? '#16A34A' : '#DC2626'};">${c.cost ? (up ? '+' : '−') + Math.abs(c.plPct).toFixed(2) + '%' : '—'}${c.cost ? `<span class="stk-mini"><i style="width:${w}%; background:${up ? '#16A34A' : '#DC2626'};"></i></span>` : ''}</div>
+      </div>${tg ? `<div class="stk-tg2 kh">${tg}</div>` : ''}`;
+  }).join('');
+  const table = all.length ? `<div class="stk-tbl"><div class="stk-tbl-in">
+      <div class="stk-tr head kh"><div>មុខហ៊ុន</div><div class="num">ចំនួនហ៊ុន</div><div class="num">ទឹកប្រាក់ទិញ</div><div class="num">តម្លៃបច្ចុប្បន្ន</div><div class="num">ចំណេញ/ខាត</div><div class="num">%</div></div>
+      ${rows || '<div class="vs-empty kh">រកមិនឃើញ</div>'}
+      <div class="stk-tr foot kh"><div>សរុប (មុខដែលឃើញ)</div><div class="num"></div><div class="num">${totC ? stkFx(totC) + ' ៛' : '—'}</div><div class="num">${stkFx(totV)} ៛</div>
+        <div class="num" style="color:${pl >= 0 ? '#16A34A' : '#DC2626'};">${totC ? (pl >= 0 ? '+' : '−') + stkFx(Math.abs(pl)) + ' ៛' : '—'}</div><div class="num" style="color:${pl >= 0 ? '#16A34A' : '#DC2626'};">${totC ? (plPct >= 0 ? '+' : '−') + Math.abs(plPct).toFixed(2) + '%' : '—'}</div></div>
+    </div></div>`
+    : `<div class="vs-empty kh"><div style="font-size:38px;">📈</div>មិនទាន់មានភាគហ៊ុន<br><span style="font-size:12px; opacity:.75;">ដាក់រូបភាគហ៊ុនក្នុង Folder “ហ៊ុន” រួចចុច “🔄 Update ពីរូប”</span></div>`;
+  const when = stk.scannedAt ? stkStamp(stk.scannedAt) : '';
+  body.innerHTML = `<div class="vs-bar">
+      <button type="button" class="btn btn-primary btn-sm kh" data-sscan="1" ${stkBusy ? 'disabled' : ''}>🔄 Update ពីរូប</button>
+      <button type="button" class="stk-rate mono" data-srate="1" title="កែអត្រាប្តូរប្រាក់">$1 = ${stkFx(stkRate())} ៛</button>
+      <div class="kh" style="font-size:12px; color:var(--ink-dim); flex:1; min-width:150px;">${escHTML(stkMsg) || (when ? 'វិភាគចុងក្រោយ៖ ' + when : '')}</div>
+    </div>${top}${alloc}${goal}${table}
+    <div class="stk-src kh"><div style="display:flex; justify-content:space-between; align-items:baseline;"><b>រូបដើម</b><span style="font-size:11.5px; color:var(--ink-dim);">${imgs.length} រូប${stk.day ? ' · ' + stk.day + (stk.dayCount ? ' (ប្រើ ' + stk.dayCount + ' រូបថ្មីបំផុត)' : '') : ''}</span></div>
+      ${imgs.length ? `<div class="stk-imgs">${imgs.slice(0, 10).map(i => `<a role="button" tabindex="0" data-simg="${escHTML(i.id)}" title="${escHTML(i.name)}"><img loading="lazy" src="${escHTML(libLink('https://drive.google.com/thumbnail?id=' + i.id + '&sz=w300'))}" alt=""></a>`).join('')}</div>` : '<div style="font-size:12px; color:var(--ink-dim); margin-top:6px;">ទិន្នន័យបង្ហាញតាមរូបក្នុង Folder “ហ៊ុន” ក្នុង Google Drive ប៉ុណ្ណោះ — ដាក់ ឬលុបរូបនៅទីនោះ រួចចុច “Update ពីរូប”</div>'}
+      ${Object.keys(stk.imgData).length ? `<details style="margin-top:8px;"><summary class="kh" style="cursor:pointer; font-size:12px; color:var(--ink-dim);">📄 អត្ថបទដែលអានបាន (ដើម្បីផ្ទៀងផ្ទាត់)</summary>${imgs.filter(i => stk.imgData[i.id]).map(i => `<div class="kh" style="font-size:11.5px; margin-top:6px;"><b>${escHTML(i.name)}</b></div><pre style="white-space:pre-wrap; font-size:11px; max-height:150px; overflow:auto; background:#F8FAFC; padding:6px; border-radius:8px;">${escHTML(stk.imgData[i.id].text || '')}</pre>`).join('')}</details>` : ''}</div>`;
+}
+function stkRerender(){ if(vsIsVisible('stock')) renderLibrary(); }
+
+function stkPct(p){ return p >= 100 ? '100' : p >= 10 ? p.toFixed(1) : p.toFixed(2); }
+function stkGoalEdit(id){
+  const h = stk.holdings.find(x => x.id === id); if(!h) return;
+  const t = (stk.targets || {})[id] || {};
+  const held = h.ocrShares > 0
+    ? `<div class="full" style="font-size:12.5px;">ចំនួនហ៊ុនដែលកាន់ (អានពីរូប)៖ <b class="mono">${stkFx(h.ocrShares)}</b></div>`
+    : `<div class="full"><label>ចំនួនហ៊ុនដែលកាន់ (រូបមិនមានចំនួនហ៊ុន)</label><input type="number" id="sgHeld" inputmode="decimal" value="${escHTML(t.held || '')}" placeholder="ឧ. 1"></div>`;
+  vsDlg('🎯 គោលដៅទិញ · ' + h.ticker, `<div class="vs-form kh">
+      <div class="full"><label>ចំនួនហ៊ុនគោលដៅ (ត្រូវមានសរុប)</label><input type="number" id="sgTarget" inputmode="decimal" value="${escHTML(t.target || '')}" placeholder="ឧ. 1000"></div>${held}
+      <div class="full" style="font-size:11.5px; color:var(--ink-dim);">ទុកទទេ ដើម្បីលុបគោលដៅ</div></div>`, 'រក្សាទុក', () => {
+    const n = el => { const x = el ? parseFloat(el.value) : 0; return isFinite(x) && x > 0 ? x : 0; };
+    const target = n(document.getElementById('sgTarget')), heldV = n(document.getElementById('sgHeld'));
+    if(!stk.targets) stk.targets = {};
+    if(target || heldV) stk.targets[id] = { target, held:heldV }; else delete stk.targets[id];
+    stkDerive(); stkSave(); stkRerender();
+  });
+}
+function stkRateEdit(){
+  vsDlg('💱 អត្រាប្តូរប្រាក់', `<label class="kh" style="font-size:12px;">$1 = ប៉ុន្មានរៀល (៛)</label><input type="number" id="sfRate" inputmode="decimal" style="width:100%; height:38px;" value="${stkRate()}">`, 'រក្សាទុក', () => {
+    const x = parseFloat(document.getElementById('sfRate').value); if(!(x > 0)) return 'សូមបញ្ចូលលេខ';
+    stk.rate = x; stkSave(); stkRerender();
+  });
+}
+function stkOpenImg(id){
+  const i = (stk.images || []).find(x => x.id === id); if(!i) return;
+  const x = { id:i.id, name:i.name, mime:'image/jpeg', modified:i.modified, size:0, shelf:'ហ៊ុន', path:'', kind:'image', title:libCleanTitle(i.name) };
+  libIndex.set(x.id, x); libOpen(x.id);
+}
+
+/* ---- read numbers out of the OCR text of a screenshot ---- */
+const STK_STOP = new Set(['USD','KHR','CSX','PL','QTY','BUY','SELL','TOTAL','AVG','LAST','PRICE','NAME','SYMBOL','PORTFOLIO','CASH','VALUE','COST','GAIN','LOSS','HOME','MENU','TODAY','OPEN','HIGH','LOW','CLOSE','VOL','CHG','CHANGE','NET','ALL','MY','AM','PM','ID','NO','OF','THE','AND','FOR','WIFI','LTE','BID','ASK','ORDER','STOCK','STOCKS','MARKET','PROFIT','RATE','DAY','WEEK','MONTH','YEAR','NEW','APP','VIEW','MORE','SEE','SHARE','SHARES','AMOUNT','UNIT','FEE','TAX','CURRENT','KB','KBS','MB','GB','LTE','XS','OK','APP']);
+/* The broker app has two kinds of screenshot:
+   A) “ការវាយតម្លៃ”  : per ticker  [TICKER  +7.78%]  បរិមាណទិញ (cost)  តម្លៃបច្ចុប្បន្ន (value)   + header: total & “ថ្ងៃនេះ” %
+   B) “សមតុល្យមូលបត្រ” : table  [TICKER | មូលបត្រដែលបានកាន់កាប់ | …លក់បាន | មិនទាន់ទូទាត់ | …]  → number of shares held */
+const STK_KNOWN = new Set(['MJQE', 'PPSP', 'PWSA', 'PAS', 'PPAP', 'ABC', 'GTI', 'DBDE', 'CGSM']);
+function stockParseImage(text){
+  const out = { kind:'?', rows:[], held:[], tickOrder:[], dayPct:null, total:0, approx:0 };
+  const lines = String(text || '').replace(/[\\_]/g, ' ').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  const pctRe = /[+\-−–]?\s?\d+[.,]?\d*\s*%/, pctAll = /[+\-−–]?\s?\d+[.,]?\d*\s*%/g, pctDec = /([+\-−–]?\s?\d+[.,]\d+)\s*%/, pctGet = /([+\-−–]?\s?\d+[.,]?\d*)\s*%/;
+  const tickOf = ln => {
+    const known = (ln.match(/\b[A-Za-z]{2,6}\b/g) || []).map(t => t.toUpperCase()).find(t => STK_KNOWN.has(t));     // known CSX tickers first (also fixes OCR case errors like PPsP)
+    return known || (ln.match(/\b[A-Z]{2,6}\b/g) || []).find(t => !STK_STOP.has(t));
+  };
+  const nInt = ln => (ln.replace(pctAll, ' ').match(/\d{1,3}(?:,\d{3})+|\d{3,}/g) || []).map(x => parseInt(x.replace(/,/g, ''), 10)).filter(x => x >= 100);
+  const toPct = m => { if(!m) return null; const raw = m[1].replace(/\s/g, '').replace(/[−–]/, '-').replace(',', '.'); let v = parseFloat(raw); if(!/[.]/.test(raw) && Math.abs(v) >= 100) v /= 100; return isFinite(v) ? v : null; };
+  const starts = [];
+  lines.forEach((ln, i) => { const t = tickOf(ln); if(t && (pctRe.test(ln) || (lines[i + 1] && pctRe.test(lines[i + 1]) && !tickOf(lines[i + 1])))) starts.push({ i, t, p:toPct(ln.match(pctGet) || (lines[i + 1] || '').match(pctGet)) }); });
+  if(starts.length >= 2){                                     // ---- A : valuation screenshot
+    out.kind = 'A';
+    const head = lines.slice(0, starts[0].i).join(' ');
+    const hp = head.match(pctDec); if(hp) out.dayPct = toPct(hp);
+    out.total = nInt(head).sort((a, b) => b - a)[0] || 0;
+    // Reading order of the OCR is unreliable (all “current value” numbers can come after several costs), so every
+    // ticker is paired with the (cost, value) numbers whose gain matches the % badge printed next to the ticker.
+    const N = []; lines.forEach((l, i) => { if(i >= starts[0].i) nInt(l).forEach(v => N.push({ v, i })); });
+    const pos = starts.map(st => { const k = N.findIndex(x => x.i >= st.i); return k < 0 ? N.length : k; });
+    const cands = starts.map(st => { const arr = []; if(st.p === null) return arr;
+      N.forEach((c, ci) => N.forEach((v, vi) => { if(ci !== vi && Math.abs(v.v - c.v * (1 + st.p / 100)) <= c.v * 0.00006 + 1) arr.push([ci, vi]); })); return arr; });
+    const taken = new Set(), pick = new Array(starts.length).fill(null);
+    for(let pass = 0; pass < 2; pass++) starts.forEach((st, k) => {
+      if(pick[k]) return;
+      const free = cands[k].filter(([c, v]) => !taken.has(c) && !taken.has(v));
+      if(free.length === 1 || (pass === 1 && free.length > 1)){
+        free.sort((x, y) => Math.abs(x[0] - pos[k]) - Math.abs(y[0] - pos[k]));
+        pick[k] = free[0]; taken.add(free[0][0]); taken.add(free[0][1]);
+      }
+    });
+    starts.forEach((st, k) => {
+      if(out.rows.some(r => r.ticker === st.t)) return;
+      let pr = pick[k], approx = false;
+      if(!pr){ const idx = []; for(let j = pos[k]; j < N.length && idx.length < 2; j++) if(!taken.has(j)) idx.push(j);
+        if(idx.length < 2) return; idx.forEach(j => taken.add(j)); pr = idx; approx = true; out.approx++; }
+      out.rows.push({ ticker:st.t, cost:N[pr[0]].v, value:N[pr[1]].v, pct:st.p, approx });
+    });
+    return out;
+  }
+  const zl = tok => /^[0OoQ@()]+$/.test(tok) ? 0 : /^\d[\d,]*$/.test(tok) ? parseInt(tok.replace(/,/g, ''), 10) : NaN;
+  const heldOf = nums => { let i = 0; while(i < nums.length - 1 && !(nums[i] > 0 && nums[i] === nums[i + 1])) i++;
+    return i < nums.length - 1 ? nums[i] : (nums.find(x => x > 0) || 0); };            // held = first column whose value is repeated in “sellable”
+  // ---- B : securities-balance table — (1) ticker on its own line, numbers on the lines after it
+  const tl = []; lines.forEach((ln, i) => { const t = tickOf(ln); if(t && !pctRe.test(ln)) tl.push({ i, t }); });
+  const segs = tl.map((st, k) => { const end = k + 1 < tl.length ? tl[k + 1].i : lines.length, nums = [];
+    lines.slice(st.i + 1, end).forEach(l => l.split(/\s+/).map(zl).filter(x => !isNaN(x)).forEach(x => nums.push(x))); return { t:st.t, nums }; })
+    .filter(sg => sg.nums.length >= 2 && sg.nums.some(x => x > 0));
+  if(segs.length >= 3){ out.kind = 'B'; segs.forEach(sg => { const h = heldOf(sg.nums); if(h > 0 && !out.held.some(x => x.ticker === sg.t)) out.held.push({ ticker:sg.t, shares:h }); }); return out; }
+  // (2) whole row on one line (ticker may be unreadable → matched later by order)
+  const rowsB = [];
+  lines.forEach(ln => {
+    if(pctRe.test(ln)) return;
+    const nums = ln.split(/\s+/).map(zl).filter(x => !isNaN(x));
+    if(nums.length >= 4) rowsB.push({ ticker:tickOf(ln) || null, nums });
+    else if(!nums.length){ const t = tickOf(ln); if(t) out.tickOrder.push(t); }
+  });
+  if(rowsB.length >= 3){ out.kind = 'B'; rowsB.forEach(r => { const h = heldOf(r.nums); if(h > 0) out.held.push({ ticker:r.ticker, shares:h }); }); }
+  return out;
+}
+
+const STK_NAMES = { MJQE:'Mengly J. Quach Education', PPSP:'តំបន់សេដ្ឋកិច្ចពិសេសភ្នំពេញ (Royal Group)', PWSA:'រដ្ឋាករទឹកស្វយ័តក្រុងភ្នំពេញ', PAS:'កំពង់ផែស្វយ័តក្រុងព្រះសីហនុ', PPAP:'កំពង់ផែស្វយ័តភ្នំពេញ', ABC:'ធនាគារ ACLEDA' };
+const stkDay = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.getFullYear() + '-' + cpdPad(d.getMonth() + 1) + '-' + cpdPad(d.getDate()); };
+// holdings = exactly what the newest day's screenshots in the Folder show (read-only: nothing can be added or removed by hand)
+function stkDerive(){
+  const imgs = (stk.images || []).filter(i => stk.imgData[i.id]).sort((a, b) => String(b.modified).localeCompare(String(a.modified)));
+  const A = imgs.find(i => stk.imgData[i.id].kind === 'A'), B = imgs.find(i => stk.imgData[i.id].kind === 'B');
+  const a = A ? stk.imgData[A.id] : null, b = B ? stk.imgData[B.id] : null;
+  const order = a ? a.rows.map(r => r.ticker) : [];
+  const held = new Map(); let warn = '';
+  if(b){
+    const unnamed = b.held.filter(h => !h.ticker);
+    const names = b.tickOrder && b.tickOrder.length === b.held.length ? b.tickOrder : order;     // rows without a readable ticker → same order as the valuation screenshot
+    b.held.forEach((h, k) => { const t = h.ticker || (names.length === b.held.length ? names[k] : null); if(t && !held.has(t)) held.set(t, h.shares); });
+    if(unnamed.length && names.length !== b.held.length) warn = 'ចំនួនជួរក្នុងរូបសមតុល្យមិនត្រូវនឹងចំនួនមុខហ៊ុន';
+  }
+  const tick = a ? order : [...held.keys()];
+  stk.holdings = tick.map(t => {
+    const r = a ? a.rows.find(x => x.ticker === t) : null, g = (stk.targets || {})[t + 'KHR'] || {};
+    return { id:t + 'KHR', ticker:t, cur:'KHR', name:STK_NAMES[t] || '', ocrShares:held.get(t) || 0, shares:held.get(t) || +g.held || 0, cost:r ? r.cost : 0, value:r ? r.value : 0, price:0, targetPrice:0, targetShares:+g.target || 0 };
+  });
+  if(a && a.total){ const sum = stk.holdings.reduce((x, h) => x + h.value, 0); if(Math.abs(sum - a.total) > Math.max(5, a.total * 0.001)) warn = 'ផលបូកតម្លៃមិនត្រូវនឹងសរុបក្នុងរូប (' + stkFx(a.total) + ' ៛) — សូមផ្ទៀងផ្ទាត់'; }
+  stk.day = A ? stkDay(A.modified) : (B ? stkDay(B.modified) : '');
+  if(a && a.approx && !warn) warn = 'អានតម្លៃមួយចំនួនមិនបានច្បាស់ (' + a.approx + ' មុខ) — សូមផ្ទៀងផ្ទាត់ជាមួយរូប';
+  stk.dayCount = (A ? 1 : 0) + (B ? 1 : 0); stk.warn = warn;
+  stk.dayPct = a && a.dayPct !== null && a.dayPct !== undefined ? a.dayPct : null; stk.dayAt = A ? A.modified : '';
+  return stk.holdings;
+}
+Object.values(stk.imgData).forEach(d => Object.assign(d, stockParseImage(d.text || '')));   // re-read stored text with the current parser
+stkDerive();
+let stkTried = false;
+async function stockScan(){
+  if(stkBusy) return;
+  stkBusy = true; stkTried = true; stkMsg = '⏳ កំពុងអានរូបក្នុង Folder ហ៊ុន (OCR) — អាចចំណាយពេល ១០–៣០ វិនាទី...'; stkRerender();
+  try{
+    let guard = 0, pending = 0, total = 0;
+    do{
+      const skip = Object.keys(stk.imgData).filter(id => { const i = (stk.images || []).find(x => x.id === id); return i && stk.imgData[id].modified === i.modified; });
+      const j = await vsApi('stock', { op:'scan', folder:LIB_STOCK_FOLDER, skip:skip.join(','), limit:3 });
+      const s2 = j.stock || {}; total = s2.total || 0;
+      stk.images = (s2.images || []).map(x => ({ id:x.id, name:x.name, modified:x.modified }));
+      const present = new Set(stk.images.map(x => x.id));
+      Object.keys(stk.imgData).forEach(id => { if(!present.has(id)) delete stk.imgData[id]; });          // image removed from Folder → its data goes too
+      (s2.images || []).forEach(x => { if(x.scanned) stk.imgData[x.id] = Object.assign({ modified:x.modified, name:x.name, text:String(x.text || '').slice(0, 6000) }, stockParseImage(x.text || '')); });
+      stk.scannedAt = s2.scannedAt || new Date().toISOString();
+      pending = stk.images.filter(x => !stk.imgData[x.id] || stk.imgData[x.id].modified !== x.modified).length;
+      stkDerive(); stkRerender();
+    }while(pending > 0 && ++guard < 4);
+    stkSnap(); stkSave();
+    stkMsg = !total ? '⚠ Folder ហ៊ុនគ្មានរូបភាព (ឬ Account Apps Script គ្មានសិទ្ធិចូល Folder នេះ)'
+      : !stk.holdings.length ? '⚠ មិនអាចអាន Ticker/លេខពីរូបទេ — សូមពិនិត្យ “អត្ថបទដែលអានបាន” ខាងក្រោម'
+      : stk.warn ? '⚠ ' + stk.warn
+      : pending > 0 ? `✓ អានបានមួយផ្នែក — ចុច Update ម្តងទៀតសម្រាប់ ${pending} រូបដែលនៅសល់` : `✓ ទិន្នន័យទាន់សម័យ (${total} រូប)`;
+  }catch(e){ stkMsg = '⚠ វិភាគមិនបាន៖ ' + String(e.message || e); }
+  stkBusy = false; stkRerender();
+}
+
+/* clicks inside the library for the vault + stock views — returns true when handled */
+function vsClick(e){
+  const t = e.target;
+  const a = t.closest('[data-vact]');
+  if(a){ e.stopPropagation(); const id = a.dataset.vid; ({ rename:vaultRename, move:vaultMove, trash:vaultTrash })[a.dataset.vact](id); return true; }
+  const vm = t.closest('[data-vmenu]'); if(vm){ e.stopPropagation(); vaultMenu(vm.dataset.vmenu); return true; }
+  const go = t.closest('[data-vgo]'); if(go){ vaultLoad(go.dataset.vgo); return true; }
+  if(t.closest('[data-vnew]')){ vaultNewFolder(); return true; }
+  const op = t.closest('[data-vopen]'); if(op){ vaultOpenFile(op.dataset.vopen); return true; }
+  if(t.closest('[data-sscan]')){ stockScan(); return true; }
+  const sg = t.closest('[data-sgoal]'); if(sg){ e.stopPropagation(); stkGoalEdit(sg.dataset.sgoal); return true; }
+  const si = t.closest('[data-simg]'); if(si){ stkOpenImg(si.dataset.simg); return true; }
+  if(t.closest('[data-srate]')){ stkRateEdit(); return true; }
+  return false;
+}
+v_enter: {
+  const lv = document.getElementById('view-library');
+  if(lv) lv.addEventListener('keydown', e => { if((e.key === 'Enter' || e.key === ' ') && e.target.matches('.vs-card')){ e.preventDefault(); e.target.click(); } });
+  if(lv) lv.addEventListener('change', e => { if(e.target && e.target.id === 'vsFile'){ vaultUpload(e.target.files); e.target.value = ''; } });
+}
+
 function renderLibrary(){
   const body = document.getElementById('libBody');
   const view = document.getElementById('view-library');
@@ -7356,11 +8063,17 @@ function renderLibrary(){
   libKind = secKindToLib(cur ? cur.kind : 'media');
   const liveCount = x => x.kind === 'music' && musData && musData.folderId === x.id ? musList.length
     : x.kind === 'article' && artData && artData.folderId === x.id ? artList.length
-    : x.kind === 'media' && libData && libData.folderId === x.id ? all.length : (x.count || 0);
+    : x.kind === 'stock' ? stk.holdings.length : x.kind === 'media' && libData && libData.folderId === x.id ? all.length : (x.count || 0);
   document.getElementById('libKinds').innerHTML = libSections.map(x => `
     <button type="button" class="lib-kind" role="tab" data-sec="${escHTML(x.id)}" aria-selected="${!!cur && x.id === cur.id}">
-      <span class="i">${secIcon(x)}</span><span class="t kh">${escHTML(x.name)}</span><span class="n">${liveCount(x)}</span></button>`).join('');
+      <span class="i">${secIcon(x)}</span><span class="t kh">${escHTML(x.name)}</span>${x.kind === 'vault' ? '' : `<span class="n">${liveCount(x)}</span>`}</button>`).join('');
   view.classList.toggle('is-music', libKind === 'music' || libKind === 'article');
+  if(cur && (cur.kind === 'vault' || cur.kind === 'stock')){
+    libSetGroups(null);
+    document.getElementById('libShelfNav').innerHTML = '';
+    if(cur.kind === 'vault') vaultRender(body); else stockRender(body);
+    libSyncBulk(); return;
+  }
   if(libKind === 'article'){ artRenderView(body); libSyncBulk(); return; }
   if(libKind === 'music'){ musRenderView(body); libSyncBulk(); return; }
 
@@ -8440,6 +9153,7 @@ function artGroupDelete(id){
   v.addEventListener('click', e => {
     const k = e.target.closest('[data-sec]');
     if(k){ libSelectSection(k.dataset.sec); return; }
+    if(vsClick(e)) return;
     const se = e.target.closest('[data-shelf-edit]');
     if(se){ libEditOpen('shelf', se.dataset.shelfEdit); return; }
     const sd = e.target.closest('[data-shelf-del]');
@@ -8503,7 +9217,7 @@ function artGroupDelete(id){
 
   let t = null;
   document.getElementById('libSearch').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { libQuery = e.target.value; renderLibrary(); }, 180); });
-  document.getElementById('libRefreshBtn').addEventListener('click', () => { loadSections(true); libKind === 'music' ? musLoad(true) : libKind === 'article' ? artLoad(true) : loadLibrary(true); });
+  document.getElementById('libRefreshBtn').addEventListener('click', () => { const cs = libCurSection(); if(cs && cs.kind === 'vault'){ vaultLoad(); return; } if(cs && cs.kind === 'stock'){ stockScan(); return; } loadSections(true); libKind === 'music' ? musLoad(true) : libKind === 'article' ? artLoad(true) : loadLibrary(true); });
   document.getElementById('libGroupSel').addEventListener('change', e => {
     const v = e.target.value;
     if(libKind === 'music') musShelf = v;
