@@ -1162,6 +1162,14 @@
     .cpd-item .p{ grid-column:2; justify-self:start; }
   }
 
+  /* ===== Library · articles = titles only, dense ===== */
+  .art-titles{ display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); }
+  .art-titles li{ border-bottom:1px solid #F1F5F9; min-width:0; }
+  .art-titles .art-row{ padding:6px 12px; gap:8px; border-bottom:0; }
+  .art-titles .art-row .tt{ font-size:13px; font-weight:600; line-height:1.45; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .art-titles .art-row .cv{ font-size:15px; }
+  @media (max-width:600px){ .art-titles{ grid-template-columns:1fr; } .art-titles .art-row{ padding:7px 12px; } }
+
   /* ===== Library · ឃ្លាំងឯកសារ + ហ៊ុន ===== */
   body.guest .lib-kind[data-sec="__vault"], body.guest .lib-kind[data-sec="1I994Hw9wi2OotQA21Ibp_1aqSHGDsigR"]{ display:none !important; }
   .vs-bar{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
@@ -7842,7 +7850,7 @@ function stockRender(body){
       } else tg += ' · <span style="opacity:.75;">រូបមិនមានចំនួនហ៊ុន — ចុច 🎯 ដើម្បីបញ្ចូលចំនួនដែលកាន់</span>';
     }
     return `<div class="stk-tr">
-        <div><div style="display:flex; gap:7px; align-items:center;"><span class="dot" style="background:${col};"></span><b class="mono" style="font-size:14px;">${escHTML(h.ticker)}</b>${c.state === 'done' ? '<span class="stk-chip kh done">✅ គ្រប់គោលដៅ</span>' : c.ts > 0 ? `<span class="stk-chip kh wait">🎯 ${stkPct(c.goalPct)}%</span>` : ''}<button type="button" class="stk-goalbtn" data-sgoal="${escHTML(h.id)}" title="កំណត់គោលដៅទិញ" aria-label="កំណត់គោលដៅទិញ">🎯</button></div>
+        <div><div style="display:flex; gap:7px; align-items:center;"><span class="dot" style="background:${col};"></span><b class="mono" style="font-size:14px;">${escHTML(h.ticker)}</b>${h.est ? '<span class="stk-chip kh wait">⚠ ប៉ាន់ស្មាន</span>' : h.missing ? '<span class="stk-chip kh wait">⚠ គ្មានតម្លៃ</span>' : ''}${c.state === 'done' ? '<span class="stk-chip kh done">✅ គ្រប់គោលដៅ</span>' : c.ts > 0 ? `<span class="stk-chip kh wait">🎯 ${stkPct(c.goalPct)}%</span>` : ''}<button type="button" class="stk-goalbtn" data-sgoal="${escHTML(h.id)}" title="កំណត់គោលដៅទិញ" aria-label="កំណត់គោលដៅទិញ">🎯</button></div>
           <div class="kh" style="font-size:12px; color:var(--ink-dim); margin-top:2px;">${escHTML(h.name || '')}</div></div>
         <div class="num stk-sh">${c.shares ? stkFx(c.shares) : '—'}</div>
         <div class="num">${c.cost ? stkMoney(c.cost, cu) : '—'}</div>
@@ -7866,7 +7874,7 @@ function stockRender(body){
     </div>${top}${alloc}${goal}${table}
     <div class="stk-src kh"><div style="display:flex; justify-content:space-between; align-items:baseline;"><b>រូបដើម</b><span style="font-size:11.5px; color:var(--ink-dim);">${imgs.length} រូប${stk.day ? ' · ' + stk.day + (stk.dayCount ? ' (ប្រើ ' + stk.dayCount + ' រូបថ្មីបំផុត)' : '') : ''}</span></div>
       ${imgs.length ? `<div class="stk-imgs">${imgs.slice(0, 10).map(i => `<a role="button" tabindex="0" data-simg="${escHTML(i.id)}" title="${escHTML(i.name)}"><img loading="lazy" src="${escHTML(libLink('https://drive.google.com/thumbnail?id=' + i.id + '&sz=w300'))}" alt=""></a>`).join('')}</div>` : '<div style="font-size:12px; color:var(--ink-dim); margin-top:6px;">ទិន្នន័យបង្ហាញតាមរូបក្នុង Folder “ហ៊ុន” ក្នុង Google Drive ប៉ុណ្ណោះ — ដាក់ ឬលុបរូបនៅទីនោះ រួចចុច “Update ពីរូប”</div>'}
-      ${Object.keys(stk.imgData).length ? `<details style="margin-top:8px;"><summary class="kh" style="cursor:pointer; font-size:12px; color:var(--ink-dim);">📄 អត្ថបទដែលអានបាន (ដើម្បីផ្ទៀងផ្ទាត់)</summary>${imgs.filter(i => stk.imgData[i.id]).map(i => `<div class="kh" style="font-size:11.5px; margin-top:6px;"><b>${escHTML(i.name)}</b></div><pre style="white-space:pre-wrap; font-size:11px; max-height:150px; overflow:auto; background:#F8FAFC; padding:6px; border-radius:8px;">${escHTML(stk.imgData[i.id].text || '')}</pre>`).join('')}</details>` : ''}</div>`;
+      ${Object.keys(stk.imgData).length ? `<details style="margin-top:8px;"><summary class="kh" style="cursor:pointer; font-size:12px; color:var(--ink-dim);">📄 អត្ថបទដែលអានបាន (ដើម្បីផ្ទៀងផ្ទាត់)</summary>${imgs.filter(i => stk.imgData[i.id]).map(i => `<div class="kh" style="font-size:11.5px; margin-top:6px;"><b>${escHTML(i.name)}</b></div><div class="kh" style="font-size:11.5px; color:var(--ink-dim);">${stk.imgData[i.id].kind === 'A' ? '→ ការវាយតម្លៃ · រកឃើញ ' + stk.imgData[i.id].rows.length + ' មុខ៖ ' + escHTML(stk.imgData[i.id].rows.map(r => r.ticker || '?').join(', ')) : stk.imgData[i.id].kind === 'B' ? '→ សមតុល្យមូលបត្រ · រកឃើញ ' + stk.imgData[i.id].held.length + ' ជួរ' : '→ មិនស្គាល់ប្រភេទរូប'}</div><pre style="white-space:pre-wrap; font-size:11px; max-height:150px; overflow:auto; background:#F8FAFC; padding:6px; border-radius:8px;">${escHTML(stk.imgData[i.id].text || '')}</pre>`).join('')}</details>` : ''}</div>`;
 }
 function stkRerender(){ if(vsIsVisible('stock')) renderLibrary(); }
 
@@ -7905,52 +7913,73 @@ const STK_STOP = new Set(['USD','KHR','CSX','PL','QTY','BUY','SELL','TOTAL','AVG
    A) “ការវាយតម្លៃ”  : per ticker  [TICKER  +7.78%]  បរិមាណទិញ (cost)  តម្លៃបច្ចុប្បន្ន (value)   + header: total & “ថ្ងៃនេះ” %
    B) “សមតុល្យមូលបត្រ” : table  [TICKER | មូលបត្រដែលបានកាន់កាប់ | …លក់បាន | មិនទាន់ទូទាត់ | …]  → number of shares held */
 const STK_KNOWN = new Set(['MJQE', 'PPSP', 'PWSA', 'PAS', 'PPAP', 'ABC', 'GTI', 'DBDE', 'CGSM']);
+function stkLev(x, y){ const d = []; for(let i = 0; i <= x.length; i++){ d[i] = [i]; } for(let j = 1; j <= y.length; j++) d[0][j] = j;
+  for(let i = 1; i <= x.length; i++) for(let j = 1; j <= y.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (x[i - 1] === y[j - 1] ? 0 : 1));
+  return d[x.length][y.length]; }
+// OCR often garbles blue ticker text (PWSA → PW5A, PVVSA, PWS A …): repair towards the known tickers
+function stkFuzzy(tok){
+  const t = String(tok).toUpperCase().replace(/VV/g, 'W').replace(/[5$]/g, 'S').replace(/0/g, 'O').replace(/[1|!]/g, 'I').replace(/8/g, 'B').replace(/[^A-Z]/g, '');
+  if(t.length < 3 || t.length > 6) return null;
+  if(STK_KNOWN.has(t)) return t;
+  let best = null, n = 0;
+  STK_KNOWN.forEach(k => { if(Math.abs(k.length - t.length) <= 1 && k.length >= 4 && stkLev(k, t) === 1){ best = k; n++; } });
+  return n === 1 ? best : null;
+}
+/* The broker app has two kinds of screenshot:
+   A) “ការវាយតម្លៃ”  : per ticker  [TICKER  +7.78%]  បរិមាណទិញ (cost)  តម្លៃបច្ចុប្បន្ន (value)   + header: total & “ថ្ងៃនេះ” %
+   B) “សមតុល្យមូលបត្រ” : table  [TICKER | មូលបត្រដែលបានកាន់កាប់ | …លក់បាន | មិនទាន់ទូទាត់ | …]  → number of shares held */
 function stockParseImage(text){
   const out = { kind:'?', rows:[], held:[], tickOrder:[], dayPct:null, total:0, approx:0 };
   const lines = String(text || '').replace(/[\\_]/g, ' ').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-  const pctRe = /[+\-−–]?\s?\d+[.,]?\d*\s*%/, pctAll = /[+\-−–]?\s?\d+[.,]?\d*\s*%/g, pctDec = /([+\-−–]?\s?\d+[.,]\d+)\s*%/, pctGet = /([+\-−–]?\s?\d+[.,]?\d*)\s*%/;
+  const pctTok = /([+\-−–]?\s?\d+[.,]\d+|\d{3,4})\s*%/g, pctAll = /[+\-−–]?\s?\d+[.,]?\d*\s*%/g;
+  const hasPct = ln => /\d\s*%/.test(ln);
   const tickOf = ln => {
-    const known = (ln.match(/\b[A-Za-z]{2,6}\b/g) || []).map(t => t.toUpperCase()).find(t => STK_KNOWN.has(t));     // known CSX tickers first (also fixes OCR case errors like PPsP)
-    return known || (ln.match(/\b[A-Z]{2,6}\b/g) || []).find(t => !STK_STOP.has(t));
+    const words = ln.match(/[A-Za-z0-9]{2,6}/g) || [];
+    const known = words.map(t => t.toUpperCase()).find(t => STK_KNOWN.has(t));
+    if(known) return known;
+    for(const w of words){ if(/\d/.test(w) && /[A-Za-z]/.test(w) || /vv/i.test(w)){ const f = stkFuzzy(w); if(f) return f; } }
+    const sp = ln.match(/\b[A-Za-z]{1,3}\s[A-Za-z]{1,3}\b/g) || [];                 // “PWS A” split by a space
+    for(const w of sp){ const f = stkFuzzy(w.replace(/\s/g, '')); if(f) return f; }
+    return (ln.match(/\b[A-Z]{2,6}\b/g) || []).find(t => !STK_STOP.has(t));
   };
   const nInt = ln => (ln.replace(pctAll, ' ').match(/\d{1,3}(?:,\d{3})+|\d{3,}/g) || []).map(x => parseInt(x.replace(/,/g, ''), 10)).filter(x => x >= 100);
-  const toPct = m => { if(!m) return null; const raw = m[1].replace(/\s/g, '').replace(/[−–]/, '-').replace(',', '.'); let v = parseFloat(raw); if(!/[.]/.test(raw) && Math.abs(v) >= 100) v /= 100; return isFinite(v) ? v : null; };
-  const starts = [];
-  lines.forEach((ln, i) => { const t = tickOf(ln); if(t && (pctRe.test(ln) || (lines[i + 1] && pctRe.test(lines[i + 1]) && !tickOf(lines[i + 1])))) starts.push({ i, t, p:toPct(ln.match(pctGet) || (lines[i + 1] || '').match(pctGet)) }); });
-  if(starts.length >= 2){                                     // ---- A : valuation screenshot
+  const toPct = raw0 => { const raw = String(raw0).replace(/\s/g, '').replace(/[−–]/, '-').replace(',', '.'); let v = parseFloat(raw); if(!/[.]/.test(raw) && Math.abs(v) >= 100) v /= 100; return isFinite(v) ? v : null; };
+  // ---- A : every “% badge” is one card; pair it with the (cost, value) numbers whose gain equals the badge.
+  const N = []; lines.forEach((l, i) => nInt(l).forEach(v => N.push({ v, i })));
+  const P = []; lines.forEach((ln, i) => { let m; pctTok.lastIndex = 0; while((m = pctTok.exec(ln))) P.push({ i, p:toPct(m[1]) }); });
+  const gainOk = (c, v, p) => Math.abs(v.v - c.v * (1 + p / 100)) <= c.v * 0.00006 + 1;
+  const cands = P.map(pc => { const arr = []; if(pc.p === null) return arr; N.forEach((c, ci) => N.forEach((v, vi) => { if(ci !== vi && gainOk(c, v, pc.p)) arr.push([ci, vi]); })); return arr; });
+  const cardIdx = P.map((pc, k) => k).filter(k => cands[k].length);
+  if(cardIdx.length >= 2){
     out.kind = 'A';
-    const head = lines.slice(0, starts[0].i).join(' ');
-    const hp = head.match(pctDec); if(hp) out.dayPct = toPct(hp);
-    out.total = nInt(head).sort((a, b) => b - a)[0] || 0;
-    // Reading order of the OCR is unreliable (all “current value” numbers can come after several costs), so every
-    // ticker is paired with the (cost, value) numbers whose gain matches the % badge printed next to the ticker.
-    const N = []; lines.forEach((l, i) => { if(i >= starts[0].i) nInt(l).forEach(v => N.push({ v, i })); });
-    const pos = starts.map(st => { const k = N.findIndex(x => x.i >= st.i); return k < 0 ? N.length : k; });
-    const cands = starts.map(st => { const arr = []; if(st.p === null) return arr;
-      N.forEach((c, ci) => N.forEach((v, vi) => { if(ci !== vi && Math.abs(v.v - c.v * (1 + st.p / 100)) <= c.v * 0.00006 + 1) arr.push([ci, vi]); })); return arr; });
-    const taken = new Set(), pick = new Array(starts.length).fill(null);
-    for(let pass = 0; pass < 2; pass++) starts.forEach((st, k) => {
-      if(pick[k]) return;
+    const firstLine = P[cardIdx[0]].i;
+    const head = lines.slice(0, firstLine).join(' ');
+    const dp = P.find((pc, k) => pc.i <= firstLine && !cands[k].length && /\d[.,]\d/.test(lines[pc.i])); if(dp) out.dayPct = dp.p;
+    out.total = nInt(head).sort((x, y) => y - x)[0] || 0;
+    const pos = cardIdx.map(k => { const j = N.findIndex(x => x.i >= P[k].i); return j < 0 ? N.length : j; });
+    const taken = new Set(), pick = new Array(cardIdx.length).fill(null);
+    for(let pass = 0; pass < 2; pass++) cardIdx.forEach((k, q) => {
+      if(pick[q]) return;
       const free = cands[k].filter(([c, v]) => !taken.has(c) && !taken.has(v));
       if(free.length === 1 || (pass === 1 && free.length > 1)){
-        free.sort((x, y) => Math.abs(x[0] - pos[k]) - Math.abs(y[0] - pos[k]));
-        pick[k] = free[0]; taken.add(free[0][0]); taken.add(free[0][1]);
+        free.sort((x, y) => Math.abs(x[0] - pos[q]) - Math.abs(y[0] - pos[q]));
+        pick[q] = free[0]; taken.add(free[0][0]); taken.add(free[0][1]);
       }
     });
-    starts.forEach((st, k) => {
-      if(out.rows.some(r => r.ticker === st.t)) return;
-      let pr = pick[k], approx = false;
-      if(!pr){ const idx = []; for(let j = pos[k]; j < N.length && idx.length < 2; j++) if(!taken.has(j)) idx.push(j);
-        if(idx.length < 2) return; idx.forEach(j => taken.add(j)); pr = idx; approx = true; out.approx++; }
-      out.rows.push({ ticker:st.t, cost:N[pr[0]].v, value:N[pr[1]].v, pct:st.p, approx });
+    cardIdx.forEach((k, q) => {
+      if(!pick[q]) return;
+      let t = null; for(let li = P[k].i; li >= Math.max(0, P[k].i - 2) && !t; li--) t = tickOf(lines[li]);      // ticker is on the badge line (or just above it)
+      out.rows.push({ ticker:t || null, cost:N[pick[q][0]].v, value:N[pick[q][1]].v, pct:P[k].p, line:P[k].i });
     });
+    const seen = new Set(); out.rows = out.rows.filter(r => { if(!r.ticker) return true; if(seen.has(r.ticker)) return false; seen.add(r.ticker); return true; });
+    out.unnamed = out.rows.filter(r => !r.ticker).length;
     return out;
   }
   const zl = tok => /^[0OoQ@()]+$/.test(tok) ? 0 : /^\d[\d,]*$/.test(tok) ? parseInt(tok.replace(/,/g, ''), 10) : NaN;
   const heldOf = nums => { let i = 0; while(i < nums.length - 1 && !(nums[i] > 0 && nums[i] === nums[i + 1])) i++;
     return i < nums.length - 1 ? nums[i] : (nums.find(x => x > 0) || 0); };            // held = first column whose value is repeated in “sellable”
   // ---- B : securities-balance table — (1) ticker on its own line, numbers on the lines after it
-  const tl = []; lines.forEach((ln, i) => { const t = tickOf(ln); if(t && !pctRe.test(ln)) tl.push({ i, t }); });
+  const tl = []; lines.forEach((ln, i) => { const t = tickOf(ln); if(t && !hasPct(ln)) tl.push({ i, t }); });
   const segs = tl.map((st, k) => { const end = k + 1 < tl.length ? tl[k + 1].i : lines.length, nums = [];
     lines.slice(st.i + 1, end).forEach(l => l.split(/\s+/).map(zl).filter(x => !isNaN(x)).forEach(x => nums.push(x))); return { t:st.t, nums }; })
     .filter(sg => sg.nums.length >= 2 && sg.nums.some(x => x > 0));
@@ -7958,7 +7987,7 @@ function stockParseImage(text){
   // (2) whole row on one line (ticker may be unreadable → matched later by order)
   const rowsB = [];
   lines.forEach(ln => {
-    if(pctRe.test(ln)) return;
+    if(hasPct(ln)) return;
     const nums = ln.split(/\s+/).map(zl).filter(x => !isNaN(x));
     if(nums.length >= 4) rowsB.push({ ticker:tickOf(ln) || null, nums });
     else if(!nums.length){ const t = tickOf(ln); if(t) out.tickOrder.push(t); }
@@ -7974,22 +8003,31 @@ function stkDerive(){
   const imgs = (stk.images || []).filter(i => stk.imgData[i.id]).sort((a, b) => String(b.modified).localeCompare(String(a.modified)));
   const A = imgs.find(i => stk.imgData[i.id].kind === 'A'), B = imgs.find(i => stk.imgData[i.id].kind === 'B');
   const a = A ? stk.imgData[A.id] : null, b = B ? stk.imgData[B.id] : null;
-  const order = a ? a.rows.map(r => r.ticker) : [];
-  const held = new Map(); let warn = '';
+  const held = new Map(); const notes = [];
+  let rows = a ? a.rows.map(r => Object.assign({}, r)) : [];
   if(b){
-    const unnamed = b.held.filter(h => !h.ticker);
-    const names = b.tickOrder && b.tickOrder.length === b.held.length ? b.tickOrder : order;     // rows without a readable ticker → same order as the valuation screenshot
+    const names = b.tickOrder && b.tickOrder.length === b.held.length ? b.tickOrder : rows.map(r => r.ticker);     // rows without a readable ticker → same order as the valuation screenshot
     b.held.forEach((h, k) => { const t = h.ticker || (names.length === b.held.length ? names[k] : null); if(t && !held.has(t)) held.set(t, h.shares); });
-    if(unnamed.length && names.length !== b.held.length) warn = 'ចំនួនជួរក្នុងរូបសមតុល្យមិនត្រូវនឹងចំនួនមុខហ៊ុន';
   }
-  const tick = a ? order : [...held.keys()];
-  stk.holdings = tick.map(t => {
-    const r = a ? a.rows.find(x => x.ticker === t) : null, g = (stk.targets || {})[t + 'KHR'] || {};
-    return { id:t + 'KHR', ticker:t, cur:'KHR', name:STK_NAMES[t] || '', ocrShares:held.get(t) || 0, shares:held.get(t) || +g.held || 0, cost:r ? r.cost : 0, value:r ? r.value : 0, price:0, targetPrice:0, targetShares:+g.target || 0 };
+  const bOrder = [...held.keys()];
+  const spare = bOrder.filter(t => !rows.some(r => r.ticker === t));                         // tickers the valuation image could not name
+  rows.forEach(r => { if(!r.ticker && spare.length) r.ticker = spare.shift(); });
+  const missing = bOrder.filter(t => !rows.some(r => r.ticker === t));                       // held, but its card was not read in the valuation image
+  missing.forEach(t => rows.push({ ticker:t, cost:0, value:0, missing:true }));
+  if(missing.length === 1 && a && a.total){                                                  // rebuild its value from the total printed in the screenshot
+    const sum = rows.reduce((x, r) => x + (r.missing ? 0 : r.value), 0);
+    if(a.total > sum) rows.find(r => r.missing).value = a.total - sum, rows.find(r => r.missing).est = true;
+  }
+  const idx = t => { const k = bOrder.indexOf(t); return k < 0 ? 99 : k; };
+  if(bOrder.length) rows.sort((x, y) => idx(x.ticker) - idx(y.ticker));
+  stk.holdings = rows.filter(r => r.ticker).map(r => {
+    const g = (stk.targets || {})[r.ticker + 'KHR'] || {};
+    return { id:r.ticker + 'KHR', ticker:r.ticker, cur:'KHR', name:STK_NAMES[r.ticker] || '', ocrShares:held.get(r.ticker) || 0, shares:held.get(r.ticker) || +g.held || 0, cost:r.cost || 0, value:r.value || 0, price:0, targetPrice:0, targetShares:+g.target || 0, est:!!r.est, missing:!!r.missing && !r.est };
   });
-  if(a && a.total){ const sum = stk.holdings.reduce((x, h) => x + h.value, 0); if(Math.abs(sum - a.total) > Math.max(5, a.total * 0.001)) warn = 'ផលបូកតម្លៃមិនត្រូវនឹងសរុបក្នុងរូប (' + stkFx(a.total) + ' ៛) — សូមផ្ទៀងផ្ទាត់'; }
+  let warn = '';
+  if(missing.length) warn = missing.join(', ') + ' មានក្នុងរូបសមតុល្យ ប៉ុន្តែអានមិនឃើញក្នុងរូបការវាយតម្លៃ' + (missing.length === 1 && a && a.total ? ' — តម្លៃប៉ាន់ស្មានពីសរុបក្នុងរូប' : '');
+  else if(a && a.total){ const sum = stk.holdings.reduce((x, h) => x + h.value, 0); if(Math.abs(sum - a.total) > Math.max(5, a.total * 0.001)) warn = 'ផលបូកតម្លៃមិនត្រូវនឹងសរុបក្នុងរូប (' + stkFx(a.total) + ' ៛) — សូមផ្ទៀងផ្ទាត់'; }
   stk.day = A ? stkDay(A.modified) : (B ? stkDay(B.modified) : '');
-  if(a && a.approx && !warn) warn = 'អានតម្លៃមួយចំនួនមិនបានច្បាស់ (' + a.approx + ' មុខ) — សូមផ្ទៀងផ្ទាត់ជាមួយរូប';
   stk.dayCount = (A ? 1 : 0) + (B ? 1 : 0); stk.warn = warn;
   stk.dayPct = a && a.dayPct !== null && a.dayPct !== undefined ? a.dayPct : null; stk.dayAt = A ? A.modified : '';
   return stk.holdings;
@@ -8009,7 +8047,7 @@ async function stockScan(){
       stk.images = (s2.images || []).map(x => ({ id:x.id, name:x.name, modified:x.modified }));
       const present = new Set(stk.images.map(x => x.id));
       Object.keys(stk.imgData).forEach(id => { if(!present.has(id)) delete stk.imgData[id]; });          // image removed from Folder → its data goes too
-      (s2.images || []).forEach(x => { if(x.scanned) stk.imgData[x.id] = Object.assign({ modified:x.modified, name:x.name, text:String(x.text || '').slice(0, 6000) }, stockParseImage(x.text || '')); });
+      (s2.images || []).forEach(x => { if(x.scanned) stk.imgData[x.id] = Object.assign({ modified:x.modified, name:x.name, text:String(x.text || "").slice(0, 20000) }, stockParseImage(x.text || '')); });
       stk.scannedAt = s2.scannedAt || new Date().toISOString();
       pending = stk.images.filter(x => !stk.imgData[x.id] || stk.imgData[x.id].modified !== x.modified).length;
       stkDerive(); stkRerender();
@@ -8044,6 +8082,13 @@ v_enter: {
   if(lv) lv.addEventListener('change', e => { if(e.target && e.target.id === 'vsFile'){ vaultUpload(e.target.files); e.target.value = ''; } });
 }
 
+const LIB_COLL = new Intl.Collator('en', { numeric:true, sensitivity:'base' });
+function libAlphaGroup(str){                       // 0 = English letter, 1 = digit, 2 = Khmer / other
+  const c = String(str || '').replace(/^[^A-Za-z0-9\u1780-\u17FF]+/, '').charAt(0);
+  return /[A-Za-z]/.test(c) ? 0 : /[0-9]/.test(c) ? 1 : 2;
+}
+const libStrip = t => String(t || '').replace(/^[^A-Za-z0-9\u1780-\u17FF]+/, '');         // ignore leading emoji / punctuation
+function libCmpEnFirst(a, b){ const x = libAlphaGroup(a), y = libAlphaGroup(b); return x !== y ? x - y : LIB_COLL.compare(libStrip(a), libStrip(b)); }
 function renderLibrary(){
   const body = document.getElementById('libBody');
   const view = document.getElementById('view-library');
@@ -8055,7 +8100,7 @@ function renderLibrary(){
   [...libSel].forEach(id => { if(!libIndex.has(id)) libSel.delete(id); });
   const q = libQuery.trim().toLowerCase();
   const match = it => !q || (it.title + ' ' + it.name + ' ' + it.shelf + ' ' + (it.path || '')).toLowerCase().includes(q);
-  const shelves = (libData && libData.shelves) || [];
+  const shelves = ((libData && libData.shelves) || []).slice().sort((a, b) => libCmpEnFirst(a.name, b.name));
   document.getElementById('libTotal').textContent = libData ? `${shelves.length} ធ្នើ · ${all.length} ឯកសារ` : '—';
   document.getElementById('libDriveLink').href = libLink('https://drive.google.com/drive/folders/' + libFolderId());
 
@@ -8092,7 +8137,7 @@ function renderLibrary(){
     libSyncBulk(); return;
   }
   const list = ofKind.filter(it => match(it) && (libShelf === 'all' || it.shelfId === libShelf));
-  const byTitle = (a, b) => a.title.localeCompare(b.title);
+  const byTitle = (a, b) => libCmpEnFirst(a.title, b.title);
   const kd = LIB_KINDS.find(k => k.k === libKind);
 
   if(libKind === 'book'){
@@ -8340,7 +8385,7 @@ function libEditOpen(type, id){
   libEditCtx = { type, id };
   const err = document.getElementById('libEditErr'); err.classList.add('hidden');
   const nameEl = document.getElementById('libEditName');
-  const shelves = (libData && libData.shelves) || [];
+  const shelves = ((libData && libData.shelves) || []).slice().sort((a, b) => libCmpEnFirst(a.name, b.name));
   const isBook = type === 'book';
   document.getElementById('libEditShelfWrap').style.display = isBook ? '' : 'none';
   document.getElementById('libEditCover').style.display = isBook ? '' : 'none';
@@ -8390,12 +8435,12 @@ async function libEditSave(){
     if(from && to && to !== from.id) libMoveItems([id], to);
   } else if(type === 'newShelf'){
     libRun(`បង្កើតធ្នើ “${name}”`, { op: 'newShelf', name }, j => {
-      libData.shelves.push(j.shelf); libData.shelves.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+      libData.shelves.push(j.shelf); libData.shelves.sort((a, b) => libCmpEnFirst(a.name, b.name));
     });
   } else {
     libRun('ប្តូរឈ្មោះធ្នើ', { op: 'renameShelf', id, name }, j => {
       const sh = libData.shelves.find(s => s.id === id); if(sh) sh.name = j.name || name;
-      libData.shelves.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+      libData.shelves.sort((a, b) => libCmpEnFirst(a.name, b.name));
     });
   }
 }
@@ -8934,7 +8979,7 @@ function artRenderView(body){
   if(items.length){
     html += `<ul class="art-titles">${items.map(it => `<li>
       <button type="button" class="art-row${read.has(it.id) ? ' read' : ''}" data-art="${escHTML(it.id)}">
-        <span class="tt">${escHTML(it.title)}</span><span class="cv">›</span>
+        <span class="tt" title="${escHTML(it.title)}">${escHTML(it.title)}</span><span class="cv">›</span>
       </button></li>`).join('')}</ul>`;
   } else {
     html += `<div class="lib-empty-big kh"><div>📰</div>${q ? 'រកមិនឃើញអត្ថបទត្រូវនឹងការស្វែងរក' : (selG ? 'ក្រុមនេះមិនទាន់មានអត្ថបទ' : 'មិនទាន់មានអត្ថបទ')}<br><span style="opacity:.7; font-size:12px;">ចុច “＋ អត្ថបទថ្មី” ឬដាក់ Google Doc ចូល Folder អត្ថបទ រួចចុច 🔄</span></div>`;
