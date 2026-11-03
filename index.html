@@ -2882,7 +2882,7 @@
 
 <div class="overlay hidden" id="printOverlay">
   <div class="modal">
-    <div class="modal-head"><h2 class="kh" id="printOverlayTitle">កំណត់ត្រា · Print Record</h2><button class="x" id="closePrint">✕</button></div>
+    <div class="modal-head"><h2 class="kh" id="printOverlayTitle">កំណត់ត្រា · Print Record</h2><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span id="s2sTools" style="display:none;align-items:center;gap:6px;"><input type="date" id="s2sNextAppt" title="ថ្ងៃណាត់ជួបបន្ត / Next appointment" style="font-size:12px;padding:4px 6px;border:1px solid var(--border-soft);border-radius:8px;background:var(--surface-2);color:var(--ink);max-width:128px;"><button type="button" class="btn btn-primary btn-sm" id="send2SaveBtn">📤 Send2Save</button></span><button class="x" id="closePrint">✕</button></div></div>
     <div class="modal-body">
       <div id="printArea"></div>
       <div class="modal-actions" style="margin-top:16px;">
@@ -5716,6 +5716,7 @@ function buildReceiptHTML(record, sizeClass) {
       <div class="thermal-row"><span class="lbl">Discount:</span><span class="val mono">${record.payDiscount || '0'}</span></div>
       <div class="thermal-row"><span class="lbl">Paid:</span><span class="val mono">${record.payPaid || '$0.00'}</span></div>
       <div class="thermal-row"><span class="lbl">Balance:</span><span class="val mono">${record.payBalance || '$0.00'}</span></div>
+      ${nextApptRowHTML()}
       <div class="thermal-footer kh">សូមអរគុណ! Thank you!</div>
     </div>
   `;
@@ -5773,6 +5774,7 @@ function buildCombinedReceiptHTML(patientName, records, sizeClass) {
       <div class="thermal-row"><span class="lbl">Grand Total:</span><span class="val mono">$${grandTotal.toFixed(2)}</span></div>
       <div class="thermal-row"><span class="lbl">Paid:</span><span class="val mono">$${grandPaid.toFixed(2)}</span></div>
       <div class="thermal-row"><span class="lbl">Balance:</span><span class="val mono">$${grandBal.toFixed(2)}</span></div>
+      ${nextApptRowHTML()}
       <div class="thermal-footer kh">សូមអរគុណ! Thank you!</div>
     </div>
   `;
@@ -9367,6 +9369,12 @@ function handleThermalPrint(size) {
   
   document.getElementById('dynamicPageStyle').textContent = pageCSS;
   
+  if(printContext.type === 'receipt' || printContext.type === 'receipt-combined'){
+    receiptNextAppt = s2sDefaultNextAppt(printContext);
+    document.getElementById('s2sNextAppt').value = receiptNextAppt;
+  } else { receiptNextAppt = ''; }
+  s2sSizeClass = sizeClass;
+  
   let html = '';
   if(printContext.type === 'receipt') {
       html = buildReceiptHTML(printContext.record, sizeClass);
@@ -9383,8 +9391,130 @@ function handleThermalPrint(size) {
   }
   
   document.getElementById('printArea').innerHTML = html;
+  s2sSetContext((printContext.type === 'receipt' || printContext.type === 'receipt-combined') ? printContext : null);
   document.getElementById('printOverlay').classList.remove('hidden');
 }
+
+/* ---------- Send2Save: Receipt → JPEG → Google Drive ---------- */
+const RECEIPT_FOLDER_ID = '1JvmpsUI1q8dwiQtUHH4fESRJDOzR-V3o';
+let send2SaveCtx = null;
+
+function s2sSetContext(ctx){
+  send2SaveCtx = ctx;
+  const b = document.getElementById('send2SaveBtn');
+  if(!b) return;
+  document.getElementById('s2sTools').style.display = ctx ? 'flex' : 'none';
+  if(!ctx) receiptNextAppt = '';
+  b.disabled = false;
+  b.textContent = '📤 Send2Save';
+}
+
+/* ថ្ងៃណាត់ជួបបន្ត · Next appointment on the receipt */
+let receiptNextAppt = '';   // 'yyyy-mm-dd' or ''
+let s2sSizeClass = 'w-80';
+
+function nextApptRowHTML(){
+  if(!receiptNextAppt) return '';
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(receiptNextAppt);
+  if(!m) return '';
+  return `<div class="thermal-row" style="margin-top:8px;align-items:baseline;"><span class="lbl kh" style="font-weight:800;font-size:1.2em;color:#000;">ថ្ងៃណាត់បន្ត:</span><span class="val mono" style="font-weight:800;font-size:1.3em;">${m[3]}/${m[2]}/${m[1]}</span></div>`;
+}
+
+function s2sDefaultNextAppt(ctx){
+  try{
+    const name = ctx.type === 'receipt' ? ctx.record.name : ctx.patientName;
+    const recs = getPatientRecords(name) || [];
+    const now = new Date();
+    let d = patientHasSteps(recs) ? patientNextApptDate(recs, now) : null;
+    if(!d){
+      recs.forEach(r => {
+        const t = r.timeLast ? parseAnyDate(r.timeLast) : null;
+        if(t && t > now && (!d || t < d)) d = t;
+      });
+    }
+    return d ? dateToIsoLocal(d).slice(0, 10) : '';
+  }catch(e){ return ''; }
+}
+
+document.getElementById('s2sNextAppt').addEventListener('change', function(){
+  receiptNextAppt = this.value || '';
+  const ctx = send2SaveCtx;
+  if(!ctx) return;
+  document.getElementById('printArea').innerHTML = ctx.type === 'receipt'
+    ? buildReceiptHTML(ctx.record, s2sSizeClass)
+    : buildCombinedReceiptHTML(ctx.patientName, ctx.records, s2sSizeClass);
+});
+
+// លាក់ប៊ូតុង Send2Save ពេលបិទ Print window គ្រប់ទម្រង់
+new MutationObserver(() => {
+  if(document.getElementById('printOverlay').classList.contains('hidden')) s2sSetContext(null);
+}).observe(document.getElementById('printOverlay'), { attributes: true, attributeFilter: ['class'] });
+
+function s2sLoadHtml2Canvas(){
+  if(window.html2canvas) return Promise.resolve(window.html2canvas);
+  return new Promise((resolve, reject) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    sc.onload = () => window.html2canvas ? resolve(window.html2canvas) : reject(new Error('html2canvas missing'));
+    sc.onerror = () => reject(new Error('html2canvas load failed'));
+    document.head.appendChild(sc);
+  });
+}
+
+function s2sPatientName(ctx){
+  return cleanStr(ctx.type === 'receipt' ? (ctx.record && ctx.record.name) : ctx.patientName) || 'Unknown';
+}
+function s2sPatientPhone(ctx){
+  const recs = ctx.type === 'receipt' ? [ctx.record] : (ctx.records || []);
+  let p = recs.map(r => cleanStr(r && r.phone)).find(Boolean);
+  if(!p){
+    try{ p = (getPatientRecords(s2sPatientName(ctx)) || []).map(r => cleanStr(r.phone)).find(Boolean); }catch(e){}
+  }
+  return String(p || '').replace(/[^\d]/g, '');
+}
+
+async function send2SaveReceipt(){
+  if(!send2SaveCtx) return;
+  const btn = document.getElementById('send2SaveBtn');
+  const el = document.querySelector('#printArea .thermal-receipt');
+  if(!el) return;
+  btn.disabled = true;
+  btn.textContent = '⏳ កំពុងថត...';
+  try{
+    const h2c = await s2sLoadHtml2Canvas();
+    const canvas = await h2c(el, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false });
+    const base64 = canvas.toDataURL('image/jpeg', 0.92).split(',')[1];
+
+    const d = new Date();
+    const dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    const safe = t => String(t || '').replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, ' ').trim();
+    const patientName = s2sPatientName(send2SaveCtx);
+    const phone = s2sPatientPhone(send2SaveCtx);
+    const filename = [dateStr, safe(patientName), phone].filter(Boolean).join('-') + '.jpg';
+
+    const payload = {
+      action: 'uploadXray',
+      data: { folderId: RECEIPT_FOLDER_ID, filename: filename, mimeType: 'image/jpeg', base64: base64, patientName: patientName, recordCode: '' },
+      timestamp: Date.now()
+    };
+
+    btn.textContent = '⏳ កំពុងផ្ញើ...';
+    if(navigator.onLine && webAppUrl){
+      await fetch(webAppUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+      btn.textContent = '✅ បានផ្ញើ';
+    } else {
+      const queue = getPendingQueue();
+      queue.push(payload);
+      savePendingQueue(queue);
+      btn.textContent = '📥 រង់ចាំ Online';
+    }
+  }catch(err){
+    console.warn('Send2Save error:', err);
+    btn.textContent = '⚠️ បរាជ័យ';
+  }
+  setTimeout(() => { if(send2SaveCtx){ btn.disabled = false; btn.textContent = '📤 Send2Save'; } }, 2500);
+}
+document.getElementById('send2SaveBtn').addEventListener('click', send2SaveReceipt);
 
 document.getElementById('fabAdd').addEventListener('click', ()=>{ activePatientContext = null; openForm(); });
 document.getElementById('closeForm').addEventListener('click', closeFormModal);
