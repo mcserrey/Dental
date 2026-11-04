@@ -14,8 +14,8 @@
     --bg:#F5F9FC; --surface:#FFFFFF; --surface-2:#EDF3FA;
     --border:#D9E6F2; --border-soft:#E8F1FA;
     --ink:#132539; --ink-soft:#4C6178; --ink-dim:#8DA0B3;
-    --primary:#54b754; --primary-dark:#3A963A; --primary-soft:#CDEBCD; --primary-softer:#EDF8ED;
-    --amber:#FFD21F; --amber-soft:#FFF6C9; --amber-dark:#8A6A00;
+    --primary:#54b754; --primary-dark:#2F7D32; --primary-soft:#CDEBCD; --primary-softer:#EDF8ED;
+    --amber:#E0B424; --amber-soft:#F7EFCF; --amber-dark:#7A5E00;
     --coral:#E4574C; --coral-soft:#FBE1DE; --coral-dark:#A43227;
     --shadow:0 12px 30px -16px rgba(19,37,57,0.16);
     --shadow-sm:0 4px 14px -8px rgba(19,37,57,0.14);
@@ -600,9 +600,9 @@
    ===================================================================== */
 :root{
   --sb-w:264px; --sb-w-min:76px;
-  --sb-bg:#54b754; /* ពណ៌ផ្ទៃ Sidebar (Green #54b754) */
+  --sb-bg:#3F8F43; /* ពណ៌ផ្ទៃ Sidebar (Green #54b754) */
   --sb-ink:#FFFFFF; /* ពណ៌អក្សរធម្មតា */
-  --sb-dim:#F3FBF3; /* ពណ៌អក្សររាងព្រាល */
+  --sb-dim:#DCEFDD; /* ពណ៌អក្សររាងព្រាល */
   --sb-line:rgba(255,255,255,.2); 
   --sb-hover:rgba(255,255,255,.15); 
   --sb-active:rgba(0,0,0,.15);
@@ -638,7 +638,7 @@
   .sb-item[aria-current="page"]::before{
     content:""; position:absolute; left:-10px; top:9px; bottom:9px; width:3px; border-radius:0 3px 3px 0; background:var(--amber);
   }
-  .sb-ico{ width:20px; height:20px; flex:none; display:grid; place-items:center; color:#FFD700; }
+  .sb-ico{ width:20px; height:20px; flex:none; display:grid; place-items:center; color:#EBC94B; }
   .sb-item[aria-current="page"] .sb-ico{ color:var(--amber); }
   .sb-ico svg{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
   .sb-label{ display:flex; flex-direction:column; line-height:1.3; min-width:0; flex:1; }
@@ -1024,7 +1024,7 @@
 
   /* ===== Dashboard (EMR overview) ===== */
   .dash-hero{ display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; padding:18px 20px; margin-bottom:16px; border-radius:16px;
-    background:linear-gradient(120deg, #54b754 0%, #7BC043 55%, #E8B800 100%); color:#fff; box-shadow:var(--shadow); }
+    background:linear-gradient(120deg, #3F8F43 0%, #5FA34A 60%, #B8962A 100%); color:#fff; box-shadow:var(--shadow); }
   .dash-greet{ font-size:20px; font-weight:700; }
   .dash-date{ font-size:12.5px; opacity:.9; margin-top:3px; }
   .dash-quick{ display:flex; gap:8px; flex-wrap:wrap; }
@@ -3252,20 +3252,27 @@
       <button class="x" id="closeRxDetail">✕</button>
     </div>
     <div class="modal-body">
-      <div style="max-height: 500px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px;">
-        <table class="med-table" style="width: 100%; margin: 0;">
-          <thead>
-            <tr>
-              <th style="width: 95px;">ថ្ងៃចេញថ្នាំ</th>
-              <th>ឈ្មោះអ្នកជំងឺ</th>
-              <th>ថ្នាំ</th>
-              <th style="width: 95px;">វិធីប្រើ</th>
-              <th style="width: 55px; text-align:center;">ចំនួន</th>
-              <th style="width: 70px; text-align:center;"></th>
-            </tr>
-          </thead>
-          <tbody id="rxDetailTableBody"></tbody>
-        </table>
+      <div id="rxListView"></div>
+      <div id="rxDetailView" style="display:none;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm kh" onclick="rxBackToList()">← ត្រឡប់</button>
+          <div id="rxDetailHeading" class="kh" style="font-weight:800; color:var(--primary-dark); min-width:0; flex:1;"></div>
+        </div>
+        <div style="max-height: 500px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px;">
+          <table class="med-table" style="width: 100%; margin: 0;">
+            <thead>
+              <tr>
+                <th style="width: 95px;">ថ្ងៃចេញថ្នាំ</th>
+                <th>ឈ្មោះអ្នកជំងឺ</th>
+                <th>ថ្នាំ</th>
+                <th style="width: 95px;">វិធីប្រើ</th>
+                <th style="width: 55px; text-align:center;">ចំនួន</th>
+                <th style="width: 70px; text-align:center;"></th>
+              </tr>
+            </thead>
+            <tbody id="rxDetailTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -4992,7 +4999,7 @@ function renderDashOverview(){
     monthRecs.forEach(r => { const t = cleanStr(r.treatment); if(t && t !== '—') cnt[t] = (cnt[t] || 0) + 1; });
     const top = Object.entries(cnt).sort((a,b) => b[1] - a[1]).slice(0, 6);
     const max = top.length ? top[0][1] : 1;
-    const colors = ['#54b754','#FFD21F','#7C3AED','#D97706','#0E9F6E','#E4574C'];
+    const colors = ['#54b754','#E0B424','#7C3AED','#D97706','#0E9F6E','#E4574C'];
     txEl.innerHTML = top.length ? top.map(([name, n], i) => `
       <div class="dash-bar-row"><div class="bl kh"><span title="${escHTML(name)}">${escHTML(name)}</span><b>${n}</b></div>
       <div class="dash-meter" style="margin:0; height:7px;"><i style="width:${Math.round(n / max * 100)}%; background:${colors[i]};"></i></div></div>`).join('')
@@ -5020,7 +5027,7 @@ function renderDashOverview(){
         <div><div class="ml kh">កុមារ ≤15</div><div class="mv" style="color:#D97706;">${kids}</div></div>
       </div>
       <div class="kh" style="display:flex; justify-content:space-between; font-size:11.5px; margin:12px 0 4px;"><span style="color:#C99A00;">♂ ប្រុស ${male} (${mPct}%)</span><span style="color:#E4574C;">♀ ស្រី ${female} (${fPct}%)</span></div>
-      <div class="dash-meter" style="display:flex; margin:0;"><i style="width:${mPct}%; background:#FFD21F; border-radius:0;"></i><i style="width:${fPct}%; background:#E4574C; border-radius:0;"></i></div>`;
+      <div class="dash-meter" style="display:flex; margin:0;"><i style="width:${mPct}%; background:#E0B424; border-radius:0;"></i><i style="width:${fPct}%; background:#E4574C; border-radius:0;"></i></div>`;
   }
 
   // ---- 14-day trend (bars = patients, line = revenue)
@@ -10350,40 +10357,102 @@ document.getElementById('procedureStepsOverlay').addEventListener('click', (e) =
   }
 });
 
+let rxViewState = null;
+
 function openRxDetail(patientName, records){
   document.getElementById('rxDetailTitle').textContent = `💊 វេជ្ជបញ្ជា — ${patientName}`;
 
+  const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const rows = [];
   [...records]
     .filter(r => cleanStr(r.medication))
     .sort((a,b) => (parseAnyDate(b.timestamp)||0) - (parseAnyDate(a.timestamp)||0))
     .forEach(r => {
-      const items = parsePrescriptionString(r.medication);
-      items.forEach(it => {
+      const med = String(r.medication);
+      parsePrescriptionString(r.medication).forEach(it => {
         const times = [it.m ? 'ព្រឹក' : '', it.n ? 'ថ្ងៃ' : '', it.e ? 'ល្ងាច' : ''].filter(Boolean).join('+');
-        rows.push({ record: r, item: it, times });
+        // ថ្ងៃចេញថ្នាំ៖ យកពី Prescription បើមាន បើគ្មានយកថ្ងៃនៃកំណត់ត្រា
+        const hasOwnDate = med.includes(it.date) || med.includes(it.date.replace(/-/g,'/'));
+        const rd = parseAnyDate(r.timestamp);
+        const dateKey = (hasOwnDate || !rd) ? it.date : ymd(rd);
+        rows.push({ record: r, item: it, times, dateKey });
       });
     });
 
-  const tbody = document.getElementById('rxDetailTableBody');
+  const groups = new Map();
+  rows.forEach(x => { if(!groups.has(x.dateKey)) groups.set(x.dateKey, []); groups.get(x.dateKey).push(x); });
+  const keys = [...groups.keys()].sort((a,b) => (parseAnyDate(b)||0) - (parseAnyDate(a)||0));
+  rxViewState = { patientName, groups, keys };
+
+  const listEl = document.getElementById('rxListView');
   if(rows.length === 0){
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--ink-dim);padding:24px;" class="kh">មិនទាន់មានវេជ្ជបញ្ជានៅឡើយទេ</td></tr>`;
+    listEl.innerHTML = `<div class="kh" style="text-align:center;color:var(--ink-dim);padding:24px;">មិនទាន់មានវេជ្ជបញ្ជានៅឡើយទេ</div>`;
   } else {
-    tbody.innerHTML = rows.map(({record, item, times}) => `
-      <tr>
-        <td class="mono" style="font-size:12px;">${item.date ? item.date.replace(/-/g,'/') : formatDateDisplay(record.timestamp).split(' ')[0]}</td>
-        <td class="kh" style="font-weight:700;">${escHTML(patientName)}</td>
-        <td class="kh"><b>${escHTML(item.name)}</b></td>
-        <td class="kh" style="font-size:12px;">${times || '—'}</td>
-        <td class="mono" style="text-align:center;">${item.qty || '—'}</td>
-        <td style="text-align:center; white-space:nowrap;">
-          <button type="button" class="icon-btn" title="កែប្រែ Edit" onclick='closeRxAndEdit("${record._id}")'>✎</button>
-          <button type="button" class="icon-btn" title="Print" onclick='printRxRecord("${record._id}")'>🖨</button>
-        </td>
-      </tr>
-    `).join('');
+    listEl.innerHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; max-height:520px; overflow-y:auto; padding:2px;">` +
+      keys.map((k, gi) => {
+        const list = groups.get(k);
+        const d = parseAnyDate(k);
+        const tx = [...new Set(list.map(x => cleanStr(x.record.treatment) || cleanStr(x.record.diagnosis)).filter(Boolean))].join(', ');
+        return `
+        <div role="button" tabindex="0" onclick="rxOpenGroup(${gi})" style="cursor:pointer; display:block; position:relative; background:var(--surface); border:1px solid var(--border); border-left:5px solid var(--primary); border-radius:12px; padding:12px 14px 12px 16px; box-shadow:var(--shadow-sm);">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+            <div class="mono" style="font-size:12px; font-weight:800; color:var(--primary-dark); padding-top:4px;">📅 ${d ? fmtDMY(d) : escHTML(k)}</div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button type="button" class="icon-btn" title="Print វេជ្ជបញ្ជា" onclick="event.stopPropagation(); rxPrintGroup(${gi})">🖨</button>
+              <div style="font-family:'Sora',serif; font-size:26px; line-height:1; font-weight:800; color:var(--primary);">℞</div>
+            </div>
+          </div>
+          <div style="border-top:1px dashed var(--border); margin:8px 0;"></div>
+          <div class="kh" style="font-size:13.5px; font-weight:700; color:var(--ink); line-height:1.4; word-break:break-word;">${escHTML(tx) || '—'}</div>
+        </div>`;
+      }).join('') + `</div>`;
   }
+  document.getElementById('rxDetailView').style.display = 'none';
+  listEl.style.display = '';
   document.getElementById('rxDetailOverlay').classList.remove('hidden');
+}
+
+function rxOpenGroup(gi){
+  const st = rxViewState; if(!st) return;
+  const k = st.keys[gi]; const list = st.groups.get(k) || [];
+  const d = parseAnyDate(k);
+  const tx = [...new Set(list.map(x => cleanStr(x.record.treatment) || cleanStr(x.record.diagnosis)).filter(Boolean))].join(', ');
+  document.getElementById('rxDetailHeading').innerHTML = `📅 <span class="mono">${d ? fmtDMY(d) : escHTML(k)}</span>${tx ? ' · ' + escHTML(tx) : ''}`;
+  document.getElementById('rxDetailTableBody').innerHTML = list.map(({record, item, times}) => `
+    <tr>
+      <td class="mono" style="font-size:12px;">${d ? fmtDMY(d) : escHTML(k)}</td>
+      <td class="kh" style="font-weight:700;">${escHTML(st.patientName)}</td>
+      <td class="kh"><b>${escHTML(item.name)}</b></td>
+      <td class="kh" style="font-size:12px;">${times || '—'}</td>
+      <td class="mono" style="text-align:center;">${item.qty || '—'}</td>
+      <td style="text-align:center; white-space:nowrap;">
+        <button type="button" class="icon-btn" title="កែប្រែ Edit" onclick='closeRxAndEdit("${record._id}")'>✎</button>
+        <button type="button" class="icon-btn" title="Print" onclick='printRxRecord("${record._id}")'>🖨</button>
+      </td>
+    </tr>`).join('');
+  document.getElementById('rxListView').style.display = 'none';
+  document.getElementById('rxDetailView').style.display = '';
+}
+
+// Print វេជ្ជបញ្ជា នៃថ្ងៃចេញថ្នាំមួយ (ថ្នាំទាំងអស់ក្នុងថ្ងៃនោះ)
+function rxPrintGroup(gi){
+  const st = rxViewState; if(!st) return;
+  const k = st.keys[gi]; const list = st.groups.get(k) || [];
+  if(!list.length) return;
+  const med = list.map(({item}) => {
+    const t = [item.m ? 'ព្រឹក' : '', item.n ? 'ថ្ងៃ' : '', item.e ? 'ល្ងាច' : ''].filter(Boolean).join('+');
+    return `${k}: ${item.name} [${t}](${item.qty || ''})`;
+  }).join(';');
+  const base = list[0].record;
+  const rec = Object.assign({}, base, { medication: med, timestamp: k.replace(/-/g, '/') + ' 00:00:00' });
+  document.getElementById('rxDetailOverlay').classList.add('hidden');
+  printContext = { type: 'rx', record: rec };
+  document.getElementById('printSizeModalOverlay').classList.remove('hidden');
+}
+
+function rxBackToList(){
+  document.getElementById('rxDetailView').style.display = 'none';
+  document.getElementById('rxListView').style.display = '';
 }
 
 function closeRxAndEdit(recordId){
