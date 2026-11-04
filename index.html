@@ -255,7 +255,7 @@
   #invoiceDetailOverlay     { z-index: 99 !important; }
   #settingsOverlay          { z-index: 102 !important; }
   #clinicalConfigOverlay    { z-index: 104 !important; background: rgba(11,42,39,0.65) !important; }
-  #pinModalOverlay          { z-index: 120 !important; background: rgba(11,42,39,0.65) !important; }
+  #pinModalOverlay          { z-index: 130 !important; background: rgba(11,42,39,0.65) !important; }
 
   .xray-gallery-grid {
     display: grid;
@@ -925,7 +925,8 @@
   .fin-sub{ font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
   .fin-head-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .fin-head-actions .tb-search{ min-width:220px; }
-  #priceListOverlay{ z-index:100; }
+  #priceListOverlay{ z-index:106 !important; }      /* above Settings (102), Clinical Config (104), CPD (105) */
+  #invPayEditOverlay, #stepPricePickOverlay{ z-index:115 !important; }
   .pl-row{ display:flex; align-items:center; gap:6px; padding:6px 4px; border-bottom:1px dashed var(--border); border-radius:8px; }
   .pl-row.pl-over{ background:var(--primary-softer); outline:2px dashed var(--primary); }
   .pl-grip{ cursor:grab; color:var(--ink-dim); font-size:16px; padding:0 4px; user-select:none; touch-action:none; }
@@ -2091,7 +2092,6 @@
       </div>
       <div class="topbar-actions">
         <input type="text" class="search-input search-input-topbar kh" id="searchInput" placeholder="🔍 ស្វែងរក ឈ្មោះ, លេខធ្មេញ...">
-        <button type="button" class="btn btn-outline kh" id="priceListBtn" style="height: 34px; padding: 0 14px; border-radius: 8px; white-space:nowrap;">💲 តារាងតម្លៃ</button>
         <button class="btn btn-primary kh" id="fabAdd" style="height: 34px; padding: 0 14px; border-radius: 8px; white-space:nowrap;">＋ កត់ត្រាថ្មី</button>
       </div>
     </header>
@@ -2327,6 +2327,7 @@
               <div class="fin-sub">Accounts Receivable · Outstanding balances</div>
             </div>
             <div class="fin-head-actions">
+              <button type="button" class="btn btn-outline btn-sm kh" data-open-pricelist>💲 តារាងតម្លៃ</button>
               <input type="text" class="tb-search kh" id="invoicePatientSearch" placeholder="🔍 ស្វែងរកអ្នកជំងឺ / លេខទូរស័ព្ទ...">
             </div>
           </div>
@@ -2921,6 +2922,9 @@
         <button type="button" class="btn btn-outline btn-block kh" id="openClinicalConfigBtn" style="border-color: var(--primary); color: var(--primary-dark); font-weight: 700; font-size: 12.5px;">
           ⚙️ កំណត់ Treatment, Diagnosis & Procedures
         </button>
+        <button type="button" class="btn btn-outline btn-block kh" data-open-pricelist style="border-color: var(--primary); color: var(--primary-dark); font-weight: 700; font-size: 12.5px; margin-top:8px;">
+          💲 តារាងតម្លៃ · Price List
+        </button>
         <button type="button" class="btn btn-outline btn-block kh" id="openCpdBtn" style="border-color:#7C3AED; color:#6D28D9; font-weight:700; font-size:12.5px; margin-top:8px;">
           🎓 CPD · វិញ្ញាបនបត្របណ្តុះបណ្តាល (Google Drive)
         </button>
@@ -3243,7 +3247,7 @@
 </div>
 
 <!-- កែការបង់ប្រាក់ (Payment History) -->
-<div class="overlay hidden" id="invPayEditOverlay" style="z-index:120;">
+<div class="overlay hidden" id="invPayEditOverlay">
   <div class="modal narrow" style="max-width: 460px;">
     <div class="modal-head">
       <h2 class="kh">✎ កែការបង់ប្រាក់ · Edit Payment</h2>
@@ -3270,7 +3274,7 @@
 </div>
 
 <!-- ជ្រើសតម្លៃសម្រាប់ Step (ពីតារាងតម្លៃ) -->
-<div class="overlay hidden" id="stepPricePickOverlay" style="z-index:120;">
+<div class="overlay hidden" id="stepPricePickOverlay">
   <div class="modal narrow" style="max-width: 460px;">
     <div class="modal-head">
       <h2 class="kh">💲 បន្ថែមតម្លៃ · Add Price</h2>
@@ -9558,7 +9562,7 @@ function closePriceList(){
   document.getElementById('priceListOverlay').classList.add('hidden');
 }
 
-document.getElementById('priceListBtn').addEventListener('click', openPriceList);
+document.querySelectorAll('[data-open-pricelist]').forEach(b => b.addEventListener('click', openPriceList));
 document.getElementById('closePriceList').addEventListener('click', closePriceList);
 document.getElementById('plDoneBtn').addEventListener('click', closePriceList);
 document.getElementById('priceListOverlay').addEventListener('click', e => { if(e.target.id === 'priceListOverlay') closePriceList(); });
