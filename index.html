@@ -3218,6 +3218,7 @@
       <div id="procStepsInfo" class="kh" style="font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;"></div>
 
       <div id="procStepsCards" style="margin-bottom:18px;"></div>
+      <div id="procStepsPriceSummary"></div>
       <div style="border-top:1px dashed var(--border); padding-top:14px;">
         <label class="kh" style="display:block; font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:8px;">＋ បន្ថែមជំហានថ្មី · Add Step</label>
         <div style="display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap;">
@@ -3236,6 +3237,58 @@
           <button type="button" class="btn btn-primary btn-sm kh" id="addProcStepBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
         <div id="procStepLabHint" class="kh" style="display:none; margin-top:8px; font-size:12px; color:#5B21B6; background:#EDE9FE; padding:6px 10px; border-radius:8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- កែការបង់ប្រាក់ (Payment History) -->
+<div class="overlay hidden" id="invPayEditOverlay" style="z-index:120;">
+  <div class="modal narrow" style="max-width: 460px;">
+    <div class="modal-head">
+      <h2 class="kh">✎ កែការបង់ប្រាក់ · Edit Payment</h2>
+      <button class="x" id="closeInvPayEdit">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="invPayEditInfo" class="kh" style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;"></div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="field" style="margin:0; flex:1; min-width:140px;">
+          <label class="kh" style="font-size:10.5px;">ថ្ងៃខែឆ្នាំបង់</label>
+          <input type="date" id="invPayEditDate" class="mono">
+        </div>
+        <div class="field" style="margin:0; flex:1; min-width:120px;">
+          <label class="kh" style="font-size:10.5px;">ចំនួនបង់រួមសរុប ($)</label>
+          <input type="text" id="invPayEditAmount" class="mono" inputmode="decimal">
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:16px;">
+        <button type="button" class="btn btn-danger kh" id="invPayEditDelete">🗑 លុប</button>
+        <button type="button" class="btn btn-primary kh" id="invPayEditSave" style="flex:1; justify-content:center;">✓ រក្សាទុក</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ជ្រើសតម្លៃសម្រាប់ Step (ពីតារាងតម្លៃ) -->
+<div class="overlay hidden" id="stepPricePickOverlay" style="z-index:120;">
+  <div class="modal narrow" style="max-width: 460px;">
+    <div class="modal-head">
+      <h2 class="kh">💲 បន្ថែមតម្លៃ · Add Price</h2>
+      <button class="x" id="closeStepPricePick">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <label class="kh" style="font-size:12px; color:var(--ink-soft);">ចំនួន (គ្រាប់/ដង)</label>
+        <input type="number" id="spQty" class="mono" min="1" value="1" style="width:70px; padding:6px 8px; border:1px solid var(--border); border-radius:8px;">
+      </div>
+      <div id="spList" style="max-height:300px; overflow-y:auto; border:1px solid var(--border); border-radius:10px;"></div>
+      <div style="border-top:1px dashed var(--border); margin-top:12px; padding-top:12px;">
+        <div class="kh" style="font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:6px;">ឬវាយតម្លៃដោយខ្លួនឯង</div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="spCustomName" class="kh" placeholder="ឈ្មោះ (ស្រេចចិត្ត)" style="flex:2; min-width:0; padding:7px 9px; border:1px solid var(--border); border-radius:8px;">
+          <input type="text" id="spCustomAmount" class="mono" inputmode="decimal" placeholder="$0.00" style="width:90px; padding:7px 9px; border:1px solid var(--border); border-radius:8px; text-align:right;">
+          <button type="button" class="btn btn-primary btn-sm kh" id="spCustomAdd">＋</button>
+        </div>
       </div>
     </div>
   </div>
@@ -9417,7 +9470,7 @@ function handleThermalPrint(size) {
   
   document.getElementById('dynamicPageStyle').textContent = pageCSS;
   
-  if(printContext.type === 'receipt' || printContext.type === 'receipt-combined'){
+  if(['receipt','receipt-combined','payment-receipt'].includes(printContext.type)){
     receiptNextAppt = s2sDefaultNextAppt(printContext);
     document.getElementById('s2sNextAppt').value = receiptNextAppt;
   } else { receiptNextAppt = ''; }
@@ -9430,6 +9483,9 @@ function handleThermalPrint(size) {
   } else if(printContext.type === 'receipt-combined') {
       html = buildCombinedReceiptHTML(printContext.patientName, printContext.records, sizeClass);
       document.getElementById('printOverlayTitle').textContent = 'Receipt / វិក្កយបត្រសរុប';
+  } else if(printContext.type === 'payment-receipt') {
+      html = buildPaymentReceiptHTML(printContext, sizeClass);
+      document.getElementById('printOverlayTitle').textContent = 'Payment Receipt / បង្កាន់ដៃបង់ប្រាក់';
   } else if(printContext.type === 'labform') {
       html = buildLabFormHTML(printContext.order, sizeClass);
       document.getElementById('printOverlayTitle').textContent = 'Dental Lab Order Form / ពុម្ភធ្មេញ';
@@ -9439,7 +9495,7 @@ function handleThermalPrint(size) {
   }
   
   document.getElementById('printArea').innerHTML = html;
-  s2sSetContext((printContext.type === 'receipt' || printContext.type === 'receipt-combined') ? printContext : null);
+  s2sSetContext(['receipt','receipt-combined','payment-receipt'].includes(printContext.type) ? printContext : null);
   document.getElementById('printOverlay').classList.remove('hidden');
 }
 
@@ -9662,9 +9718,7 @@ document.getElementById('s2sNextAppt').addEventListener('change', function(){
   receiptNextAppt = this.value || '';
   const ctx = send2SaveCtx;
   if(!ctx) return;
-  document.getElementById('printArea').innerHTML = ctx.type === 'receipt'
-    ? buildReceiptHTML(ctx.record, s2sSizeClass)
-    : buildCombinedReceiptHTML(ctx.patientName, ctx.records, s2sSizeClass);
+  document.getElementById('printArea').innerHTML = buildReceiptForCtx(ctx, s2sSizeClass);
 });
 
 // លាក់ប៊ូតុង Send2Save ពេលបិទ Print window គ្រប់ទម្រង់
@@ -10246,6 +10300,7 @@ function renderProcedureStepsCards(){
   const r = allRecords.find(x => x._id === activeProcStepsRecordId);
   if(!r) return;
   const cardsEl = document.getElementById('procStepsCards');
+  renderStepPriceSummary(r);
   const treatmentLabel = r.treatment || r.diagnosis || '';
   const hasSteps = !!(r.procedureSteps && r.procedureSteps.length > 0);
   // First node of the timeline: a "TX" circle + the treatment name, joined by the same connector line down to step 1.
@@ -10256,7 +10311,11 @@ function renderProcedureStepsCards(){
           ${hasSteps ? '<div class="proc-tx-line" style="width:2px; flex:1; min-height:14px; background:var(--border); margin:2px 0;"></div>' : ''}
         </div>
         <div style="flex:1; padding-bottom:${hasSteps ? '12px' : '0'};">
-          <div class="kh" style="min-height:28px; display:flex; align-items:center; font-weight:800; font-size:14.5px; color:var(--ink); font-style:italic;">${escHTML(treatmentLabel)}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; min-height:28px;">
+            <div class="kh" style="font-weight:800; font-size:14.5px; color:var(--ink); font-style:italic; min-width:0;">${escHTML(treatmentLabel)}</div>
+            <button type="button" title="បន្ថែមតម្លៃ Treatment (ពីតារាងតម្លៃ)" onclick="openStepPricePicker('tx')" style="width:20px; height:20px; border-radius:50%; background:var(--primary-soft); color:var(--primary-dark); border:none; cursor:pointer; font-size:14px; line-height:1; font-weight:800; flex-shrink:0;">+</button>
+          </div>
+          ${txPriceChipsHTML(r)}
         </div>
       </div>` : '';
   if(!hasSteps){
@@ -10287,11 +10346,16 @@ function renderProcedureStepsCards(){
               ${nameHtml}
               <span style="color:var(--ink-dim);"> - </span>
               <span class="mono" style="color:var(--ink-soft);">${toDDMMYYYYTime(s.date)}</span>
+              
               ${(s.labOrderId && labOrders.some(o => o.id === s.labOrderId)) ? '<span class="kh" data-lab-tag="1" style="font-size:10.5px; color:#5B21B6; background:#EDE9FE; padding:1px 8px; border-radius:999px; margin-left:6px;">🧪 ក្នុងបញ្ជី Lab</span>' : (isLabStepName(s.step) ? `<button type="button" class="kh" data-lab-add="1" onclick="addLabOrderForStep(${s.idx})" style="font-size:10.5px; color:#5B21B6; background:#fff; border:1px solid #7C3AED; padding:1px 9px; border-radius:999px; margin-left:6px; cursor:pointer;">🧪 បញ្ចូល Dental Lab</button>` : '')}
             </div>
-            <button type="button" onclick="deleteProcedureStep(${s.idx})" style="width:20px; height:20px; border-radius:50%; background:var(--coral-soft); color:var(--coral-dark); border:none; cursor:pointer; font-size:10.5px; line-height:1; flex-shrink:0;">✕</button>
+            <div style="display:flex; gap:5px; flex-shrink:0;">
+              <button type="button" title="បន្ថែមតម្លៃ (ពីតារាងតម្លៃ)" onclick="openStepPricePicker(${s.idx})" style="width:20px; height:20px; border-radius:50%; background:var(--primary-soft); color:var(--primary-dark); border:none; cursor:pointer; font-size:14px; line-height:1; font-weight:800;">+</button>
+              <button type="button" onclick="deleteProcedureStep(${s.idx})" style="width:20px; height:20px; border-radius:50%; background:var(--coral-soft); color:var(--coral-dark); border:none; cursor:pointer; font-size:10.5px; line-height:1;">✕</button>
+            </div>
           </div>
           ${s.note ? `<div class="kh" style="font-size:12px; color:var(--ink-soft); margin-top:4px; background:var(--surface-2); padding:5px 8px; border-radius:6px;">${escHTML(s.note)}</div>` : ''}
+          ${stepPriceChipsHTML(s)}
         </div>
       </div>
     `;
@@ -10464,7 +10528,7 @@ function saveProcedureStepsToRecord(r){
   r.doing = (r.procedureSteps || []).map(s => s.step).join(', ');
   r.doingDateTime = latestStepDateText(r.procedureSteps || []);
   saveLocalRecords();
-  const payload = {...r, payments: JSON.stringify(r.payments || []), procedureStepsJSON: JSON.stringify(r.procedureSteps || [])};
+  const payload = {...r, payments: JSON.stringify(r.payments || []), procedureStepsJSON: JSON.stringify(r.procedureSteps || []), txPriceItemsJSON: JSON.stringify(r.txPriceItems || [])};
   try{ pushToSheet('updateRecord', payload); }catch(err){ console.warn('Sync queue error:', err); }
 }
 
@@ -10486,6 +10550,145 @@ function deleteProcedureStep(idx){
     linked.orders.forEach(o => removeLabOrderCascade(o.id));
     doDelete();
   }));
+}
+
+/* ---------- តម្លៃក្នុង Step (ពីតារាងតម្លៃ) ---------- */
+/* ---------- + តម្លៃនៅកន្ទុយ Step នីមួយៗ ---------- */
+let stepPricePickIdx = null;
+
+function stepPriceItems(st){
+  if(Array.isArray(st.priceItems)) return st.priceItems;
+  const legacy = parseFloat(st.price) || 0;
+  return legacy > 0 ? [{ name: st.priceName || '', amount: legacy, qty: 1 }] : [];
+}
+function stepPriceChipsHTML(st){
+  return priceChipsHTML(stepPriceItems(st), k => `removeStepPriceItem(${st.idx}, ${k})`);
+}
+function txPriceChipsHTML(r){
+  return priceChipsHTML(Array.isArray(r.txPriceItems) ? r.txPriceItems : [], k => `removeTxPriceItem(${k})`);
+}
+function recordPriceSum(r){
+  const sumOf = items => items.reduce((u, it) => u + (parseFloat(it.amount) || 0), 0);
+  const tx = Array.isArray(r.txPriceItems) ? sumOf(r.txPriceItems) : 0;
+  return tx + (r.procedureSteps || []).reduce((t, st) => t + sumOf(stepPriceItems(st)), 0);
+}
+function priceChipsHTML(items, removeCall){
+  if(!items.length) return '';
+  return `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:5px;">` + items.map((it, k) => `
+    <span class="kh" style="display:inline-flex; align-items:center; gap:5px; font-size:11.5px; background:var(--primary-softer); border:1px solid var(--primary-soft); color:var(--primary-dark); padding:2px 4px 2px 9px; border-radius:999px;">
+      ${escHTML(it.name || 'តម្លៃ')}${(it.qty || 1) > 1 ? ' ×' + it.qty : ''}
+      <b class="mono">$${(parseFloat(it.amount) || 0).toFixed(2)}</b>
+      <button type="button" onclick="${removeCall(k)}" title="លុបតម្លៃនេះ" style="width:16px; height:16px; border-radius:50%; border:none; background:var(--coral-soft); color:var(--coral-dark); cursor:pointer; font-size:9px; line-height:1;">✕</button>
+    </span>`).join('') + `</div>`;
+}
+function syncStepPrice(st){
+  const items = stepPriceItems(st);
+  st.priceItems = items;
+  st.price = items.reduce((t, it) => t + (parseFloat(it.amount) || 0), 0);
+  delete st.priceName;
+}
+function commitStepPrices(r){
+  updateRecordStatusFromLatestStep(r);
+  saveProcedureStepsToRecord(r);
+  renderProcedureStepsCards();
+}
+
+function openStepPricePicker(idx){
+  stepPricePickIdx = idx;
+  const num = v => { const m = String(v == null ? '' : v).replace(/[^\d.]/g, ''); return m ? parseFloat(m) : NaN; };
+  const list = document.getElementById('spList');
+  const rows = appPriceList.map((it, i) => ({ it, i, n: num(it.price) })).filter(x => cleanStr(x.it.name) && !isNaN(x.n));
+  list.innerHTML = rows.length ? rows.map(x => `
+    <button type="button" onclick="stepPricePick(${x.i})" class="kh" style="all:unset; box-sizing:border-box; display:flex; justify-content:space-between; gap:10px; width:100%; padding:10px 12px; border-bottom:1px dashed var(--border); cursor:pointer;">
+      <span style="font-weight:700;">${escHTML(x.it.name)}</span>
+      <span class="mono" style="color:var(--primary-dark); font-weight:700;">$${x.n.toFixed(2)}</span>
+    </button>`).join('')
+    : '<div class="kh" style="text-align:center; color:var(--ink-dim); padding:20px;">មិនទាន់មានតារាងតម្លៃ — បន្ថែមតាមប៊ូតុង 💲 តារាងតម្លៃ ឬវាយខាងក្រោម</div>';
+  document.getElementById('spQty').value = '1';
+  document.getElementById('spCustomName').value = '';
+  document.getElementById('spCustomAmount').value = '';
+  document.getElementById('stepPricePickOverlay').classList.remove('hidden');
+}
+function closeStepPricePick(){ document.getElementById('stepPricePickOverlay').classList.add('hidden'); }
+
+function stepPriceAdd(name, unit){
+  const r = allRecords.find(x => x._id === activeProcStepsRecordId);
+  if(!r || !(unit > 0)) return;
+  const qty = Math.max(1, parseInt(document.getElementById('spQty').value, 10) || 1);
+  if(stepPricePickIdx === 'tx'){            // តម្លៃកម្រិត Treatment (TX)
+    if(!Array.isArray(r.txPriceItems)) r.txPriceItems = [];
+    r.txPriceItems.push({ name: name, amount: Math.round(unit * qty * 100) / 100, qty: qty, unit: unit });
+    closeStepPricePick();
+    commitStepPrices(r);
+    return;
+  }
+  const st = r.procedureSteps && r.procedureSteps[stepPricePickIdx];
+  if(!st) return;
+  st.priceItems = stepPriceItems(st).slice();
+  st.priceItems.push({ name: name, amount: Math.round(unit * qty * 100) / 100, qty: qty, unit: unit });
+  syncStepPrice(st);
+  closeStepPricePick();
+  commitStepPrices(r);
+}
+function stepPricePick(i){
+  const it = appPriceList[i]; if(!it) return;
+  const m = String(it.price == null ? '' : it.price).replace(/[^\d.]/g, '');
+  stepPriceAdd(cleanStr(it.name), m ? parseFloat(m) : 0);
+}
+function removeTxPriceItem(k){
+  const r = allRecords.find(x => x._id === activeProcStepsRecordId);
+  if(!r || !Array.isArray(r.txPriceItems)) return;
+  r.txPriceItems.splice(k, 1);
+  commitStepPrices(r);
+}
+function removeStepPriceItem(idx, k){
+  const r = allRecords.find(x => x._id === activeProcStepsRecordId);
+  const st = r && r.procedureSteps && r.procedureSteps[idx];
+  if(!st) return;
+  st.priceItems = stepPriceItems(st).slice();
+  st.priceItems.splice(k, 1);
+  syncStepPrice(st);
+  commitStepPrices(r);
+}
+document.getElementById('closeStepPricePick').addEventListener('click', closeStepPricePick);
+document.getElementById('stepPricePickOverlay').addEventListener('click', e => { if(e.target.id === 'stepPricePickOverlay') closeStepPricePick(); });
+document.getElementById('spCustomAdd').addEventListener('click', () => {
+  const m = String(document.getElementById('spCustomAmount').value).replace(/[^\d.]/g, '');
+  stepPriceAdd(cleanStr(document.getElementById('spCustomName').value), m ? parseFloat(m) : 0);
+});
+
+function renderStepPriceSummary(r){
+  const el = document.getElementById('procStepsPriceSummary');
+  if(!el) return;
+  const steps = Array.isArray(r.procedureSteps) ? r.procedureSteps : [];
+  const sum = recordPriceSum(r);
+  if(sum <= 0){ el.innerHTML = ''; return; }
+  const cur = parseFloat(String(r.payTotal || '').replace(/[^\d.]/g, '')) || 0;
+  const same = Math.abs(cur - sum) < 0.005;
+  el.innerHTML = `
+    <div class="kh" style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; background:var(--primary-softer); border:1px solid var(--primary-soft); border-radius:10px; padding:8px 12px; margin-bottom:14px; font-size:12.5px;">
+      <div>💲 សរុបតម្លៃ (TX + Step): <b class="mono" style="color:var(--primary-dark);">$${sum.toFixed(2)}</b>
+        <span style="color:var(--ink-dim);"> · Total វិក្កយបត្រ: <span class="mono">$${cur.toFixed(2)}</span></span></div>
+      ${same ? '<span style="color:var(--primary-dark); font-weight:700;">✓ ត្រូវគ្នា</span>'
+             : '<button type="button" class="btn btn-primary btn-sm kh" onclick="applyStepPricesToTotal()">→ ដាក់ជា Total វិក្កយបត្រ</button>'}
+    </div>`;
+}
+
+function applyStepPricesToTotal(){
+  const r = allRecords.find(x => x._id === activeProcStepsRecordId);
+  if(!r) return;
+  const sum = recordPriceSum(r);
+  if(sum <= 0) return;
+  const cur = parseFloat(String(r.payTotal || '').replace(/[^\d.]/g, '')) || 0;
+  const apply = () => {
+    r.payTotal = '$' + sum.toFixed(2);
+    recomputeRecordPayFields(r);
+    saveProcedureStepsToRecord(r);
+    renderStepPriceSummary(r);
+    try{ renderInvoicesTable(); }catch(e){}
+  };
+  if(cur > 0) showConfirm(`ប្តូរ Total វិក្កយបត្រ ពី $${cur.toFixed(2)} ទៅ $${sum.toFixed(2)} (សរុបតម្លៃ TX + Step)?`, apply);
+  else apply();
 }
 
 document.getElementById('procStepSelect').addEventListener('change', (e) => {
@@ -10707,12 +10910,266 @@ function openInvoiceDetail(p){
       </div>
     </div>
     ${rows}
+    ${invoicePaymentSectionHTML(p)}
   `;
   activeInvoiceDetailPatient = p;
   document.getElementById('invoiceDetailOverlay').classList.remove('hidden');
 }
 
 let activeInvoiceDetailPatient = null;
+
+/* ---------- បង់ប្រាក់ក្នុងផ្ទាំងវិក្កយបត្រ: វាយចំនួនបង់រួមសរុប → កាត់ពីវិក្កយបត្រចាស់ទៅថ្មី ---------- */
+function invMoney(v){ return parseFloat(String(v || '').replace(/[^\d.]/g, '')) || 0; }
+
+function invOwingCases(p){
+  const key = r => (parseAnyDate(r.timestamp) || parseAnyDate(r.payDate) || new Date(0)).getTime();
+  return p.cases.filter(r => invMoney(r.payBalance) > 0.004).sort((a, b) => key(a) - key(b));   // ចាស់ → ថ្មី
+}
+function invAllocate(p, amount){
+  let left = Math.round(amount * 100) / 100;
+  const out = [];
+  invOwingCases(p).forEach(r => {
+    if(left <= 0.004) return;
+    const bal = invMoney(r.payBalance);
+    const take = Math.round(Math.min(bal, left) * 100) / 100;
+    if(take > 0){ out.push({ r, amt: take, bal }); left = Math.round((left - take) * 100) / 100; }
+  });
+  return { rows: out, left };
+}
+
+let invPayGroupsCache = [];
+
+// ប្រមូលការបង់ប្រាក់ជាក្រុម (ការបង់រួមសរុបតែមួយដង = មួយក្រុម)
+function invPaymentGroups(p){
+  const map = new Map();
+  p.cases.forEach(r => {
+    if(Array.isArray(r.payments) && r.payments.length){
+      r.payments.forEach((x, idx) => {
+        const key = x.batch ? 'B|' + x.batch : 'S|' + r._id + '|' + idx;
+        if(!map.has(key)) map.set(key, { key, batch: x.batch || '', date: x.date, entries: [] });
+        map.get(key).entries.push({ r, x, amount: parseFloat(x.amount) || 0 });
+      });
+    } else if(invMoney(r.payPaid) > 0){
+      const key = 'L|' + r._id;
+      map.set(key, { key, batch: '', date: r.payDate || '', entries: [{ r, x: null, amount: invMoney(r.payPaid) }] });
+    }
+  });
+  const groups = [...map.values()].map(g => ({ ...g, total: g.entries.reduce((t, e) => t + e.amount, 0) }));
+  groups.sort((a, b) => (parseAnyDate(b.date) || 0) - (parseAnyDate(a.date) || 0));
+  return groups;
+}
+function invGroupLabel(g){
+  const names = [...new Set(g.entries.map(e => e.r.treatment || e.r.diagnosis || '—'))];
+  return names.length > 1 ? `${names.length} ករណី · ${names.join(', ')}` : names[0];
+}
+
+function invoicePaymentSectionHTML(p){
+  const owing = invOwingCases(p);
+  const totalBal = owing.reduce((t, r) => t + invMoney(r.payBalance), 0);
+  invPayGroupsCache = invPaymentGroups(p);
+  const histHtml = invPayGroupsCache.length ? invPayGroupsCache.map((g, gi) => `
+      <div onclick="invEditPayment(${gi})" title="ចុចដើម្បីកែ" style="display:flex; align-items:center; gap:8px; padding:7px 4px; border-bottom:1px dashed var(--border-soft); font-size:12.5px; cursor:pointer;">
+        <span class="mono" style="color:var(--ink-soft); flex:none;">${g.date ? fmtYMD(g.date) : '—'}</span>
+        <span class="kh" style="flex:1; min-width:0; color:var(--ink-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHTML(invGroupLabel(g))}</span>
+        <span class="mono" style="font-weight:700; color:var(--primary-dark); flex:none;">$${g.total.toFixed(2)}</span>
+        <button type="button" class="icon-btn" title="កែ" onclick="event.stopPropagation(); invEditPayment(${gi})">✎</button>
+        <button type="button" class="icon-btn" title="Print Receipt" onclick="event.stopPropagation(); invPrintPayment(${gi})">🖨</button>
+      </div>`).join('')
+    : '<div class="kh" style="color:var(--ink-dim); font-size:12.5px;">មិនទាន់មានការបង់ប្រាក់នៅឡើយទេ</div>';
+
+  const form = owing.length ? `
+      <div class="kh" style="font-size:12px; color:var(--ink-soft); margin-bottom:8px;">នៅខ្វះសរុប <b class="mono" style="color:var(--coral-dark);">$${totalBal.toFixed(2)}</b> · ការបង់នឹងកាត់ពីវិក្កយបត្រ <b>ចាស់ទៅថ្មី</b> ដោយស្វ័យប្រវត្តិ</div>
+      <div style="display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap;">
+        <div class="field" style="margin:0; width:150px;">
+          <label class="kh" style="font-size:10.5px;">ថ្ងៃខែឆ្នាំបង់</label>
+          <input type="date" id="invPayDate" class="mono" value="${getLocalTodayYMD()}">
+        </div>
+        <div class="field" style="margin:0; width:130px;">
+          <label class="kh" style="font-size:10.5px;">ចំនួនបង់រួមសរុប ($)</label>
+          <input type="text" id="invPayAmount" class="mono" inputmode="decimal" placeholder="0.00" oninput="invPayPreview()">
+        </div>
+        <button type="button" class="btn btn-outline btn-sm kh" style="height:38px;" onclick="document.getElementById('invPayAmount').value='${totalBal.toFixed(2)}'; invPayPreview();">បង់ទាំងអស់</button>
+        <button type="button" class="btn btn-primary btn-sm kh" style="height:38px;" onclick="invAddPayment()">💵 បង់ប្រាក់</button>
+      </div>
+      <div id="invPayPreview" class="kh" style="margin-top:8px; font-size:12px;"></div>` : '<div class="kh" style="color:var(--primary-dark); font-weight:700; font-size:13px;">✓ បានបង់គ្រប់ចំនួនហើយ</div>';
+
+  return `
+    <div style="margin-top:16px; padding-top:14px; border-top:2px solid var(--primary);">
+      <div class="kh" style="font-weight:800; font-size:14px; color:var(--primary-dark); margin-bottom:10px;">💵 បង់ប្រាក់ · Add Payment</div>
+      ${form}
+      <div class="kh" style="font-weight:700; font-size:12px; color:var(--ink-soft); margin:14px 0 4px;">ប្រវត្តិបង់ប្រាក់ · Payment History <span style="font-weight:400; color:var(--ink-dim);">(ចុចដើម្បីកែ)</span></div>
+      ${histHtml}
+    </div>`;
+}
+
+function invPayPreview(){
+  const p = activeInvoiceDetailPatient; if(!p) return;
+  const el = document.getElementById('invPayPreview'); if(!el) return;
+  const amount = invMoney(document.getElementById('invPayAmount').value);
+  if(amount <= 0){ el.innerHTML = ''; return; }
+  const { rows, left } = invAllocate(p, amount);
+  el.innerHTML = rows.map(x => {
+    const d = parseAnyDate(x.r.timestamp) || parseAnyDate(x.r.payDate);
+    const after = x.bal - x.amt;
+    return `<div style="display:flex; justify-content:space-between; gap:10px; padding:3px 0; border-bottom:1px dashed var(--border-soft);">
+      <span style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${d ? fmtDMY(d) + ' · ' : ''}${escHTML(x.r.treatment || x.r.diagnosis || '—')}</span>
+      <span class="mono" style="flex:none;"><b style="color:var(--primary-dark);">−$${x.amt.toFixed(2)}</b> <span style="color:var(--ink-dim);">${after > 0.004 ? '(នៅខ្វះ $' + after.toFixed(2) + ')' : '✓ គ្រប់'}</span></span>
+    </div>`;
+  }).join('') + (left > 0.004 ? `<div style="color:var(--coral-dark); font-weight:700; margin-top:4px;">⚠ លើស $${left.toFixed(2)} ពីចំនួននៅខ្វះសរុប</div>` : '');
+}
+
+// រក្សាទុក + Sync កំណត់ត្រាដែលបានប្តូរ រួចបង្ហាញផ្ទាំងវិក្កយបត្រឡើងវិញ
+function invCommitPayments(p, records){
+  const list = [...new Set(records)];
+  list.forEach(r => recomputeRecordPayFields(r));
+  saveLocalRecords();
+  list.forEach(r => {
+    try{
+      pushToSheet('updateRecord', {...r, payments: JSON.stringify(r.payments || []), procedureStepsJSON: JSON.stringify(r.procedureSteps || [])});
+    }catch(err){ console.warn('Sync queue error:', err); }
+  });
+  p.total = p.cases.reduce((t, c) => t + invMoney(c.payTotal), 0);
+  p.paid = p.cases.reduce((t, c) => t + invMoney(c.payPaid), 0);
+  p.balance = p.cases.reduce((t, c) => t + invMoney(c.payBalance), 0);
+  try{ renderInvoicesTable(); }catch(e){}
+  try{ renderAll(); }catch(e){}
+  openInvoiceDetail(p);
+}
+function invEnsurePaymentsArray(r){
+  if(!Array.isArray(r.payments)) r.payments = [];
+  const legacy = invMoney(r.payPaid);
+  if(r.payments.length === 0 && legacy > 0) r.payments.push({ date: r.payDate || getLocalTodayYMD(), amount: legacy });
+}
+
+function invAddPayment(){
+  const p = activeInvoiceDetailPatient; if(!p) return;
+  const date = document.getElementById('invPayDate').value || getLocalTodayYMD();
+  const amount = invMoney(document.getElementById('invPayAmount').value);
+  if(amount <= 0){ alert('សូមបញ្ចូលចំនួនទឹកប្រាក់ត្រឹមត្រូវ'); return; }
+  const { rows, left } = invAllocate(p, amount);
+  if(left > 0.004){ alert(`ចំនួនលើសពីនៅខ្វះសរុប ($${(amount - left).toFixed(2)}) សូមកែចំនួន`); return; }
+  if(!rows.length) return;
+  requestClinicPin(() => {
+    const batch = 'B' + Date.now();
+    rows.forEach(({ r, amt }) => {
+      invEnsurePaymentsArray(r);
+      r.payments.push({ date, amount: amt, batch });
+      recomputeRecordPayFields(r);
+      if(!r.payDate) r.payDate = date;
+    });
+    invCommitPayments(p, rows.map(x => x.r));
+  });
+}
+
+/* ---------- កែ / លុប ការបង់ប្រាក់ ---------- */
+let invEditGroupIdx = null;
+
+function invEditPayment(gi){
+  const g = invPayGroupsCache[gi]; if(!g) return;
+  invEditGroupIdx = gi;
+  document.getElementById('invPayEditInfo').innerHTML = g.entries.map(e =>
+    `<div style="display:flex; justify-content:space-between; gap:10px;"><span>${escHTML(e.r.treatment || e.r.diagnosis || '—')}</span><span class="mono">$${e.amount.toFixed(2)}</span></div>`).join('') +
+    (g.entries.length > 1 ? '<div style="margin-top:6px; color:var(--ink-dim);">បើប្តូរចំនួន ប្រព័ន្ធនឹងកាត់ឡើងវិញពីវិក្កយបត្រចាស់ទៅថ្មី។</div>' : '');
+  document.getElementById('invPayEditDate').value = /^\d{4}-\d{2}-\d{2}$/.test(String(g.date)) ? g.date : getLocalTodayYMD();
+  document.getElementById('invPayEditAmount').value = g.total.toFixed(2);
+  document.getElementById('invPayEditOverlay').classList.remove('hidden');
+}
+function closeInvPayEdit(){ document.getElementById('invPayEditOverlay').classList.add('hidden'); invEditGroupIdx = null; }
+
+// ដកធាតុបង់ប្រាក់ក្នុងក្រុមចេញពីកំណត់ត្រា (រៀបចំ legacy ជា array មុន)
+function invDetachGroup(g){
+  g.entries.forEach(e => { if(!e.x) invEnsurePaymentsArray(e.r); });
+  g.entries.forEach(e => {
+    const x = e.x || (e.r.payments || []).find(q => !q.batch && (parseFloat(q.amount) || 0) === e.amount) || null;
+    if(x) e.r.payments = e.r.payments.filter(q => q !== x);
+    e.x = x;
+  });
+}
+
+function invSavePaymentEdit(){
+  const p = activeInvoiceDetailPatient; const g = invPayGroupsCache[invEditGroupIdx];
+  if(!p || !g) return;
+  const date = document.getElementById('invPayEditDate').value || getLocalTodayYMD();
+  const amount = Math.round(invMoney(document.getElementById('invPayEditAmount').value) * 100) / 100;
+  if(amount <= 0){ alert('សូមបញ្ចូលចំនួនទឹកប្រាក់ត្រឹមត្រូវ'); return; }
+  const single = g.entries.length === 1 && !g.batch;     // បង់ដោយឡែក → នៅក្នុងករណីដដែល
+  const owingBal = invOwingCases(p).reduce((t, r) => t + invMoney(r.payBalance), 0);
+  const avail = (single ? invMoney(g.entries[0].r.payBalance) : owingBal) + g.total;
+  if(amount > avail + 0.004){ alert(`ចំនួនលើសពីនៅខ្វះ (អតិបរមា $${avail.toFixed(2)}) សូមកែចំនួន`); return; }
+  requestClinicPin(() => {
+    const touched = g.entries.map(e => e.r);
+    invDetachGroup(g);
+    if(single){
+      const r = g.entries[0].r;
+      r.payments.push({ date, amount, ...(g.batch ? { batch: g.batch } : {}) });
+    } else {
+      g.entries.forEach(e => recomputeRecordPayFields(e.r));
+      const batch = g.batch || ('B' + Date.now());
+      const { rows } = invAllocate(p, amount);
+      rows.forEach(({ r, amt }) => { invEnsurePaymentsArray(r); r.payments.push({ date, amount: amt, batch }); touched.push(r); });
+    }
+    closeInvPayEdit();
+    invCommitPayments(p, touched);
+  });
+}
+
+function invDeletePayment(){
+  const p = activeInvoiceDetailPatient; const g = invPayGroupsCache[invEditGroupIdx];
+  if(!p || !g) return;
+  requestClinicPin(() => showConfirm(`លុបការបង់ប្រាក់ $${g.total.toFixed(2)} ថ្ងៃ ${g.date ? fmtYMD(g.date) : ''} នេះ?`, () => {
+    const touched = g.entries.map(e => e.r);
+    invDetachGroup(g);
+    closeInvPayEdit();
+    invCommitPayments(p, touched);
+  }));
+}
+
+document.getElementById('closeInvPayEdit').addEventListener('click', closeInvPayEdit);
+document.getElementById('invPayEditOverlay').addEventListener('click', e => { if(e.target.id === 'invPayEditOverlay') closeInvPayEdit(); });
+document.getElementById('invPayEditSave').addEventListener('click', invSavePaymentEdit);
+document.getElementById('invPayEditDelete').addEventListener('click', invDeletePayment);
+
+/* ---------- Print Receipt នៃការបង់ប្រាក់សរុបមួយដង ---------- */
+function invPrintPayment(gi){
+  const p = activeInvoiceDetailPatient; const g = invPayGroupsCache[gi];
+  if(!p || !g) return;
+  const items = g.entries.map(e => ({ label: e.r.treatment || e.r.diagnosis || '—', amount: e.amount }));
+  const balanceNow = p.cases.reduce((t, c) => t + invMoney(c.payBalance), 0);
+  document.getElementById('invoiceDetailOverlay').classList.add('hidden');
+  printContext = {
+    type: 'payment-receipt',
+    patientName: p.name,
+    records: g.entries.map(e => e.r),
+    payment: { date: g.date, items, total: g.total, balanceNow }
+  };
+  document.getElementById('printSizeModalOverlay').classList.remove('hidden');
+}
+
+function buildPaymentReceiptHTML(ctx, sizeClass){
+  const pay = ctx.payment;
+  const rows = pay.items.map(it => `<div class="thermal-row"><span class="lbl kh">${escHTML(it.label)}</span><span class="val mono">$${it.amount.toFixed(2)}</span></div>`).join('');
+  return `
+    <div class="thermal-receipt ${sizeClass}">
+      ${invoiceHeaderHTML()}
+      <div class="thermal-title">Payment Receipt / បង្កាន់ដៃបង់ប្រាក់</div>
+      <div class="thermal-row"><span class="lbl">Date:</span><span class="val mono">${pay.date ? fmtYMD(pay.date) : '—'}</span></div>
+      <div class="thermal-row"><span class="lbl">Patient:</span><span class="val kh">${escHTML(ctx.patientName)}</span></div>
+      <div class="thermal-divider"></div>
+      ${rows}
+      <div class="thermal-divider"></div>
+      <div class="thermal-row"><span class="lbl">Total Paid:</span><span class="val mono">$${pay.total.toFixed(2)}</span></div>
+      <div class="thermal-row"><span class="lbl">Balance:</span><span class="val mono">$${pay.balanceNow.toFixed(2)}</span></div>
+      ${nextApptRowHTML()}
+      ${receiptQrHTML()}
+      <div class="thermal-footer kh">សូមអរគុណ! Thank you!</div>
+    </div>`;
+}
+
+function buildReceiptForCtx(ctx, size){
+  if(ctx.type === 'receipt') return buildReceiptHTML(ctx.record, size);
+  if(ctx.type === 'payment-receipt') return buildPaymentReceiptHTML(ctx, size);
+  return buildCombinedReceiptHTML(ctx.patientName, ctx.records, size);
+}
 
 function closeInvoiceDetailAndEdit(recordId){
   const r = allRecords.find(x => x._id === recordId);
