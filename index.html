@@ -925,6 +925,15 @@
   .fin-sub{ font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
   .fin-head-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .fin-head-actions .tb-search{ min-width:220px; }
+  #priceListOverlay{ z-index:100; }
+  .pl-row{ display:flex; align-items:center; gap:6px; padding:6px 4px; border-bottom:1px dashed var(--border); border-radius:8px; }
+  .pl-row.pl-over{ background:var(--primary-softer); outline:2px dashed var(--primary); }
+  .pl-grip{ cursor:grab; color:var(--ink-dim); font-size:16px; padding:0 4px; user-select:none; touch-action:none; }
+  .pl-no{ width:22px; text-align:right; font-size:11px; color:var(--ink-dim); flex:none; }
+  .pl-row input{ border:1px solid var(--border); border-radius:8px; padding:7px 9px; font-size:13px; background:var(--surface); color:var(--ink); min-width:0; }
+  .pl-row .pl-name{ flex:1; }
+  .pl-row .pl-price{ width:84px; text-align:right; flex:none; }
+  .pl-row .icon-btn{ flex:none; }
   .fin-aging{ display:grid; grid-template-columns:repeat(4, 1fr); gap:0; border-bottom:1px solid var(--border-soft); }
   .fin-aging .ag{ padding:10px 16px; border-right:1px solid var(--border-soft); }
   .fin-aging .ag:last-child{ border-right:0; }
@@ -2082,6 +2091,7 @@
       </div>
       <div class="topbar-actions">
         <input type="text" class="search-input search-input-topbar kh" id="searchInput" placeholder="🔍 ស្វែងរក ឈ្មោះ, លេខធ្មេញ...">
+        <button type="button" class="btn btn-outline kh" id="priceListBtn" style="height: 34px; padding: 0 14px; border-radius: 8px; white-space:nowrap;">💲 តារាងតម្លៃ</button>
         <button class="btn btn-primary kh" id="fabAdd" style="height: 34px; padding: 0 14px; border-radius: 8px; white-space:nowrap;">＋ កត់ត្រាថ្មី</button>
       </div>
     </header>
@@ -3292,6 +3302,27 @@
 </div>
 
 <!-- Invoice detail / print drill-in (small overlay, opened by clicking a patient row) -->
+<!-- តារាងតម្លៃ · Price List (opened from Billing & Finance) -->
+<div class="overlay hidden" id="priceListOverlay">
+  <div class="modal" style="max-width: 560px;">
+    <div class="modal-head">
+      <h2 class="kh">💲 តារាងតម្លៃ · Price List</h2>
+      <button class="x" id="closePriceList">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+        <div class="kh" style="font-size:12px; color:var(--ink-dim);">ទាញ ⠿ ឬចុច ▲▼ ដើម្បីដូរលំដាប់ · <span id="plCount" class="mono"></span></div>
+        <button type="button" class="btn btn-primary btn-sm kh" id="plAddBtn">＋ បន្ថែម</button>
+      </div>
+      <div id="plList" style="max-height:480px; overflow-y:auto; border:1px solid var(--border); border-radius:10px; padding:4px;"></div>
+      <div class="modal-actions" style="margin-top:14px;">
+        <button type="button" class="btn btn-outline kh" id="plPrintBtn" style="flex:1; justify-content:center;">🖨 Print / PDF</button>
+        <button type="button" class="btn btn-primary kh" id="plDoneBtn" style="flex:1; justify-content:center;">✓ រួចរាល់</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="overlay hidden" id="invoiceDetailOverlay">
   <div class="modal" style="max-width: 640px;">
     <div class="modal-head">
@@ -4437,6 +4468,11 @@ async function fetchFromSheet(isSilent = false){
         if(Array.isArray(json.config.labPrices) && json.config.labPrices.length){
           appLabPrices = json.config.labPrices;
           localStorage.setItem('kep_cfg_labprices', JSON.stringify(appLabPrices));
+        }
+        if(Array.isArray(json.config.priceList) && json.config.priceList.length){
+          appPriceList = json.config.priceList;
+          localStorage.setItem(PRICELIST_KEY, JSON.stringify(appPriceList));
+          if(!document.getElementById('priceListOverlay').classList.contains('hidden')) renderPriceList();
         }
         populateClinicalSelects();
       }
@@ -9406,6 +9442,175 @@ function handleThermalPrint(size) {
   s2sSetContext((printContext.type === 'receipt' || printContext.type === 'receipt-combined') ? printContext : null);
   document.getElementById('printOverlay').classList.remove('hidden');
 }
+
+/* ---------- តារាងតម្លៃ · Price List ---------- */
+const PRICELIST_KEY = 'kep_cfg_pricelist';
+let appPriceList = [];
+try{ appPriceList = JSON.parse(localStorage.getItem(PRICELIST_KEY) || '[]') || []; }catch(e){ appPriceList = []; }
+let plPushTimer = null;
+
+function savePriceList(immediate){
+  try{ localStorage.setItem(PRICELIST_KEY, JSON.stringify(appPriceList)); }catch(e){}
+  clearTimeout(plPushTimer);
+  const push = () => { try{ pushToSheet('updateConfig', { key: 'priceList', value: appPriceList }); }catch(e){ console.warn('priceList push failed', e); } };
+  if(immediate) push(); else plPushTimer = setTimeout(push, 700);
+}
+
+function plAttr(v){ return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function renderPriceList(focusIdx){
+  const el = document.getElementById('plList');
+  document.getElementById('plCount').textContent = appPriceList.length + ' ធាតុ';
+  if(appPriceList.length === 0){
+    el.innerHTML = '<div class="kh" style="text-align:center;color:var(--ink-dim);padding:24px;">មិនទាន់មានតារាងតម្លៃ — ចុច ＋ បន្ថែម</div>';
+    return;
+  }
+  const last = appPriceList.length - 1;
+  el.innerHTML = appPriceList.map((it, i) => `
+    <div class="pl-row" data-i="${i}">
+      <span class="pl-grip" draggable="true" title="ទាញដើម្បីដូរលំដាប់">⠿</span>
+      <span class="pl-no mono">${i+1}</span>
+      <input type="text" class="pl-name kh" data-f="name" value="${plAttr(it.name)}" placeholder="ឈ្មោះសេវា / Treatment">
+      <input type="text" class="pl-price mono" data-f="price" inputmode="decimal" value="${plAttr(it.price)}" placeholder="$0">
+      <button type="button" class="icon-btn" data-act="up" title="ឡើង" ${i===0?'disabled style="opacity:.35"':''}>▲</button>
+      <button type="button" class="icon-btn" data-act="down" title="ចុះ" ${i===last?'disabled style="opacity:.35"':''}>▼</button>
+      <button type="button" class="icon-btn" data-act="del" title="លុប">🗑</button>
+    </div>`).join('');
+  if(typeof focusIdx === 'number'){
+    const inp = el.querySelector(`.pl-row[data-i="${focusIdx}"] .pl-name`);
+    if(inp){ inp.focus(); inp.scrollIntoView({ block: 'nearest' }); }
+  }
+}
+
+function plMove(from, to){
+  if(to < 0 || to >= appPriceList.length || from === to) return;
+  const [x] = appPriceList.splice(from, 1);
+  appPriceList.splice(to, 0, x);
+  savePriceList(true);
+  renderPriceList();
+}
+
+function openPriceList(){
+  renderPriceList();
+  document.getElementById('priceListOverlay').classList.remove('hidden');
+}
+function closePriceList(){
+  // លុបជួរទទេ
+  const before = appPriceList.length;
+  appPriceList = appPriceList.filter(it => cleanStr(it.name) || cleanStr(it.price));
+  if(appPriceList.length !== before) savePriceList(true);
+  document.getElementById('priceListOverlay').classList.add('hidden');
+}
+
+document.getElementById('priceListBtn').addEventListener('click', openPriceList);
+document.getElementById('closePriceList').addEventListener('click', closePriceList);
+document.getElementById('plDoneBtn').addEventListener('click', closePriceList);
+document.getElementById('priceListOverlay').addEventListener('click', e => { if(e.target.id === 'priceListOverlay') closePriceList(); });
+document.getElementById('plAddBtn').addEventListener('click', () => {
+  appPriceList.push({ name: '', price: '' });
+  savePriceList(true);
+  renderPriceList(appPriceList.length - 1);
+});
+
+(function(){
+  const list = document.getElementById('plList');
+  list.addEventListener('input', e => {
+    const f = e.target.dataset && e.target.dataset.f; if(!f) return;
+    const row = e.target.closest('.pl-row'); if(!row) return;
+    const it = appPriceList[Number(row.dataset.i)]; if(!it) return;
+    it[f] = e.target.value;
+    savePriceList(false);
+  });
+  list.addEventListener('click', e => {
+    const b = e.target.closest('[data-act]'); if(!b) return;
+    const row = b.closest('.pl-row'); const i = Number(row.dataset.i);
+    const act = b.dataset.act;
+    if(act === 'up') plMove(i, i - 1);
+    else if(act === 'down') plMove(i, i + 1);
+    else if(act === 'del'){
+      const nm = cleanStr(appPriceList[i] && appPriceList[i].name) || ('ជួរទី ' + (i+1));
+      showConfirm('លុប "' + String(nm).replace(/</g,'&lt;') + '" ចេញពីតារាងតម្លៃ?', () => {
+        appPriceList.splice(i, 1);
+        savePriceList(true);
+        renderPriceList();
+      });
+    }
+  });
+  // Drag & drop (ទាញពីសញ្ញា ⠿)
+  let dragFrom = null;
+  list.addEventListener('dragstart', e => {
+    const g = e.target.closest && e.target.closest('.pl-grip'); if(!g) return;
+    const row = g.closest('.pl-row'); dragFrom = Number(row.dataset.i);
+    try{ e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragFrom)); e.dataTransfer.setDragImage(row, 20, 16); }catch(_){}
+  });
+  list.addEventListener('dragover', e => {
+    if(dragFrom === null) return;
+    e.preventDefault();
+    list.querySelectorAll('.pl-over').forEach(r => r.classList.remove('pl-over'));
+    const row = e.target.closest('.pl-row'); if(row) row.classList.add('pl-over');
+  });
+  list.addEventListener('drop', e => {
+    if(dragFrom === null) return;
+    e.preventDefault();
+    const row = e.target.closest('.pl-row');
+    const to = row ? Number(row.dataset.i) : dragFrom;
+    const from = dragFrom; dragFrom = null;
+    plMove(from, to);
+  });
+  list.addEventListener('dragend', () => { dragFrom = null; list.querySelectorAll('.pl-over').forEach(r => r.classList.remove('pl-over')); });
+})();
+
+
+function printPriceList(){
+  const items = appPriceList.filter(it => cleanStr(it.name) || cleanStr(it.price));
+  if(items.length === 0){ alert('មិនទាន់មានតារាងតម្លៃសម្រាប់បោះពុម្ពទេ'); return; }
+  const esc = v => String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const fmtPrice = v => {
+    const t = cleanStr(v); if(!t) return '—';
+    return /^\$?\s*\d+(\.\d+)?$/.test(t) ? '$' + parseFloat(t.replace(/[^\d.]/g,'')).toFixed(2) : esc(t);
+  };
+  const logo = (document.querySelector('.brand-mark img') || {}).src || '';
+  const now = new Date();
+  const printDateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+  const rows = items.map((it, i) => `
+    <tr style="page-break-inside:avoid;">
+      <td class="mono" style="text-align:center;">${i+1}</td>
+      <td class="kh"><b>${esc(it.name) || '—'}</b></td>
+      <td class="mono" style="text-align:right; font-weight:700;">${fmtPrice(it.price)}</td>
+    </tr>`).join('');
+
+  setPrintMode('a4');
+  document.getElementById('printOverlayTitle').textContent = 'តារាងតម្លៃ · Price List';
+  document.getElementById('printArea').innerHTML = `
+    <div class="print-sheet">
+      <div style="display:flex; align-items:center; gap:16px; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:16px;">
+        ${logo ? `<img src="${logo}" alt="KEP Dental Clinic" style="width:72px; height:72px; object-fit:contain; flex:none;">` : ''}
+        <div style="flex:1; min-width:0;">
+          <div style="font-family:'Sora','Noto Sans Khmer',sans-serif; font-size:22px; font-weight:800; line-height:1.2;">KEP Dental Clinic</div>
+          <div style="font-size:13px; font-weight:600; margin-top:2px;">Dr.MCSerey (DDS)</div>
+          <div class="kh" style="font-size:12px; margin-top:2px;">NR33-KEP-ផ្សារដំណាក់ចង្អើរ-012-369-729</div>
+        </div>
+        <div style="text-align:right; flex:none;">
+          <div class="mono" style="font-size:11px; color:#555;">Printed: ${printDateStr}</div>
+        </div>
+      </div>
+      <div class="kh" style="text-align:center; font-size:18px; font-weight:800; margin-bottom:14px;">តារាងតម្លៃ · Price List</div>
+      <table class="ps-visit-table" style="width:100%;">
+        <thead>
+          <tr>
+            <th style="width:50px; text-align:center;">ល.រ</th>
+            <th>សេវា / Treatment</th>
+            <th style="width:130px; text-align:right;">តម្លៃ / Price</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="ps-foot kh" style="margin-top:24px; text-align:center;">សូមអរគុណ! Thank you!</div>
+    </div>`;
+  document.getElementById('priceListOverlay').classList.add('hidden');
+  document.getElementById('printOverlay').classList.remove('hidden');
+}
+document.getElementById('plPrintBtn').addEventListener('click', printPriceList);
 
 /* ---------- Send2Save: Receipt → JPEG → Google Drive ---------- */
 const RECEIPT_FOLDER_ID = '1JvmpsUI1q8dwiQtUHH4fESRJDOzR-V3o';
