@@ -1965,6 +1965,120 @@
   .art-edit .hint code{ background:var(--surface-2); padding:1px 6px; border-radius:5px; font-family:'IBM Plex Mono',monospace; }
   @media (max-width:600px){ .art-reader-body{ padding:18px 16px 30px; } #artReaderOverlay{ padding:6px !important; } .art-reader{ max-height:calc(100vh - 12px); }
     .art-row{ padding:10px 12px; gap:10px; } .art-row .dt{ display:none; } .art-bar{ flex-direction:column; align-items:stretch; } .art-acts .art-btn{ flex:1; justify-content:center; } }
+
+  /* ===== Dashboard v2 · សាមញ្ញ ងាយមើល ===== */
+  #view-dashboard{ font-size:14px; }
+  #view-dashboard .d2-hero{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding:22px 24px; border-radius:18px; margin-bottom:24px; background:var(--sb-bg); color:#fff; box-shadow:var(--shadow); }
+  #view-dashboard .d2-hero .dash-greet{ font-size:24px; font-weight:800; line-height:1.4; }
+  #view-dashboard .d2-hero .dash-date{ font-size:13.5px; opacity:.92; margin-top:4px; }
+  #view-dashboard .d2-hero .dash-quick{ display:flex; gap:8px; flex-wrap:wrap; }
+  #view-dashboard .d2-hero .dq{ font-size:13.5px; padding:10px 16px; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.4); color:#fff; }
+  #view-dashboard .d2-hero .dq:hover{ background:rgba(255,255,255,.26); }
+  #view-dashboard .d2-hero .dq.dq-primary{ background:#fff; color:var(--primary-dark); border-color:#fff; font-weight:800; }
+  #view-dashboard .d2-title{ display:flex; align-items:baseline; gap:10px; margin:4px 2px 12px; font-size:16.5px; font-weight:800; color:var(--ink); }
+  #view-dashboard .d2-title small{ font-size:12px; font-weight:500; color:var(--ink-dim); }
+
+  #view-dashboard .d2-kpis{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; margin-bottom:28px; }
+  #view-dashboard .d2-kpis .fin-kpi{ padding:16px 18px; border-radius:16px; }
+  #view-dashboard .d2-kpis .k-label{ font-size:13.5px; line-height:1.4; min-height:0; align-items:center; }
+  #view-dashboard .d2-kpis .k-label .k-ico{ display:inline-flex; }
+  #view-dashboard .d2-kpis .k-val{ font-size:30px; margin-top:8px; white-space:normal; overflow:visible; }
+  #view-dashboard .d2-kpis .k-en{ display:none; }
+  #view-dashboard .d2-kpis .k-foot{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; padding-top:10px; font-size:12px; white-space:normal; overflow:visible; }
+  #view-dashboard .d2-kpis .k-foot > .fin-delta + span{ display:inline; }
+  #view-dashboard .d2-kpis .fin-delta{ font-size:11.5px; padding:1px 8px; max-width:none; white-space:normal; }
+
+  #view-dashboard .d2-cols{ display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr); gap:20px; margin-bottom:28px; align-items:start; }
+  #view-dashboard .d2-split{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  #view-dashboard .d2-trio{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px; margin-bottom:18px; }
+  #view-dashboard .d2-trio .fin-card, #view-dashboard .d2-split .fin-card{ margin-bottom:0; }
+  #view-dashboard .fin-card{ border-radius:16px; margin-bottom:18px; }
+  #view-dashboard .fin-card-head{ padding:14px 18px; }
+  #view-dashboard .fin-title{ font-size:15.5px; font-weight:800; }
+  #view-dashboard .fin-sub{ display:none; }
+  #view-dashboard .fin-count{ background:var(--primary-softer) !important; color:var(--primary-dark) !important; font-size:12.5px; padding:2px 10px; }
+  #view-dashboard .dash-list{ padding:6px 12px 12px; max-height:340px; }
+  #view-dashboard .dash-list .appt-row{ padding:11px 8px; gap:12px; border-bottom:1px solid var(--border-soft); }
+  #view-dashboard .dash-list .appt-row:last-child{ border-bottom:0; }
+  #view-dashboard .dash-list .appt-name{ font-size:14px; font-weight:700; }
+  #view-dashboard .dash-list .appt-meta{ font-size:12.5px; color:var(--ink-dim); }
+  #view-dashboard .dash-list .empty-state{ padding:22px 10px !important; font-size:13px !important; }
+  #view-dashboard .dash-alert{ padding:13px 18px; gap:12px; }
+  #view-dashboard .dash-alert .ai{ width:36px; height:36px; font-size:16px; }
+  #view-dashboard .dash-alert .at b{ font-size:14px; font-weight:700; }
+  #view-dashboard .dash-alert .at span{ font-size:12px; }
+  #view-dashboard .dash-alert .an{ font-size:14px; }
+  #view-dashboard .dash-empty{ font-size:13.5px; padding:24px 14px; }
+  #view-dashboard .dash-fin-row{ font-size:14px; margin-bottom:8px; }
+  #view-dashboard .dash-fin-row b{ font-size:16px; }
+  #view-dashboard .dash-bar-row .bl{ font-size:13.5px; }
+  #view-dashboard .dash-mix .ml{ font-size:12.5px; }
+  #view-dashboard .dash-mix .mv{ font-size:22px; }
+  #view-dashboard .dash-legend{ font-size:12px; }
+
+  @media (max-width:1100px){
+    #view-dashboard .d2-cols{ grid-template-columns:1fr; gap:0; margin-bottom:10px; }
+    #view-dashboard .d2-trio{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width:760px){
+    #view-dashboard .d2-kpis{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-bottom:22px; }
+    #view-dashboard .d2-kpis .fin-kpi{ padding:13px 14px; }
+    #view-dashboard .d2-kpis .k-val{ font-size:26px; }
+    #view-dashboard .d2-split{ grid-template-columns:1fr; gap:0; }
+    #view-dashboard .d2-split .fin-card{ margin-bottom:18px; }
+    #view-dashboard .d2-trio{ grid-template-columns:1fr; gap:0; }
+    #view-dashboard .d2-trio .fin-card{ margin-bottom:18px; }
+  }
+  @media (max-width:600px){
+    #view-dashboard .d2-hero{ padding:16px; border-radius:16px; margin-bottom:18px; }
+    #view-dashboard .d2-hero .dash-greet{ font-size:19px; }
+    #view-dashboard .d2-hero .dash-quick{ flex-wrap:nowrap; overflow-x:auto; width:100%; scrollbar-width:none; }
+    #view-dashboard .d2-hero .dash-quick::-webkit-scrollbar{ display:none; }
+    #view-dashboard .d2-hero .dq{ flex:0 0 auto; white-space:nowrap; padding:9px 14px; font-size:13px; }
+    #view-dashboard .d2-kpis .k-label .k-ico{ display:none; }
+    #view-dashboard .d2-title{ font-size:15.5px; }
+  }
+
+  /* ការងារថ្ងៃនេះ: បន្ទាត់ពេញទទឹង + កាត ៣ ជួរស្មើគ្នា */
+  #view-dashboard .dash-list-wide{ max-height:380px; }
+  #view-dashboard .d2-trio-work{ margin-top:0; margin-bottom:28px; }
+  #view-dashboard .d2-trio-work .dash-list{ max-height:360px; }
+  #view-dashboard .d2-trio-work .fin-card{ display:flex; flex-direction:column; }
+  #view-dashboard > .fin-card{ margin-bottom:18px; }
+
+  /* ===== Dashboard · ticker + date in topbar ===== */
+  .topbar-title .tt-row{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; min-width:0; }
+  .topbar-title .tt-date{ display:none; font-size:12.5px; font-weight:600; color:var(--ink-soft); white-space:nowrap; }
+  body:has(#view-dashboard.active) .topbar-title .tt-date{ display:inline; }
+  #view-dashboard .d2-hero{ gap:18px; flex-wrap:nowrap; }
+  #view-dashboard .d2-ticker{ flex:1 1 auto; min-width:0; overflow:hidden; position:relative; padding:4px 0;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+    mask-image:linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%); }
+  #view-dashboard .d2-ticker-track{ display:inline-flex; white-space:nowrap; width:max-content; font-size:17px; font-weight:700; line-height:1.9;
+    animation:d2tick 60s linear infinite; will-change:transform; }
+  #view-dashboard .d2-ticker:hover .d2-ticker-track{ animation-play-state:paused; }
+  #view-dashboard .tk-unit{ display:inline-flex; align-items:center; }
+  #view-dashboard .tk-sep{ margin:0 22px; opacity:.55; }
+  #view-dashboard .tk-greet{ font-size:19px; font-weight:800; }
+  #view-dashboard .tk-head{ font-weight:800; color:#FFF3C4; }
+  #view-dashboard .tk-i small{ font-size:12.5px; font-weight:500; opacity:.85; }
+  #view-dashboard .tk-i b{ font-family:'IBM Plex Mono',monospace; }
+  #view-dashboard .tk-up{ color:#C8FFC8; margin-left:2px; }
+  #view-dashboard .tk-dn{ color:#FFD3CE; margin-left:2px; }
+  #view-dashboard .tk-eq{ opacity:.8; margin-left:2px; }
+  @keyframes d2tick{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  #view-dashboard .d2-hero .dash-quick{ flex:none; }
+  @media (max-width:760px){
+    #view-dashboard .d2-hero{ flex-wrap:wrap; }
+    #view-dashboard .d2-ticker{ flex-basis:100%; }
+    #view-dashboard .d2-ticker-track{ font-size:15.5px; }
+    #view-dashboard .tk-greet{ font-size:16.5px; }
+    .topbar-title .tt-date{ font-size:11.5px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    #view-dashboard .d2-ticker{ overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
+    #view-dashboard .d2-ticker-track{ animation:none; }
+  }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -2087,7 +2201,10 @@
         <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
       <div class="topbar-title">
-        <h1 class="kh" id="pageTitle">ផ្ទាំងសរុប</h1>
+        <div class="tt-row">
+          <h1 class="kh" id="pageTitle">ផ្ទាំងសរុប</h1>
+          <span class="tt-date kh" id="topbarDate"><span id="dashDate"></span> · <span class="mono" id="dashClock"></span></span>
+        </div>
         <div class="sub" id="pageSub">Dashboard</div>
       </div>
       <div class="topbar-actions">
@@ -2100,79 +2217,74 @@
 
       <!-- Dashboard -->
       <section class="view active fin dash" id="view-dashboard">
-        <!-- Welcome / quick actions -->
-        <div class="dash-hero">
-          <div>
-            <div class="dash-greet kh" id="dashGreet">សួស្តី 👋</div>
-            <div class="dash-date kh"><span id="dashDate"></span> · <span class="mono" id="dashClock" style="color:#fff !important; font-weight:600;"></span></div>
+        <!-- 1) សួស្តី + ប៊ូតុងរហ័ស -->
+        <div class="d2-hero">
+          <div class="d2-ticker" title="ទិន្នន័យតាម Treatment · ខែនេះ ធៀបនឹងខែមុន (ដាក់កណ្តុរលើដើម្បីផ្អាក)">
+            <div class="d2-ticker-track" id="dashTicker"></div>
           </div>
           <div class="dash-quick">
-            <button type="button" class="dq dq-primary kh" data-dq="new">＋ កត់ត្រាអ្នកជំងឺ</button>
             <button type="button" class="dq kh" data-dq="appointments">📅 ការណាត់</button>
             <button type="button" class="dq kh" data-dq="labo">🧪 Dental Lab</button>
-            <button type="button" class="dq kh" data-dq="income-expense">💰 ហិរញ្ញវត្ថុ</button>
             <button type="button" class="dq kh" data-dq="reports">📊 របាយការណ៍</button>
           </div>
         </div>
 
-        <!-- Today KPIs (vs yesterday) -->
-        <div class="fin-kpis dash-kpis" id="dashSummaryStrip"></div>
+        <!-- 2) សង្ខេបថ្ងៃនេះ (ធៀបម្សិលមិញ) -->
+        <div class="d2-title kh">📊 សង្ខេបថ្ងៃនេះ <small>ធៀបនឹងម្សិលមិញ</small></div>
+        <div class="fin-kpis dash-kpis d2-kpis" id="dashSummaryStrip"></div>
 
-        <div class="dash-grid">
-          <div class="dash-main">
-            <div class="fin-card dash-o1">
-              <div class="fin-card-head">
-                <div><div class="fin-title kh">🩺 អ្នកជំងឺថ្ងៃនេះ <span class="fin-count mono" id="queueTodayCount" style="background:var(--primary-softer); color:var(--primary-dark);">0</span></div>
-                <div class="fin-sub">Today's patient queue · procedures</div></div>
-              </div>
-              <div class="dash-list" id="queueTodayBody"></div>
-            </div>
-
-            <div class="dash-split dash-o3">
-              <div class="fin-card">
-                <div class="fin-card-head">
-                  <div><div class="fin-title kh">📅 ការណាត់ថ្ងៃនេះ <span class="fin-count mono" id="apptTodayCount" style="background:#FEF3C7; color:#92400E;">0</span></div>
-                  <div class="fin-sub">Today's appointments</div></div>
-                </div>
-                <div class="dash-list" id="apptTodayBody"></div>
-              </div>
-              <div class="fin-card">
-                <div class="fin-card-head">
-                  <div><div class="fin-title kh">⏭️ ការណាត់ ២ ថ្ងៃខាងមុខ <span class="fin-count mono" id="apptUpcomingCount" style="background:#E1EFFF; color:#0B5ED7;">0</span></div>
-                  <div class="fin-sub">Upcoming · next 2 days</div></div>
-                </div>
-                <div class="dash-list" id="apptUpcomingBody"></div>
-              </div>
-            </div>
-
-            <div class="fin-card dash-o5">
-              <div class="fin-card-head">
-                <div><div class="fin-title kh">📈 និន្នាការ <span id="dashTrendDays">១៤</span> ថ្ងៃចុងក្រោយ</div>
-                <div class="fin-sub">Patient visits &amp; revenue · last <span id="dashTrendDaysEn">14</span> days</div></div>
-                <div class="dash-legend kh"><span><i style="background:var(--primary)"></i>អ្នកជំងឺ</span><span><i style="background:#0E9F6E; height:3px;"></i>ចំណូល ($)</span></div>
-              </div>
-              <div id="dashTrend" style="padding:12px 14px 6px;"></div>
-            </div>
+        <!-- 3) ការងារថ្ងៃនេះ -->
+        <div class="d2-title kh">🩺 ការងារថ្ងៃនេះ</div>
+        <div class="fin-card">
+          <div class="fin-card-head">
+            <div class="fin-title kh">អ្នកជំងឺថ្ងៃនេះ <span class="fin-count mono" id="queueTodayCount">0</span></div>
           </div>
-
-          <div class="dash-side">
-            <div class="fin-card dash-o2">
-              <div class="fin-card-head"><div><div class="fin-title kh">🔔 ការងារត្រូវយកចិត្តទុកដាក់</div><div class="fin-sub">Action items · alerts</div></div></div>
-              <div id="dashAlerts"></div>
+          <div class="dash-list dash-list-wide" id="queueTodayBody"></div>
+        </div>
+        <div class="d2-trio d2-trio-work">
+          <div class="fin-card">
+            <div class="fin-card-head">
+              <div class="fin-title kh">📅 ការណាត់ថ្ងៃនេះ <span class="fin-count mono" id="apptTodayCount">0</span></div>
             </div>
-            <div class="fin-card dash-o4">
-              <div class="fin-card-head"><div><div class="fin-title kh">💰 ហិរញ្ញវត្ថុខែនេះ</div><div class="fin-sub">Finance · month to date</div></div></div>
-              <div id="dashFinance" style="padding:14px 16px;"></div>
-            </div>
-            <div class="fin-card dash-o6">
-              <div class="fin-card-head"><div><div class="fin-title kh">🦷 ការព្យាបាលច្រើនជាងគេ</div><div class="fin-sub">Top procedures · this month</div></div></div>
-              <div id="dashTopTx" style="padding:12px 16px;"></div>
-            </div>
-            <div class="fin-card dash-o7">
-              <div class="fin-card-head"><div><div class="fin-title kh">👥 អ្នកជំងឺខែនេះ</div><div class="fin-sub">Patient mix · this month</div></div></div>
-              <div id="dashDemo" style="padding:12px 16px;"></div>
-            </div>
+            <div class="dash-list" id="apptTodayBody"></div>
           </div>
+          <div class="fin-card">
+            <div class="fin-card-head">
+              <div class="fin-title kh">⏭️ ការណាត់ ២ ថ្ងៃខាងមុខ <span class="fin-count mono" id="apptUpcomingCount">0</span></div>
+            </div>
+            <div class="dash-list" id="apptUpcomingBody"></div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-card-head">
+              <div class="fin-title kh">🔔 ត្រូវយកចិត្តទុកដាក់</div>
+            </div>
+            <div class="dash-list" id="dashAlerts" style="padding:0 0 6px;"></div>
+          </div>
+        </div>
+
+        <!-- 4) ទិដ្ឋភាពខែនេះ -->
+        <div class="d2-title kh">📈 ទិដ្ឋភាពខែនេះ</div>
+        <div class="d2-trio">
+          <div class="fin-card">
+            <div class="fin-card-head"><div class="fin-title kh">💰 ហិរញ្ញវត្ថុ</div></div>
+            <div id="dashFinance" style="padding:16px 18px;"></div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-card-head"><div class="fin-title kh">🦷 ការព្យាបាលច្រើនជាងគេ</div></div>
+            <div id="dashTopTx" style="padding:16px 18px;"></div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-card-head"><div class="fin-title kh">👥 អ្នកជំងឺ</div></div>
+            <div id="dashDemo" style="padding:16px 18px;"></div>
+          </div>
+        </div>
+        <div class="fin-card">
+          <div class="fin-card-head">
+            <div class="fin-title kh">និន្នាការ <span id="dashTrendDays">១៤</span> ថ្ងៃចុងក្រោយ</div>
+            <span style="display:none;" id="dashTrendDaysEn">14</span>
+            <div class="dash-legend kh"><span><i style="background:var(--primary)"></i>អ្នកជំងឺ</span><span><i style="background:#0E9F6E; height:3px;"></i>ចំណូល ($)</span></div>
+          </div>
+          <div id="dashTrend" style="padding:14px 18px 8px;"></div>
         </div>
       </section>
 
@@ -5031,10 +5143,45 @@ function dashGo(view, after){
   const go = () => { showView(view); if(after) after(); };
   if(view === 'income-expense') requestClinicPin(go); else go();
 }
+/* ---------- អក្សររត់៖ ទិន្នន័យតាម Treatment · ខែនេះ ធៀបខែមុន ---------- */
+let dashTickerSig = '';
+function renderDashTicker(greet){
+  const track = document.getElementById('dashTicker');
+  if(!track) return;
+  const now = new Date();
+  const cy = now.getFullYear(), cm = now.getMonth();
+  const py = cm === 0 ? cy - 1 : cy, pm = cm === 0 ? 11 : cm - 1;
+  const cur = {}, prev = {};
+  allRecords.forEach(r => {
+    const d = parseAnyDate(r.timestamp); if(!d) return;
+    const t = cleanStr(r.treatment); if(!t || t === '—') return;
+    if(d.getFullYear() === cy && d.getMonth() === cm) cur[t] = (cur[t] || 0) + 1;
+    else if(d.getFullYear() === py && d.getMonth() === pm) prev[t] = (prev[t] || 0) + 1;
+  });
+  const names = [...new Set([...Object.keys(cur), ...Object.keys(prev)])]
+    .sort((a, b) => ((cur[b] || 0) - (cur[a] || 0)) || ((prev[b] || 0) - (prev[a] || 0)));
+  const items = [`<span class="tk-greet">${escHTML(greet)} 👋 · សូមស្វាគមន៍មកកាន់គ្លីនិក</span>`];
+  if(names.length){
+    items.push(`<span class="tk-head">📊 Treatment · ខែនេះ ធៀបខែមុន</span>`);
+    names.forEach(n => {
+      const c = cur[n] || 0, p = prev[n] || 0, d = c - p;
+      const arrow = d > 0 ? `<b class="tk-up">▲${d}</b>` : d < 0 ? `<b class="tk-dn">▼${Math.abs(d)}</b>` : `<b class="tk-eq">＝</b>`;
+      items.push(`<span class="tk-i">🦷 ${escHTML(n)} <b>${c}</b> <small>(ខែមុន ${p})</small> ${arrow}</span>`);
+    });
+  }
+  const html = items.join('<span class="tk-sep">•</span>');
+  if(html === dashTickerSig) return;                 // មិនផ្លាស់ប្តូរ → កុំចាប់ផ្តើមរត់ឡើងវិញ
+  dashTickerSig = html;
+  const unit = `<span class="tk-unit">${html}<span class="tk-sep">•</span></span>`;
+  track.innerHTML = unit + unit;                     // ស្ទួន ដើម្បីរត់បន្តគ្នាមិនដាច់
+  const len = track.textContent.length / 2;
+  track.style.animationDuration = Math.max(22, Math.round(len / 7)) + 's';
+}
+
 function dashTick(){
   const now = new Date(), h = now.getHours();
   const g = h < 12 ? 'អរុណសួស្តី' : h < 17 ? 'ទិវាសួស្តី' : 'សាយណ្ហសួស្តី';
-  const ge = document.getElementById('dashGreet'); if(ge) ge.textContent = `${g} 👋 · សូមស្វាគមន៍មកកាន់គ្លីនិក`;
+  try{ renderDashTicker(g); }catch(e){ console.warn('ticker', e); }
   const ce = document.getElementById('dashClock');
   if(ce){ let hr = h % 12 || 12; ce.textContent = `${String(hr).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} ${h >= 12 ? 'PM' : 'AM'}`; }
 }
