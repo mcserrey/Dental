@@ -926,7 +926,7 @@
   .fin-head-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .fin-head-actions .tb-search{ min-width:220px; }
   #priceListOverlay{ z-index:106 !important; }      /* above Settings (102), Clinical Config (104), CPD (105) */
-  #invPayEditOverlay, #stepPricePickOverlay{ z-index:115 !important; }
+  #invPayEditOverlay, #stepPricePickOverlay, #receiptRxPickOverlay{ z-index:115 !important; }
   .pl-row{ display:flex; align-items:center; gap:6px; padding:6px 4px; border-bottom:1px dashed var(--border); border-radius:8px; }
   .pl-row.pl-over{ background:var(--primary-softer); outline:2px dashed var(--primary); }
   .pl-grip{ cursor:grab; color:var(--ink-dim); font-size:16px; padding:0 4px; user-select:none; touch-action:none; }
@@ -2896,7 +2896,7 @@
 
 <div class="overlay hidden" id="printOverlay">
   <div class="modal">
-    <div class="modal-head"><h2 class="kh" id="printOverlayTitle">កំណត់ត្រា · Print Record</h2><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span id="s2sTools" style="display:none;align-items:center;gap:6px;"><input type="date" id="s2sNextAppt" title="ថ្ងៃណាត់ជួបបន្ត / Next appointment" style="font-size:12px;padding:4px 6px;border:1px solid var(--border-soft);border-radius:8px;background:var(--surface-2);color:var(--ink);max-width:128px;"><button type="button" class="btn btn-primary btn-sm" id="send2SaveBtn">📤 Send2Save</button></span><button class="x" id="closePrint">✕</button></div></div>
+    <div class="modal-head"><h2 class="kh" id="printOverlayTitle">កំណត់ត្រា · Print Record</h2><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span id="s2sTools" style="display:none;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;"><button type="button" class="btn btn-outline btn-sm kh" id="s2sRxBtn">💊 វេជ្ជបញ្ជា</button><input type="date" id="s2sNextAppt" title="ថ្ងៃណាត់ជួបបន្ត / Next appointment" style="font-size:12px;padding:4px 6px;border:1px solid var(--border-soft);border-radius:8px;background:var(--surface-2);color:var(--ink);max-width:128px;"><button type="button" class="btn btn-primary btn-sm" id="send2SaveBtn">📤 Send2Save</button></span><button class="x" id="closePrint">✕</button></div></div>
     <div class="modal-body">
       <div id="printArea"></div>
       <div class="modal-actions" style="margin-top:16px;">
@@ -3241,6 +3241,24 @@
           <button type="button" class="btn btn-primary btn-sm kh" id="addProcStepBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
         <div id="procStepLabHint" class="kh" style="display:none; margin-top:8px; font-size:12px; color:#5B21B6; background:#EDE9FE; padding:6px 10px; border-radius:8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ជ្រើសវេជ្ជបញ្ជា ដើម្បី Print ជាមួយ Receipt -->
+<div class="overlay hidden" id="receiptRxPickOverlay">
+  <div class="modal narrow" style="max-width: 460px;">
+    <div class="modal-head">
+      <h2 class="kh">💊 ជ្រើសវេជ្ជបញ្ជា · Select Rx</h2>
+      <button class="x" id="closeReceiptRxPick">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="kh" style="font-size:12px; color:var(--ink-dim); margin-bottom:8px;">វេជ្ជបញ្ជាដែលបានជ្រើស នឹង Print ក្រោម QR Code ក្នុង Receipt តែមួយ</div>
+      <div id="receiptRxPickList" style="max-height:340px; overflow-y:auto; border:1px solid var(--border); border-radius:10px;"></div>
+      <div class="modal-actions" style="margin-top:14px;">
+        <button type="button" class="btn btn-outline kh" id="receiptRxClear">សម្អាត</button>
+        <button type="button" class="btn btn-primary kh" id="receiptRxApply" style="flex:1; justify-content:center;">✓ យក</button>
       </div>
     </div>
   </div>
@@ -5821,6 +5839,7 @@ function buildReceiptHTML(record, sizeClass) {
       <div class="thermal-row"><span class="lbl">Balance:</span><span class="val mono">${record.payBalance || '$0.00'}</span></div>
       ${nextApptRowHTML()}
       ${receiptQrHTML()}
+      ${receiptRxHTML()}
       <div class="thermal-footer kh">សូមអរគុណ! Thank you!</div>
     </div>
   `;
@@ -5880,12 +5899,13 @@ function buildCombinedReceiptHTML(patientName, records, sizeClass) {
       <div class="thermal-row"><span class="lbl">Balance:</span><span class="val mono">$${grandBal.toFixed(2)}</span></div>
       ${nextApptRowHTML()}
       ${receiptQrHTML()}
+      ${receiptRxHTML()}
       <div class="thermal-footer kh">សូមអរគុណ! Thank you!</div>
     </div>
   `;
 }
 
-function buildRxHTML(record, sizeClass) {
+function rxMedTableHTML(record) {
   const presItems = parsePrescriptionString(record.medication);
   let medHtml = '';
   if(presItems.length > 0) {
@@ -5903,7 +5923,11 @@ function buildRxHTML(record, sizeClass) {
   } else {
     medHtml = `<div style="text-align:center; padding: 10px 0;">គ្មានវេជ្ជបញ្ជាទេ</div>`;
   }
+  return medHtml;
+}
 
+function buildRxHTML(record, sizeClass) {
+  const medHtml = rxMedTableHTML(record);
   return `
     <div class="thermal-receipt ${sizeClass}">
       ${invoiceHeaderHTML()}
@@ -5915,6 +5939,7 @@ function buildRxHTML(record, sizeClass) {
       <div style="font-size:1.2em; font-weight:bold; margin-bottom:4px;">Rx:</div>
       ${medHtml}
       <div class="thermal-divider"></div>
+      ${nextApptRowHTML()}
       <div class="thermal-footer kh">សូមពិសារទឹកអោយបានច្រើន!</div>
     </div>
   `;
@@ -9474,7 +9499,8 @@ function handleThermalPrint(size) {
   
   document.getElementById('dynamicPageStyle').textContent = pageCSS;
   
-  if(['receipt','receipt-combined','payment-receipt'].includes(printContext.type)){
+  receiptRxKeys = [];
+  if(['receipt','receipt-combined','payment-receipt','rx'].includes(printContext.type)){
     receiptNextAppt = s2sDefaultNextAppt(printContext);
     document.getElementById('s2sNextAppt').value = receiptNextAppt;
   } else { receiptNextAppt = ''; }
@@ -9499,7 +9525,7 @@ function handleThermalPrint(size) {
   }
   
   document.getElementById('printArea').innerHTML = html;
-  s2sSetContext(['receipt','receipt-combined','payment-receipt'].includes(printContext.type) ? printContext : null);
+  s2sSetContext(['receipt','receipt-combined','payment-receipt','rx'].includes(printContext.type) ? printContext : null);
   document.getElementById('printOverlay').classList.remove('hidden');
 }
 
@@ -9681,7 +9707,11 @@ function s2sSetContext(ctx){
   const b = document.getElementById('send2SaveBtn');
   if(!b) return;
   document.getElementById('s2sTools').style.display = ctx ? 'flex' : 'none';
-  if(!ctx) receiptNextAppt = '';
+  const isRx = !!ctx && ctx.type === 'rx';          // វេជ្ជបញ្ជាតែឯង៖ មានតែប្រអប់ថ្ងៃណាត់
+  b.style.display = isRx ? 'none' : '';
+  document.getElementById('s2sRxBtn').style.display = isRx ? 'none' : '';
+  if(!ctx){ receiptNextAppt = ''; receiptRxKeys = []; }
+  s2sRxLabel();
   b.disabled = false;
   b.textContent = '📤 Send2Save';
 }
@@ -9704,7 +9734,7 @@ function nextApptRowHTML(){
 
 function s2sDefaultNextAppt(ctx){
   try{
-    const name = ctx.type === 'receipt' ? ctx.record.name : ctx.patientName;
+    const name = ctx.record ? ctx.record.name : ctx.patientName;
     const recs = getPatientRecords(name) || [];
     const now = new Date();
     let d = patientHasSteps(recs) ? patientNextApptDate(recs, now) : null;
@@ -9720,9 +9750,7 @@ function s2sDefaultNextAppt(ctx){
 
 document.getElementById('s2sNextAppt').addEventListener('change', function(){
   receiptNextAppt = this.value || '';
-  const ctx = send2SaveCtx;
-  if(!ctx) return;
-  document.getElementById('printArea').innerHTML = buildReceiptForCtx(ctx, s2sSizeClass);
+  s2sRerender();
 });
 
 // លាក់ប៊ូតុង Send2Save ពេលបិទ Print window គ្រប់ទម្រង់
@@ -11165,12 +11193,103 @@ function buildPaymentReceiptHTML(ctx, sizeClass){
       <div class="thermal-row"><span class="lbl">Balance:</span><span class="val mono">$${pay.balanceNow.toFixed(2)}</span></div>
       ${nextApptRowHTML()}
       ${receiptQrHTML()}
+      ${receiptRxHTML()}
       <div class="thermal-footer kh">សូមអរគុណ! Thank you!</div>
     </div>`;
 }
 
+/* ---------- ជ្រើសវេជ្ជបញ្ជា Print ជាមួយ Receipt (ក្រោម QR Code) ---------- */
+let receiptRxKeys = [];   // ថ្ងៃចេញថ្នាំ (yyyy-mm-dd) ដែលបានជ្រើស
+
+function s2sRerender(){
+  const ctx = send2SaveCtx;
+  if(!ctx) return;
+  document.getElementById('printArea').innerHTML = buildReceiptForCtx(ctx, s2sSizeClass);
+}
+function s2sRxLabel(){
+  const b = document.getElementById('s2sRxBtn');
+  if(b) b.textContent = '💊 វេជ្ជបញ្ជា' + (receiptRxKeys.length ? ' (' + receiptRxKeys.length + ')' : '');
+}
+function rxCtxPatientName(ctx){ return ctx.record ? ctx.record.name : ctx.patientName; }
+
+// ដាក់ថ្នាំជាក្រុមតាមថ្ងៃចេញថ្នាំ (ដូចបញ្ជី Card វេជ្ជបញ្ជា)
+function rxGroupsOf(records){
+  const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const groups = new Map();
+  [...records].filter(r => cleanStr(r.medication))
+    .sort((a,b) => (parseAnyDate(b.timestamp)||0) - (parseAnyDate(a.timestamp)||0))
+    .forEach(r => {
+      const med = String(r.medication);
+      parsePrescriptionString(r.medication).forEach(it => {
+        const hasOwnDate = med.includes(it.date) || med.includes(it.date.replace(/-/g,'/'));
+        const rd = parseAnyDate(r.timestamp);
+        const k = (hasOwnDate || !rd) ? it.date : ymd(rd);
+        if(!groups.has(k)) groups.set(k, []);
+        groups.get(k).push({ record: r, item: it });
+      });
+    });
+  const keys = [...groups.keys()].sort((a,b) => (parseAnyDate(b)||0) - (parseAnyDate(a)||0));
+  return { groups, keys };
+}
+function rxGroupRecord(list, k){
+  const med = list.map(({item}) => {
+    const t = [item.m ? 'ព្រឹក' : '', item.n ? 'ថ្ងៃ' : '', item.e ? 'ល្ងាច' : ''].filter(Boolean).join('+');
+    return `${k}: ${item.name} [${t}](${item.qty || ''})`;
+  }).join(';');
+  return Object.assign({}, list[0].record, { medication: med, timestamp: k.replace(/-/g, '/') + ' 00:00:00' });
+}
+
+function receiptRxHTML(){
+  if(!receiptRxKeys.length || !printContext) return '';
+  const name = rxCtxPatientName(printContext);
+  const { groups, keys } = rxGroupsOf(getPatientRecords(name) || []);
+  return keys.filter(k => receiptRxKeys.includes(k)).map(k => {
+    const d = parseAnyDate(k);
+    return `
+      <div class="thermal-divider"></div>
+      <div style="font-weight:bold; font-size:1.1em; margin-bottom:4px;">Rx / វេជ្ជបញ្ជា <span class="mono" style="font-weight:600;">${d ? fmtDMY(d) : escHTML(k)}</span></div>
+      ${rxMedTableHTML(rxGroupRecord(groups.get(k), k))}`;
+  }).join('');
+}
+
+function openReceiptRxPicker(){
+  const ctx = send2SaveCtx; if(!ctx) return;
+  const { groups, keys } = rxGroupsOf(getPatientRecords(rxCtxPatientName(ctx)) || []);
+  const list = document.getElementById('receiptRxPickList');
+  list.innerHTML = keys.length ? keys.map(k => {
+    const arr = groups.get(k);
+    const d = parseAnyDate(k);
+    const tx = [...new Set(arr.map(x => cleanStr(x.record.treatment) || cleanStr(x.record.diagnosis)).filter(Boolean))].join(', ');
+    return `
+      <label style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px dashed var(--border); cursor:pointer;">
+        <input type="checkbox" class="rxpick-ck" value="${escHTML(k)}" ${receiptRxKeys.includes(k) ? 'checked' : ''} style="width:18px; height:18px; flex:none;">
+        <span style="flex:1; min-width:0;">
+          <span class="mono" style="font-weight:800; color:var(--primary-dark);">📅 ${d ? fmtDMY(d) : escHTML(k)}</span>
+          <span class="kh" style="display:block; font-size:12.5px; color:var(--ink); word-break:break-word;">${escHTML(tx) || '—'}</span>
+        </span>
+        <span class="kh" style="font-size:11.5px; color:var(--ink-dim); flex:none;">${arr.length} ថ្នាំ</span>
+      </label>`;
+  }).join('') : '<div class="kh" style="text-align:center; color:var(--ink-dim); padding:22px;">អ្នកជំងឺនេះមិនទាន់មានវេជ្ជបញ្ជាទេ</div>';
+  document.getElementById('receiptRxPickOverlay').classList.remove('hidden');
+}
+function closeReceiptRxPicker(){ document.getElementById('receiptRxPickOverlay').classList.add('hidden'); }
+
+document.getElementById('s2sRxBtn').addEventListener('click', openReceiptRxPicker);
+document.getElementById('closeReceiptRxPick').addEventListener('click', closeReceiptRxPicker);
+document.getElementById('receiptRxPickOverlay').addEventListener('click', e => { if(e.target.id === 'receiptRxPickOverlay') closeReceiptRxPicker(); });
+document.getElementById('receiptRxClear').addEventListener('click', () => {
+  document.querySelectorAll('#receiptRxPickList .rxpick-ck').forEach(c => { c.checked = false; });
+});
+document.getElementById('receiptRxApply').addEventListener('click', () => {
+  receiptRxKeys = [...document.querySelectorAll('#receiptRxPickList .rxpick-ck:checked')].map(c => c.value);
+  s2sRxLabel();
+  closeReceiptRxPicker();
+  s2sRerender();
+});
+
 function buildReceiptForCtx(ctx, size){
   if(ctx.type === 'receipt') return buildReceiptHTML(ctx.record, size);
+  if(ctx.type === 'rx') return buildRxHTML(ctx.record, size);
   if(ctx.type === 'payment-receipt') return buildPaymentReceiptHTML(ctx, size);
   return buildCombinedReceiptHTML(ctx.patientName, ctx.records, size);
 }
