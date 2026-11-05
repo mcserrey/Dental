@@ -2079,6 +2079,24 @@
     #view-dashboard .d2-ticker{ overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
     #view-dashboard .d2-ticker-track{ animation:none; }
   }
+
+  /* ===== សង្ខេបថ្ងៃនេះ: Card តូចៗ ===== */
+  #view-dashboard .d2-kpis{ grid-template-columns:repeat(6, minmax(0,1fr)); gap:10px; margin-bottom:20px; }
+  #view-dashboard .d2-kpis .fin-kpi{ padding:10px 12px; border-radius:12px; }
+  #view-dashboard .d2-kpis .k-label{ font-size:12px; gap:6px; line-height:1.3; }
+  #view-dashboard .d2-kpis .k-label .k-ico{ width:22px; height:22px; font-size:12px; border-radius:7px; }
+  #view-dashboard .d2-kpis .k-val{ font-size:22px; margin-top:4px; line-height:1.15; }
+  #view-dashboard .d2-kpis .k-foot{ margin-top:6px; padding-top:6px; font-size:11px; gap:4px; }
+  #view-dashboard .d2-kpis .fin-delta{ font-size:10.5px; padding:0 6px; }
+  #view-dashboard .d2-title{ margin:2px 2px 8px; font-size:15.5px; }
+  #view-dashboard .d2-hero{ padding:16px 20px; margin-bottom:18px; }
+  @media (max-width:1100px){ #view-dashboard .d2-kpis{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
+  @media (max-width:600px){
+    #view-dashboard .d2-kpis{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; }
+    #view-dashboard .d2-kpis .fin-kpi{ padding:9px 10px; }
+    #view-dashboard .d2-kpis .k-val{ font-size:20px; }
+    #view-dashboard .d2-kpis .k-label .k-ico{ display:inline-flex; }
+  }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -5537,25 +5555,16 @@ function renderListBase(){
     return; 
   }
 
-  const isToday = (p) => {
-    if(p.lastVisitVal){
-      const d = parseAnyDate(p.lastVisitVal);
-      if(d && d >= startOfToday && d < startOfTomorrow) return true;
-    }
-    return patientHasActivityBetween(p, startOfToday, startOfTomorrow);
+  // បញ្ជីតែមួយ (គ្មានក្រុម "ថ្ងៃនេះ / អ្នកជំងឺផ្សេងទៀត") តម្រៀបតាមថ្ងៃ+ម៉ោង នៃ Step ចុងក្រោយបំផុត
+  const nowTs = new Date();
+  const sortKey = p => {
+    const done = patientLastVisitDate(p.list, nowTs);            // Step ចុងក្រោយដែលបានធ្វើរួច (មិនរាប់ការណាត់អនាគត)
+    if(done) return done.getTime();
+    const fb = parseAnyDate(p.latest.doingDateTime || p.latest.timestamp);
+    return fb ? fb.getTime() : 0;
   };
-  const todayPatients = patients.filter(isToday);
-  const otherPatients = patients.filter(p => !isToday(p));
-
-  let html = '';
-  if(todayPatients.length > 0){
-    html += `<div class="section-title" style="margin:0 0 10px;"><h2 class="kh" style="font-size:14px;">ថ្ងៃនេះ · Today <span class="mono" style="font-size:11px;color:var(--ink-dim);font-weight:400;">(${todayPatients.length})</span></h2></div>`;
-    html += todayPatients.map(p => buildPatientRowHTML(p, startOfToday)).join('');
-    if(otherPatients.length > 0){
-      html += `<div class="section-title" style="margin:18px 0 10px;"><h2 class="kh" style="font-size:14px;">អ្នកជំងឺផ្សេងទៀត · Other Patients</h2></div>`;
-    }
-  }
-  html += otherPatients.map(p => buildPatientRowHTML(p, startOfToday)).join('');
+  patients.sort((a, b) => sortKey(b) - sortKey(a));
+  const html = patients.map(p => buildPatientRowHTML(p, startOfToday)).join('');
 
   list.innerHTML = html;
 
