@@ -2097,6 +2097,30 @@
     #view-dashboard .d2-kpis .k-val{ font-size:20px; }
     #view-dashboard .d2-kpis .k-label .k-ico{ display:inline-flex; }
   }
+
+  /* ===== អក្សររត់ ងាយមើល: Card តូចៗ ក្នុងមួយ Treatment ===== */
+  #view-dashboard .d2-ticker-track{ font-size:15px; font-weight:600; line-height:1.4; align-items:center; }
+  #view-dashboard .tk-unit{ gap:12px; }
+  #view-dashboard .tk-gap{ display:inline-block; width:56px; }
+  #view-dashboard .tk-greet{ font-size:19px; font-weight:800; padding-right:10px; }
+  #view-dashboard .tk-head{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:800; color:#FFF3C4; background:rgba(0,0,0,.18); padding:8px 14px; border-radius:999px; }
+  #view-dashboard .tk-head small{ font-weight:500; opacity:.85; }
+  #view-dashboard .tk-card{ display:inline-flex; align-items:center; gap:14px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28); padding:7px 14px; border-radius:12px; }
+  #view-dashboard .tk-name{ font-size:15px; font-weight:800; }
+  #view-dashboard .tk-num{ display:inline-flex; align-items:baseline; gap:5px; }
+  #view-dashboard .tk-num i{ font-style:normal; font-size:11.5px; font-weight:500; opacity:.8; }
+  #view-dashboard .tk-num b{ font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:700; line-height:1; }
+  #view-dashboard .tk-num.tk-old b{ font-size:15px; opacity:.85; }
+  #view-dashboard .tk-d{ font-size:12.5px; font-weight:800; padding:2px 9px; border-radius:999px; }
+  #view-dashboard .tk-d.tk-up{ background:#DFF8DF; color:#17692B; margin:0; }
+  #view-dashboard .tk-d.tk-dn{ background:#FFE0DC; color:#A6271B; margin:0; }
+  #view-dashboard .tk-d.tk-eq{ background:rgba(255,255,255,.22); color:#fff; opacity:1; margin:0; }
+  @media (max-width:760px){
+    #view-dashboard .tk-greet{ font-size:16.5px; }
+    #view-dashboard .tk-card{ gap:10px; padding:6px 11px; }
+    #view-dashboard .tk-name{ font-size:14px; }
+    #view-dashboard .tk-num b{ font-size:17px; }
+  }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -2192,11 +2216,6 @@
 
       <div class="sb-section">
         <div class="sb-group kh">គ្រប់គ្រង</div>
-        <button type="button" class="sb-item" data-nav="income-expense" title="ហិរញ្ញវត្ថុ · Billing &amp; Finance">
-          <span class="sb-ico"><svg viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></span>
-          <span class="sb-label"><span class="sb-kh">ហិរញ្ញវត្ថុ</span><span class="sb-en">Billing &amp; Finance</span></span>
-          <span class="sb-badge coral" id="nbInvoices" title="អ្នកជំងឺមិនទាន់បង់ប្រាក់ · Unpaid"></span>
-        </button>
         <button type="button" class="sb-item" data-nav="reports" title="របាយការណ៍ · Reports">
           <span class="sb-ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
           <span class="sb-label"><span class="sb-kh">របាយការណ៍</span><span class="sb-en">Reports</span></span>
@@ -5180,20 +5199,21 @@ function renderDashTicker(greet){
     .sort((a, b) => ((cur[b] || 0) - (cur[a] || 0)) || ((prev[b] || 0) - (prev[a] || 0)));
   const items = [`<span class="tk-greet">${escHTML(greet)} 👋 · សូមស្វាគមន៍មកកាន់គ្លីនិក</span>`];
   if(names.length){
-    items.push(`<span class="tk-head">📊 Treatment · ខែនេះ ធៀបខែមុន</span>`);
-    names.forEach(n => {
+    const MN = ['មករា','កុម្ភៈ','មីនា','មេសា','ឧសភា','មិថុនា','កក្កដា','សីហា','កញ្ញា','តុលា','វិច្ឆិកា','ធ្នូ'];
+    items.push(`<span class="tk-head">📊 Treatment · ${MN[cm]} <small>ធៀប</small> ${MN[pm]}</span>`);
+    names.slice(0, 12).forEach(n => {
       const c = cur[n] || 0, p = prev[n] || 0, d = c - p;
-      const arrow = d > 0 ? `<b class="tk-up">▲${d}</b>` : d < 0 ? `<b class="tk-dn">▼${Math.abs(d)}</b>` : `<b class="tk-eq">＝</b>`;
-      items.push(`<span class="tk-i">🦷 ${escHTML(n)} <b>${c}</b> <small>(ខែមុន ${p})</small> ${arrow}</span>`);
+      const delta = d > 0 ? `<span class="tk-d tk-up">▲ +${d}</span>` : d < 0 ? `<span class="tk-d tk-dn">▼ −${Math.abs(d)}</span>` : `<span class="tk-d tk-eq">＝ ដូចគ្នា</span>`;
+      items.push(`<span class="tk-card"><span class="tk-name">🦷 ${escHTML(n)}</span><span class="tk-num"><i>ខែនេះ</i><b>${c}</b></span><span class="tk-num tk-old"><i>ខែមុន</i><b>${p}</b></span>${delta}</span>`);
     });
   }
-  const html = items.join('<span class="tk-sep">•</span>');
+  const html = items.join('');
   if(html === dashTickerSig) return;                 // មិនផ្លាស់ប្តូរ → កុំចាប់ផ្តើមរត់ឡើងវិញ
   dashTickerSig = html;
-  const unit = `<span class="tk-unit">${html}<span class="tk-sep">•</span></span>`;
+  const unit = `<span class="tk-unit">${html}<span class="tk-gap"></span></span>`;
   track.innerHTML = unit + unit;                     // ស្ទួន ដើម្បីរត់បន្តគ្នាមិនដាច់
   const len = track.textContent.length / 2;
-  track.style.animationDuration = Math.max(22, Math.round(len / 7)) + 's';
+  track.style.animationDuration = Math.max(45, Math.round(len / 4.2)) + 's';
 }
 
 function dashTick(){
