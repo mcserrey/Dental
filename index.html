@@ -600,7 +600,7 @@
    ===================================================================== */
 :root{
   --sb-w:264px; --sb-w-min:76px;
-  --sb-bg:#3F8F43; /* ពណ៌ផ្ទៃ Sidebar (Green #54b754) */
+  --sb-bg:#3F8F43; /* ពណ៌ផ្ទៃ Sidebar (បៃតង · មាសជាពណ៌បន្លិច) */
   --sb-ink:#FFFFFF; /* ពណ៌អក្សរធម្មតា */
   --sb-dim:#DCEFDD; /* ពណ៌អក្សររាងព្រាល */
   --sb-line:rgba(255,255,255,.2); 
@@ -638,7 +638,7 @@
   .sb-item[aria-current="page"]::before{
     content:""; position:absolute; left:-10px; top:9px; bottom:9px; width:3px; border-radius:0 3px 3px 0; background:var(--amber);
   }
-  .sb-ico{ width:20px; height:20px; flex:none; display:grid; place-items:center; color:#EBC94B; }
+  .sb-ico{ width:20px; height:20px; flex:none; display:grid; place-items:center; color:#F2D675; }
   .sb-item[aria-current="page"] .sb-ico{ color:var(--amber); }
   .sb-ico svg{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
   .sb-label{ display:flex; flex-direction:column; line-height:1.3; min-width:0; flex:1; }
@@ -2121,6 +2121,19 @@
     #view-dashboard .tk-name{ font-size:14px; }
     #view-dashboard .tk-num b{ font-size:17px; }
   }
+
+  /* ===== ពណ៌មាស រាយជាចំណុចបន្លិច (ពណ៌មេនៅបៃតង) ===== */
+  :root{ --gold:#E6C14A; --gold-soft:#F6E7A8; }
+  .sb-brand{ border-bottom:1px solid rgba(230,193,74,.6); }
+  .sb-item[aria-current="page"]{ box-shadow: inset 4px 0 0 var(--gold); }
+  .sb-item:hover .sb-ico{ color:var(--gold); }
+  .topbar{ border-bottom:2px solid var(--gold-soft); }
+  #view-dashboard .d2-hero{ border-bottom:4px solid var(--gold); }
+  #view-dashboard .tk-head{ color:var(--gold); }
+  #view-dashboard .tk-card{ border-color:rgba(230,193,74,.55); }
+  #view-dashboard .tk-num:not(.tk-old) b{ color:#FFE9A0; }
+  #view-dashboard .d2-title::before{ content:''; width:4px; height:18px; border-radius:2px; background:var(--gold); align-self:center; }
+  #view-dashboard .fin-card-head{ border-bottom:2px solid var(--gold-soft); }
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -2261,8 +2274,6 @@
           </div>
           <div class="dash-quick">
             <button type="button" class="dq kh" data-dq="appointments">📅 ការណាត់</button>
-            <button type="button" class="dq kh" data-dq="labo">🧪 Dental Lab</button>
-            <button type="button" class="dq kh" data-dq="reports">📊 របាយការណ៍</button>
           </div>
         </div>
 
@@ -5295,7 +5306,7 @@ function renderDashOverview(){
     monthRecs.forEach(r => { const t = cleanStr(r.treatment); if(t && t !== '—') cnt[t] = (cnt[t] || 0) + 1; });
     const top = Object.entries(cnt).sort((a,b) => b[1] - a[1]).slice(0, 6);
     const max = top.length ? top[0][1] : 1;
-    const colors = ['#54b754','#E0B424','#7C3AED','#D97706','#0E9F6E','#E4574C'];
+    const colors = ['#54b754','#4A7FB5','#7C3AED','#D97706','#0E9F6E','#E4574C'];
     txEl.innerHTML = top.length ? top.map(([name, n], i) => `
       <div class="dash-bar-row"><div class="bl kh"><span title="${escHTML(name)}">${escHTML(name)}</span><b>${n}</b></div>
       <div class="dash-meter" style="margin:0; height:7px;"><i style="width:${Math.round(n / max * 100)}%; background:${colors[i]};"></i></div></div>`).join('')
@@ -5322,8 +5333,8 @@ function renderDashOverview(){
         <div><div class="ml kh">ចាស់ · Returning</div><div class="mv" style="color:var(--primary-dark);">${Math.max(0, total - newP)}</div></div>
         <div><div class="ml kh">កុមារ ≤15</div><div class="mv" style="color:#D97706;">${kids}</div></div>
       </div>
-      <div class="kh" style="display:flex; justify-content:space-between; font-size:11.5px; margin:12px 0 4px;"><span style="color:#C99A00;">♂ ប្រុស ${male} (${mPct}%)</span><span style="color:#E4574C;">♀ ស្រី ${female} (${fPct}%)</span></div>
-      <div class="dash-meter" style="display:flex; margin:0;"><i style="width:${mPct}%; background:#E0B424; border-radius:0;"></i><i style="width:${fPct}%; background:#E4574C; border-radius:0;"></i></div>`;
+      <div class="kh" style="display:flex; justify-content:space-between; font-size:11.5px; margin:12px 0 4px;"><span style="color:#3F6E9C;">♂ ប្រុស ${male} (${mPct}%)</span><span style="color:#E4574C;">♀ ស្រី ${female} (${fPct}%)</span></div>
+      <div class="dash-meter" style="display:flex; margin:0;"><i style="width:${mPct}%; background:#4A7FB5; border-radius:0;"></i><i style="width:${fPct}%; background:#E4574C; border-radius:0;"></i></div>`;
   }
 
   // ---- 14-day trend (bars = patients, line = revenue)
