@@ -502,6 +502,14 @@
   .detail-item .v{font-size:13.5px;color:var(--ink);margin-top:2px;}
 
   /* Tab styles inside settings pop up */
+  optgroup{color:#1d4ed8;font-weight:800;font-style:normal;}
+  .pl-group .pl-name{color:#1d4ed8;font-weight:800;}
+  .cfg-grp-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+  .cfg-grp-row select,.cfg-grp-row input{flex:1 1 140px;min-width:0;}
+  .cfg-io{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;}
+  .cfg-io .btn{white-space:nowrap;padding:4px 9px;font-size:11.5px;}
+  #clinicalConfigOverlay .modal-head{gap:8px;flex-wrap:wrap;}
+  #clinicalConfigOverlay .modal-head h2{flex:1 1 220px;min-width:0;}
   .cfg-tabs{display:flex;gap:8px;border-bottom:1.5px solid var(--border);margin-bottom:14px;}
   .cfg-tab-btn{background:none;border:none;padding:8px 14px;font-size:12.5px;font-weight:700;color:var(--ink-dim);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;transition:all .15s ease;}
   .cfg-tab-btn.active{color:var(--primary-dark);border-bottom-color:var(--primary);}
@@ -3246,15 +3254,23 @@
   <div class="modal" style="max-width: 650px;">
     <div class="modal-head">
       <h2 class="kh">⚙️ ការកំណត់ Treatment, Diagnosis & Procedures</h2>
-      <button class="x" id="closeClinicalConfig">✕</button>
+      <div class="cfg-io">
+        <button type="button" class="btn btn-outline btn-sm kh" id="cfgImportBtn" title="នាំចូលពី Excel (.xlsx)">📥 Import</button>
+        <button type="button" class="btn btn-outline btn-sm kh" id="cfgExportBtn" title="ទាញចេញជា Excel (.xlsx)">📤 Export</button>
+        <button type="button" class="btn btn-outline btn-sm kh" id="cfgSyncBtn" title="Sync ជាមួយ Google Sheet">🔄 Sync</button>
+        <button class="x" id="closeClinicalConfig">✕</button>
+        <input type="file" id="cfgImportFile" accept=".xlsx,.xls,.csv" style="display:none">
+      </div>
     </div>
     <div class="modal-body">
+      <div id="cfgIoStatus" class="kh" style="display:none;font-size:12px;margin-bottom:10px;padding:8px 10px;border-radius:8px;background:var(--surface-2);color:var(--ink);line-height:1.5;"></div>
       <!-- Tabs Selector -->
       <div class="cfg-tabs">
         <button class="cfg-tab-btn active kh" data-tab="tabTreatments">💉 Treatments</button>
         <button class="cfg-tab-btn kh" data-tab="tabDiagnosis">🩺 Diagnosis</button>
         <button class="cfg-tab-btn kh" data-tab="tabProcedures">🛠 Procedures (រួមទាំងតម្លៃ $)</button>
         <button class="cfg-tab-btn kh" data-tab="tabLabPrice">🧪 Lab Price</button>
+        <button class="cfg-tab-btn kh" data-tab="tabPriceList">💲 Price List</button>
       </div>
 
       <!-- Tab 1: Treatments -->
@@ -3266,10 +3282,16 @@
           </div>
           <button type="button" class="btn btn-primary btn-sm kh" id="addTxBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
+        <div class="cfg-grp-row">
+          <select id="cfgGrpSel_tx" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
+          <input type="text" id="cfgGrpNew_tx" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
+          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_tx" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
+        </div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
             <thead>
               <tr>
+                <th style="width:60px;text-align:center;">លំដាប់</th>
                 <th>ឈ្មោះ Treatment</th>
                 <th style="width:45px;text-align:center;">លុប</th>
               </tr>
@@ -3288,10 +3310,16 @@
           </div>
           <button type="button" class="btn btn-primary btn-sm kh" id="addDiagBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
+        <div class="cfg-grp-row">
+          <select id="cfgGrpSel_dg" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
+          <input type="text" id="cfgGrpNew_dg" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
+          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_dg" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
+        </div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
             <thead>
               <tr>
+                <th style="width:60px;text-align:center;">លំដាប់</th>
                 <th>ឈ្មោះ Diagnosis (Indication)</th>
                 <th style="width:45px;text-align:center;">លុប</th>
               </tr>
@@ -3313,6 +3341,11 @@
             <input type="number" id="new_proc_price" class="mono" placeholder="25.00" step="0.5">
           </div>
           <button type="button" class="btn btn-primary btn-sm kh" id="addProcBtn" style="height:38px;">＋ បន្ថែម</button>
+        </div>
+        <div class="cfg-grp-row">
+          <select id="cfgGrpSel_pr" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
+          <input type="text" id="cfgGrpNew_pr" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
+          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_pr" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
         </div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
@@ -3343,6 +3376,11 @@
           </div>
           <button type="button" class="btn btn-primary btn-sm kh" id="addLabPriceBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
+        <div class="cfg-grp-row">
+          <select id="cfgGrpSel_lp" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
+          <input type="text" id="cfgGrpNew_lp" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
+          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_lp" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
+        </div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
             <thead>
@@ -3354,6 +3392,38 @@
               </tr>
             </thead>
             <tbody id="labPriceConfigTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 5: Price List (តារាងតម្លៃ) -->
+      <div class="cfg-tab-content" id="tabPriceList">
+        <div class="kh" style="font-size:11.5px; color:var(--ink-dim); margin-bottom:10px;">តារាងតម្លៃសេវា · Sync ទៅ Tab "PriceList" ក្នុង Google Sheet</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:flex-end;">
+          <div style="flex:2;">
+            <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">ឈ្មោះសេវា / Treatment ថ្មី</div>
+            <input type="text" id="new_pl_name" class="kh" placeholder="ឧ. សំអាត Scaling, PFM-70...">
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">តម្លៃ ($ USD)</div>
+            <input type="text" id="new_pl_price" class="mono" inputmode="decimal" placeholder="25">
+          </div>
+          <button type="button" class="btn btn-primary btn-sm kh" id="addPlCfgBtn" style="height:38px;">＋ បន្ថែម</button>
+        </div>
+        <div class="cfg-grp-row">
+          <select id="cfgGrpSel_pl" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
+          <input type="text" id="cfgGrpNew_pl" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
+          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_pl" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
+        </div>
+        <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
+          <table class="med-table" style="margin:0;width:100%;">
+            <thead><tr>
+              <th style="width:60px;text-align:center;">លំដាប់</th>
+              <th>ឈ្មោះសេវា</th>
+              <th style="width:110px;text-align:right;">តម្លៃ ($)</th>
+              <th style="width:45px;text-align:center;">លុប</th>
+            </tr></thead>
+            <tbody id="priceListCfgTbody"></tbody>
           </table>
         </div>
       </div>
@@ -3702,7 +3772,7 @@ function populateClinicalSelects() {
   // Treatment Select — locked to the fixed list (no custom entry). Editable only via Settings.
   const txSel = document.getElementById('f_treatment');
   const curTx = txSel.value;
-  let txOptions = appTreatments.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+  let txOptions = cfgOptions(appTreatments, t => `<option value="${t.name}">${t.name}</option>`);
   // Safety: if editing a record whose treatment isn't in the current list (legacy/custom value),
   // keep it selectable so re-saving doesn't silently change it.
   if(curTx && curTx !== 'custom' && !appTreatments.some(t => t.name === curTx)){
@@ -3714,13 +3784,13 @@ function populateClinicalSelects() {
   // Diagnosis Select
   const dgSel = document.getElementById('f_diagnosis');
   const curDg = dgSel.value;
-  dgSel.innerHTML = appDiagnosis.map(d => `<option value="${d}">${d}</option>`).join('') + '<option value="custom">ផ្សេងទៀត / Custom…</option>';
+  dgSel.innerHTML = cfgOptions(appDiagnosis, d => `<option value="${d}">${d}</option>`) + '<option value="custom">ផ្សេងទៀត / Custom…</option>';
   if(curDg) dgSel.value = curDg;
 
   // Procedures Select — locked to the fixed list (no custom entry). Editable only via Settings.
   const prSel = document.getElementById('f_procedure_select');
   const curPr = prSel.value;
-  let prOptions = appProcedures.map(p => `<option value="${p.name}" data-price="${p.price || ''}">${p.name}${p.price ? ` ($${p.price})` : ''}</option>`).join('');
+  let prOptions = cfgOptions(appProcedures, p => `<option value="${p.name}" data-price="${p.price || ''}">${p.name}${p.price ? ` ($${p.price})` : ''}</option>`);
   if(curPr && curPr !== 'custom' && !appProcedures.some(p => p.name === curPr)){
     prOptions += `<option value="${curPr}">${curPr} (legacy)</option>`;
   }
@@ -3805,7 +3875,7 @@ function genCode(){
   return 'ID' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 }
 
-function showConfirm(message, onConfirm){
+function showConfirm(message, onConfirm, okLabel){
   const ov = document.createElement('div');
   ov.className = 'overlay';
   ov.style.zIndex = '999';
@@ -3814,7 +3884,7 @@ function showConfirm(message, onConfirm){
         <div class="kh" style="font-size:13.5px;color:var(--ink);margin-bottom:18px;line-height:1.6;white-space:pre-line;">${message}</div>
         <div style="display:flex;gap:8px;justify-content:center;">
           <button class="btn btn-outline" id="confirmCancelBtn">បោះបង់ Cancel</button>
-          <button class="btn btn-danger" id="confirmOkBtn">លុប Delete</button>
+          <button class="btn ${okLabel ? 'btn-primary' : 'btn-danger'}" id="confirmOkBtn">${okLabel || 'លុប Delete'}</button>
         </div>
       </div>
     </div>`;
@@ -4709,6 +4779,7 @@ async function fetchFromSheet(isSilent = false){
           localStorage.setItem(PRICELIST_KEY, JSON.stringify(appPriceList));
           if(!document.getElementById('priceListOverlay').classList.contains('hidden')) renderPriceList();
         }
+        try{ if(!document.getElementById('clinicalConfigOverlay').classList.contains('hidden')) renderClinicalConfigTables(); }catch(e){}
         populateClinicalSelects();
       }
 
@@ -5859,7 +5930,7 @@ function renderTreatmentPlanHTML(patientName){
     return (b.created||'').localeCompare(a.created||'');
   });
 
-  const procOptions = appProcedures.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+  const procOptions = cfgOptions(appProcedures, p => `<option value="${p.name}">${p.name}</option>`);
 
   const rows = plans.length ? plans.map(p => `
     <tr class="emr-tr" style="${p.status==='Completed' ? 'opacity:0.55;' : ''}">
@@ -6565,7 +6636,7 @@ function openForm(editRecord, prefill){
         procSelect.value = currentDoing;
       }
     } else {
-      procSelect.value = appProcedures[0] ? appProcedures[0].name : '';
+      procSelect.value = cfgItems(appProcedures)[0] ? cfgItems(appProcedures)[0].name : '';
     }
     
     const recDT = editRecord.doingDateTime ? dateToYMDTime(editRecord.doingDateTime) : nowDateTime;
@@ -6609,9 +6680,9 @@ function openForm(editRecord, prefill){
     document.getElementById('f_phone').value = formatPhoneDisplay(prefill.phone) || '';
 
     document.getElementById('f_visitDateTime').value = nowDateTime;
-    document.getElementById('f_diagnosis').value = appDiagnosis[0] || 'custom';
+    document.getElementById('f_diagnosis').value = cfgItems(appDiagnosis)[0] || 'custom';
     
-    const defTx = appTreatments[0] || { name: '' };
+    const defTx = cfgItems(appTreatments)[0] || { name: '' };
     document.getElementById('f_treatment').value = defTx.name;
 
     document.getElementById('f_idc10').value = 'K04-ជំងឺលើបណ្តូលធ្មេញ (Pulp)';
@@ -6619,7 +6690,7 @@ function openForm(editRecord, prefill){
     document.getElementById('f_diagnosis_custom').value = '';
     document.getElementById('f_teeth').value = prefill.teeth || ''; 
     
-    const defProc = appProcedures[0] || { name: '', price: '' };
+    const defProc = cfgItems(appProcedures)[0] || { name: '', price: '' };
     procSelect.value = defProc.name || '';
 
     document.getElementById('f_doingDateTime').value = nowDateTime;
@@ -6646,15 +6717,15 @@ function openForm(editRecord, prefill){
     document.getElementById('f_phone').value = '';
 
     document.getElementById('f_visitDateTime').value = nowDateTime;
-    document.getElementById('f_diagnosis').value = appDiagnosis[0] || 'custom';
-    const defTx = appTreatments[0] || { name: '' };
+    document.getElementById('f_diagnosis').value = cfgItems(appDiagnosis)[0] || 'custom';
+    const defTx = cfgItems(appTreatments)[0] || { name: '' };
     document.getElementById('f_treatment').value = defTx.name;
     document.getElementById('f_idc10').value = 'K04-ជំងឺលើបណ្តូលធ្មេញ (Pulp)';
     document.getElementById('f_diagnosis_custom').style.display = 'none'; 
     document.getElementById('f_diagnosis_custom').value = '';
     document.getElementById('f_teeth').value = ''; 
     
-    const defProc2 = appProcedures[0] || { name: '', price: '' };
+    const defProc2 = cfgItems(appProcedures)[0] || { name: '', price: '' };
     procSelect.value = defProc2.name || '';
 
     document.getElementById('f_doingDateTime').value = nowDateTime;
@@ -7083,47 +7154,6 @@ function saveSettings(){
 /* ========================================================
    ⚙️ មុខងារគ្រប់គ្រង POPUP TREATMENT, DIAGNOSIS, PROCEDURES
 ======================================================== */
-function renderClinicalConfigTables() {
-  renderLabPriceTable();
-  // 1. Render Treatments
-  const txTbody = document.getElementById('treatmentConfigTbody');
-  txTbody.innerHTML = appTreatments.map((t, idx) => `
-    <tr>
-      <td class="kh"><b>${t.name}</b></td>
-      <td style="text-align:center;">
-        <button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px;" onclick="deleteTreatmentItem(${idx})">✕</button>
-      </td>
-    </tr>
-  `).join('');
-
-  // 2. Render Diagnosis
-  const dgTbody = document.getElementById('diagnosisConfigTbody');
-  dgTbody.innerHTML = appDiagnosis.map((d, idx) => `
-    <tr>
-      <td class="kh"><b>${d}</b></td>
-      <td style="text-align:center;">
-        <button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px;" onclick="deleteDiagnosisItem(${idx})">✕</button>
-      </td>
-    </tr>
-  `).join('');
-
-  // 3. Render Procedures (now carries price + reorder controls)
-  const prTbody = document.getElementById('procedureConfigTbody');
-  prTbody.innerHTML = appProcedures.map((p, idx) => `
-    <tr>
-      <td style="text-align:center; white-space:nowrap;">
-        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="moveProcedureItem(${idx},-1)" ${idx===0?'disabled':''}>▲</button>
-        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="moveProcedureItem(${idx},1)" ${idx===appProcedures.length-1?'disabled':''}>▼</button>
-      </td>
-      <td class="kh"><b>${p.name}</b></td>
-      <td class="mono" style="text-align:right;color:var(--primary-dark);font-weight:700;">${p.price ? '$' + parseFloat(p.price).toFixed(2) : '—'}</td>
-      <td style="text-align:center;">
-        <button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px;" onclick="deleteProcedureItem(${idx})">✕</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
 window.moveProcedureItem = function(index, dir){
   const target = index + dir;
   if(target < 0 || target >= appProcedures.length) return;
@@ -7133,25 +7163,6 @@ window.moveProcedureItem = function(index, dir){
   saveClinicalConfigs();
   renderClinicalConfigTables();
 };
-
-// 4. Render Lab Price
-function renderLabPriceTable(){
-  const tbody = document.getElementById('labPriceConfigTbody');
-  if(!tbody) return;
-  tbody.innerHTML = appLabPrices.map((p, idx) => `
-    <tr>
-      <td style="text-align:center; white-space:nowrap;">
-        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="moveLabPriceItem(${idx},-1)" ${idx===0?'disabled':''}>▲</button>
-        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="moveLabPriceItem(${idx},1)" ${idx===appLabPrices.length-1?'disabled':''}>▼</button>
-      </td>
-      <td class="kh"><b>${p.name}</b></td>
-      <td class="mono" style="text-align:right;color:var(--primary-dark);font-weight:700;">${p.price ? '$' + parseFloat(p.price).toFixed(2) : '—'}</td>
-      <td style="text-align:center;">
-        <button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px;" onclick="deleteLabPriceItem(${idx})">✕</button>
-      </td>
-    </tr>
-  `).join('');
-}
 
 window.deleteLabPriceItem = function(index){
   appLabPrices.splice(index, 1);
@@ -9644,6 +9655,7 @@ document.getElementById('cpdFolderSave').addEventListener('click', () => {
 
 document.getElementById('openClinicalConfigBtn').addEventListener('click', () => {
   renderClinicalConfigTables();
+  cfgIoStatus('');
   document.getElementById('clinicalConfigOverlay').classList.remove('hidden');
 });
 
@@ -9657,6 +9669,281 @@ document.getElementById('closeClinicalConfigBtn').addEventListener('click', () =
 
 document.getElementById('clinicalConfigOverlay').addEventListener('click', (e) => {
   if (e.target.id === 'clinicalConfigOverlay') document.getElementById('clinicalConfigOverlay').classList.add('hidden');
+});
+
+
+/* ---------- Settings lists: Import / Export Excel + Sync with Google Sheet ---------- */
+const CFG_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1ZmzxDFaJTpicyt9bP_4ppCdS127VVshQ6aUSR1kgJxM/edit';
+
+function cfgIoStatus(msg, kind){
+  const el = document.getElementById('cfgIoStatus');
+  if(!el) return;
+  if(!msg){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.style.background = kind === 'err' ? '#fdecec' : kind === 'ok' ? '#e8f7ee' : 'var(--surface-2)';
+  el.style.color = kind === 'err' ? '#b42318' : kind === 'ok' ? '#157a3b' : 'var(--ink)';
+  el.innerHTML = msg + ' &nbsp;<a href="' + CFG_SHEET_URL + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;font-weight:700;">📄 Sheet</a>';
+}
+
+function cfgLoadXLSX(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise((resolve, reject) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    sc.onload = () => window.XLSX ? resolve(window.XLSX) : reject(new Error('XLSX missing'));
+    sc.onerror = () => reject(new Error('XLSX load failed'));
+    document.head.appendChild(sc);
+  });
+}
+
+function cfgNumOrText(v){
+  if(v === '' || v == null) return '';
+  const n = Number(String(v).replace(/[$,\s]/g, ''));
+  return isNaN(n) ? String(v) : n;
+}
+
+async function cfgExportExcel(){
+  try{
+    cfgIoStatus('⏳ កំពុងបង្កើតឯកសារ Excel...');
+    const X = await cfgLoadXLSX();
+    const wb = X.utils.book_new();
+    const stamp = new Date().toISOString();
+    const add = (sheet, hasPrice, list) => {
+      const header = hasPrice ? ['No','Name','Price','Group','Updated'] : ['No','Name','Group','Updated'];
+      const rows = list.map((it, i) => {
+        const n = cfgItemName(it), g = cfgIsGroup(n);
+        const name = g ? cfgGroupLabel(n) : n;
+        return hasPrice ? [i + 1, name, g ? '' : cfgNumOrText(it.price), g ? '✓' : '', stamp]
+                        : [i + 1, name, g ? '✓' : '', stamp];
+      });
+      const ws = X.utils.aoa_to_sheet([header, ...rows]);
+      ws['!cols'] = header.map((h, i) => ({ wch: h === 'Name' ? 55 : h === 'Updated' ? 26 : 10 }));
+      X.utils.book_append_sheet(wb, ws, sheet);
+    };
+    add('Treatments', false, appTreatments);
+    add('Diagnosis',  false, appDiagnosis);
+    add('Procedures', true,  appProcedures);
+    add('LabPrice',   true,  appLabPrices);
+    add('PriceList',  true,  appPriceList);
+    X.writeFile(wb, 'Settings_KEP_' + getLocalTodayYMD() + '.xlsx');
+    cfgIoStatus('✓ Export Excel រួចរាល់ (5 Sheets: Treatments, Diagnosis, Procedures, LabPrice, PriceList · ជួរ No/Name/Price/Group/Updated)', 'ok');
+  }catch(e){
+    console.warn('cfg export', e);
+    cfgIoStatus('⚠️ Export មិនបានជោគជ័យ — ពិនិត្យអ៊ីនធឺណិត (ត្រូវការទាញ library Excel)', 'err');
+  }
+}
+
+// Read one worksheet -> [{name, price}]. Understands the Sheet layout (No | Name | Price | Group ✓ | Updated)
+// and the older name/price layout. A row with ✓ in the Group column becomes a group heading ("## Name").
+function cfgReadSheetRows(X, ws){
+  const aoa = X.utils.sheet_to_json(ws, { header: 1, defval: '', raw: true });
+  if(!aoa.length) return [];
+  const h = (aoa[0] || []).map(c => String(c).trim());
+  const ni = h.findIndex(c => /^(name|ឈ្មោះ|treatment|diagnosis|procedure|item)/i.test(c));
+  const pi = h.findIndex(c => /^(price|តម្លៃ|cost)/i.test(c));
+  const gi = h.findIndex(c => /^(group|ក្រុម)/i.test(c));
+  const hasHeader = ni >= 0 || pi >= 0 || gi >= 0;
+  const nameCol = ni >= 0 ? ni : (hasHeader ? (h.findIndex(c => /^no\b/i.test(c)) === 0 ? 1 : 0) : 0);
+  const priceCol = hasHeader ? pi : 1;
+  const out = [];
+  for(let i = hasHeader ? 1 : 0; i < aoa.length; i++){
+    let name = String(aoa[i][nameCol] == null ? '' : aoa[i][nameCol]).trim();
+    if(!name) continue;
+    const isGrp = cfgIsGroup(name) || (gi >= 0 && /^(✓|✔|true|yes|1|x)$/i.test(String(aoa[i][gi]).trim()));
+    if(isGrp) name = '## ' + cfgGroupLabel(name);
+    const pv = priceCol >= 0 ? aoa[i][priceCol] : '';
+    out.push({ name, price: isGrp || pv === '' || pv == null ? '' : String(pv).replace(/^\$/, '') });
+  }
+  return out;
+}
+
+async function cfgImportExcel(file){
+  if(!file) return;
+  try{
+    cfgIoStatus('⏳ កំពុងអានឯកសារ...');
+    const X = await cfgLoadXLSX();
+    const wb = X.read(await file.arrayBuffer(), { type: 'array' });
+    const found = {};
+    wb.SheetNames.forEach(n => {
+      const k = n.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const key = k === 'treatments' || k === 'treatment' ? 'tx'
+                : k === 'diagnosis' ? 'dg'
+                : k === 'procedures' || k === 'procedure' ? 'pr'
+                : k === 'labprice' || k === 'labprices' ? 'lp'
+                : k === 'pricelist' ? 'pl' : null;
+      if(!key) return;
+      const rows = cfgReadSheetRows(X, wb.Sheets[n]);
+      if(rows.length) found[key] = rows;
+    });
+    const keys = Object.keys(found);
+    if(!keys.length){
+      cfgIoStatus('⚠️ រកមិនឃើញ Sheet ឈ្មោះ Treatments / Diagnosis / Procedures / LabPrice / PriceList ទេ (ជួរទី១ = name, price)', 'err');
+      return;
+    }
+    const label = { tx:'Treatments', dg:'Diagnosis', pr:'Procedures', lp:'LabPrice', pl:'PriceList' };
+    const summary = keys.map(k => '• ' + label[k] + ': ' + found[k].length + ' ធាតុ').join('\n');
+    showConfirm('នាំចូលពី Excel ហើយជំនួសបញ្ជីបច្ចុប្បន្ន?\n\n' + summary + '\n\n(បញ្ជីដែលគ្មានក្នុង Excel នឹងមិនប៉ះពាល់ទេ)', () => {
+      if(found.tx) appTreatments = found.tx.map(r => ({ name: r.name }));
+      if(found.dg) appDiagnosis = found.dg.map(r => r.name);
+      if(found.pr) appProcedures = found.pr.map(r => ({ name: r.name, price: r.price }));
+      if(found.lp) appLabPrices = found.lp.map(r => ({ name: r.name, price: r.price }));
+      saveClinicalConfigs();                         // saves locally + queues push to the Sheet
+      if(found.pl){ appPriceList = found.pl.map(r => ({ name: r.name, price: r.price })); savePriceList(true); }
+      renderClinicalConfigTables();
+      try{ if(!document.getElementById('priceListOverlay').classList.contains('hidden')) renderPriceList(); }catch(e){}
+      cfgIoStatus('✓ Import រួចរាល់ (' + keys.map(k => label[k]).join(', ') + ') · កំពុងបញ្ជូនទៅ Google Sheet', 'ok');
+    }, 'នាំចូល Import');
+  }catch(e){
+    console.warn('cfg import', e);
+    cfgIoStatus('⚠️ អានឯកសារមិនបាន — សូមប្រើ .xlsx ដែលមាន Sheet ដូច Export', 'err');
+  }finally{
+    document.getElementById('cfgImportFile').value = '';
+  }
+}
+
+async function cfgSyncNow(){
+  const btn = document.getElementById('cfgSyncBtn');
+  if(!webAppUrl){ cfgIoStatus('⚠️ មិនទាន់មាន Web App URL', 'err'); return; }
+  btn.disabled = true;
+  cfgIoStatus('⏳ កំពុង Sync ជាមួយ Google Sheet...');
+  try{
+    saveClinicalConfigs();                           // push the 4 lists
+    savePriceList(true);                             // push the price list
+    await fetchFromSheet(false);                     // sends the queue first, then pulls the Sheet's copy
+    renderClinicalConfigTables();
+    const left = getPendingQueue().length;
+    if(left) cfgIoStatus('⚠️ នៅសល់ ' + left + ' ធាតុមិនទាន់ផ្ញើ — នឹងព្យាយាមម្តងទៀតដោយស្វ័យប្រវត្តិ', 'err');
+    else cfgIoStatus('✓ Sync ជោគជ័យ — បញ្ជី Settings ត្រូវគ្នាជាមួយ Sheet (Config tab)', 'ok');
+  }catch(e){
+    cfgIoStatus('⚠️ Sync មិនជោគជ័យ — សូមព្យាយាមម្តងទៀត', 'err');
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('cfgExportBtn').addEventListener('click', cfgExportExcel);
+document.getElementById('cfgImportBtn').addEventListener('click', () => document.getElementById('cfgImportFile').click());
+document.getElementById('cfgImportFile').addEventListener('change', e => cfgImportExcel(e.target.files && e.target.files[0]));
+document.getElementById('cfgSyncBtn').addEventListener('click', cfgSyncNow);
+
+
+/* ---------- Groups in Settings lists: an item named "## Name" is a group heading (bold blue) ---------- */
+function cfgIsGroup(n){ return /^\s*##/.test(String(n == null ? '' : n)); }
+function cfgGroupLabel(n){ return String(n == null ? '' : n).replace(/^\s*#+\s*/, '').trim(); }
+function cfgItemName(it){ return typeof it === 'string' ? it : ((it && it.name) || ''); }
+function cfgItems(arr){ return (arr || []).filter(it => !cfgIsGroup(cfgItemName(it))); }
+function cfgOptions(arr, optFn){
+  let html = '', open = false;
+  (arr || []).forEach(it => {
+    const n = cfgItemName(it);
+    if(cfgIsGroup(n)){
+      if(open) html += '</optgroup>';
+      html += '<optgroup label="' + plAttr(cfgGroupLabel(n)) + '">'; open = true;
+    } else html += optFn(it);
+  });
+  if(open) html += '</optgroup>';
+  return html;
+}
+
+const CFG_LISTS = {
+  tx: { get: () => appTreatments, tbody: 'treatmentConfigTbody', price: false, nameId: 'new_tx_name',      priceId: '',               btn: 'addTxBtn',        mk: n => ({ name: n }),                save: () => saveClinicalConfigs() },
+  dg: { get: () => appDiagnosis,  tbody: 'diagnosisConfigTbody',  price: false, nameId: 'new_diag_name',    priceId: '',               btn: 'addDiagBtn',      mk: n => n,                            save: () => saveClinicalConfigs() },
+  pr: { get: () => appProcedures, tbody: 'procedureConfigTbody',  price: true,  nameId: 'new_proc_name',    priceId: 'new_proc_price', btn: 'addProcBtn',      mk: (n, p) => ({ name: n, price: p }), save: () => saveClinicalConfigs() },
+  lp: { get: () => appLabPrices,  tbody: 'labPriceConfigTbody',   price: true,  nameId: 'new_labprice_name',priceId: 'new_labprice_price', btn: 'addLabPriceBtn', mk: (n, p) => ({ name: n, price: p }), save: () => saveClinicalConfigs() },
+  pl: { get: () => appPriceList,  tbody: 'priceListCfgTbody',     price: true,  nameId: 'new_pl_name',      priceId: 'new_pl_price',   btn: 'addPlCfgBtn',     mk: (n, p) => ({ name: n, price: p }), save: () => savePriceList(true) }
+};
+
+function cfgFmtPrice(v){
+  if(v === '' || v == null) return '—';
+  const n = parseFloat(v);
+  return isNaN(n) ? plAttr(v) : '$' + n.toFixed(2);
+}
+
+function cfgRefreshGroupSelect(k){
+  const sel = document.getElementById('cfgGrpSel_' + k);
+  if(!sel) return;
+  const cur = sel.value;
+  let h = '<option value="">— ចុងបញ្ជី (គ្មានក្រុម) —</option>';
+  CFG_LISTS[k].get().forEach(it => {
+    const n = cfgItemName(it);
+    if(cfgIsGroup(n)) h += '<option value="' + plAttr(cfgGroupLabel(n)) + '">▸ ' + plAttr(cfgGroupLabel(n)) + '</option>';
+  });
+  sel.innerHTML = h;
+  if(Array.prototype.some.call(sel.options, o => o.value === cur)) sel.value = cur;
+}
+
+function renderCfgList(k){
+  const L = CFG_LISTS[k], arr = L.get(), tb = document.getElementById(L.tbody);
+  if(!tb) return;
+  const last = arr.length - 1;
+  const mv = i => `<td style="text-align:center; white-space:nowrap;">
+        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="cfgMove('${k}',${i},-1)" ${i===0?'disabled':''}>▲</button>
+        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="cfgMove('${k}',${i},1)" ${i===last?'disabled':''}>▼</button></td>`;
+  const del = i => `<td style="text-align:center;"><button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px;" onclick="cfgDel('${k}',${i})">✕</button></td>`;
+  tb.innerHTML = arr.map((it, i) => {
+    const n = cfgItemName(it);
+    if(cfgIsGroup(n)) return `<tr style="background:#eef4ff;">${mv(i)}<td class="kh" colspan="${L.price ? 2 : 1}" style="color:#1d4ed8;font-weight:800;">▸ ${plAttr(cfgGroupLabel(n))}</td>${del(i)}</tr>`;
+    const price = L.price ? `<td class="mono" style="text-align:right;color:var(--primary-dark);font-weight:700;">${cfgFmtPrice(it.price)}</td>` : '';
+    return `<tr>${mv(i)}<td class="kh"><b>${plAttr(n)}</b></td>${price}${del(i)}</tr>`;
+  }).join('');
+  cfgRefreshGroupSelect(k);
+}
+
+function renderLabPriceTable(){ renderCfgList('lp'); }
+function renderPriceListCfgTable(){ renderCfgList('pl'); }
+function renderClinicalConfigTables(){ Object.keys(CFG_LISTS).forEach(renderCfgList); }
+
+window.cfgMove = function(k, i, d){
+  const a = CFG_LISTS[k].get(), t = i + d;
+  if(t < 0 || t >= a.length) return;
+  const x = a[i]; a[i] = a[t]; a[t] = x;
+  CFG_LISTS[k].save(); renderCfgList(k);
+};
+window.cfgDel = function(k, i){
+  const L = CFG_LISTS[k], a = L.get(), n = cfgItemName(a[i]);
+  const msg = cfgIsGroup(n)
+    ? 'លុបក្រុម "' + plAttr(cfgGroupLabel(n)) + '"?\n(ធាតុក្នុងក្រុមនៅដដែល)'
+    : 'លុប "' + plAttr(n) + '"?';
+  showConfirm(msg, () => { a.splice(i, 1); L.save(); renderCfgList(k); });
+};
+
+function cfgInsert(k, item){
+  const a = CFG_LISTS[k].get();
+  const sel = document.getElementById('cfgGrpSel_' + k);
+  const g = sel ? sel.value : '';
+  let at = a.length;
+  if(g){
+    const gi = a.findIndex(it => cfgIsGroup(cfgItemName(it)) && cfgGroupLabel(cfgItemName(it)) === g);
+    if(gi >= 0) for(let j = gi + 1; j < a.length; j++){ if(cfgIsGroup(cfgItemName(a[j]))){ at = j; break; } }
+  }
+  a.splice(at, 0, item);
+}
+
+Object.keys(CFG_LISTS).forEach(k => {
+  const L = CFG_LISTS[k];
+  // replace the old "add" handler with the group-aware one
+  const old = document.getElementById(L.btn);
+  if(old){
+    const nb = old.cloneNode(true); old.replaceWith(nb);
+    nb.addEventListener('click', () => {
+      const ni = document.getElementById(L.nameId), pi = L.priceId ? document.getElementById(L.priceId) : null;
+      const name = ni.value.trim();
+      if(!name){ cfgIoStatus('⚠️ សូមបញ្ចូលឈ្មោះ', 'err'); ni.focus(); return; }
+      cfgInsert(k, L.mk(name, pi ? pi.value.trim().replace(/^\$/, '') : ''));
+      L.save(); renderCfgList(k);
+      ni.value = ''; if(pi) pi.value = '';
+    });
+  }
+  const gb = document.getElementById('cfgGrpAdd_' + k);
+  if(gb) gb.addEventListener('click', () => {
+    const gi = document.getElementById('cfgGrpNew_' + k);
+    const name = gi.value.trim().replace(/^#+\s*/, '');
+    if(!name){ cfgIoStatus('⚠️ សូមបញ្ចូលឈ្មោះក្រុម', 'err'); gi.focus(); return; }
+    CFG_LISTS[k].get().push(L.mk('## ' + name, ''));
+    L.save(); renderCfgList(k);
+    gi.value = '';
+    const sel = document.getElementById('cfgGrpSel_' + k); if(sel) sel.value = name;   // next new items go into this group
+  });
 });
 
 function renderAll(){ 
@@ -9740,7 +10027,7 @@ function renderPriceList(focusIdx){
   }
   const last = appPriceList.length - 1;
   el.innerHTML = appPriceList.map((it, i) => `
-    <div class="pl-row" data-i="${i}">
+    <div class="pl-row${cfgIsGroup(it.name) ? ' pl-group' : ''}" data-i="${i}">
       <span class="pl-grip" draggable="true" title="ទាញដើម្បីដូរលំដាប់">⠿</span>
       <span class="pl-no mono">${i+1}</span>
       <input type="text" class="pl-name kh" data-f="name" value="${plAttr(it.name)}" placeholder="ឈ្មោះសេវា / Treatment">
@@ -9845,9 +10132,10 @@ function printPriceList(){
   const logo = (document.querySelector('.brand-mark img') || {}).src || '';
   const now = new Date();
   const printDateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
-  const rows = items.map((it, i) => `
+  let plNo = 0;
+  const rows = items.map((it, i) => cfgIsGroup(it.name) ? `<tr style="page-break-inside:avoid;"><td colspan="3" class="kh" style="background:#eef4ff;color:#1d4ed8;font-weight:800;">▸ ${esc(cfgGroupLabel(it.name))}</td></tr>` : `
     <tr style="page-break-inside:avoid;">
-      <td class="mono" style="text-align:center;">${i+1}</td>
+      <td class="mono" style="text-align:center;">${++plNo}</td>
       <td class="kh"><b>${esc(it.name) || '—'}</b></td>
       <td class="mono" style="text-align:right; font-weight:700;">${fmtPrice(it.price)}</td>
     </tr>`).join('');
@@ -10484,7 +10772,7 @@ function openProcedureStepsModal(recordId){
   document.getElementById('procStepsInfo').textContent = `ធ្មេញ៖ ${r.teeth || '—'} · ${toDDMMYYYY(r.timestamp)}`;
 
   const sel = document.getElementById('procStepSelect');
-  sel.innerHTML = appProcedures.map(p => `<option value="${p.name}">${p.name}</option>`).join('') + '<option value="custom">ផ្សេងទៀត / Custom…</option>';
+  sel.innerHTML = cfgOptions(appProcedures, p => `<option value="${p.name}">${p.name}</option>`) + '<option value="custom">ផ្សេងទៀត / Custom…</option>';
   document.getElementById('procStepCustomInput').style.display = 'none';
   document.getElementById('procStepCustomInput').value = '';
   document.getElementById('procStepDate').value = stepDateDefaultValue();
@@ -10597,7 +10885,7 @@ function findLabPrice(name){
 
 // The Lab-work suggestions shown as a dropdown list in the Note box (works from Settings -> Lab Price).
 function labWorkListHTML(){
-  return (appLabPrices || []).map(p => {
+  return cfgItems(appLabPrices || []).map(p => {
     const price = parseFloat(p.price);
     const label = (isFinite(price) && price > 0) ? `$${price}/ធ្មេញ` : '(គ្មានតម្លៃ)';
     return `<option value="${escHTML(p.name)}" label="${escHTML(label)}"></option>`;
@@ -10816,8 +11104,8 @@ function openStepPricePicker(idx){
   stepPricePickIdx = idx;
   const num = v => { const m = String(v == null ? '' : v).replace(/[^\d.]/g, ''); return m ? parseFloat(m) : NaN; };
   const list = document.getElementById('spList');
-  const rows = appPriceList.map((it, i) => ({ it, i, n: num(it.price) })).filter(x => cleanStr(x.it.name) && !isNaN(x.n));
-  list.innerHTML = rows.length ? rows.map(x => `
+  const rows = appPriceList.map((it, i) => ({ it, i, n: num(it.price) })).filter(x => cleanStr(x.it.name) && (!isNaN(x.n) || cfgIsGroup(x.it.name)));
+  list.innerHTML = rows.length ? rows.map(x => cfgIsGroup(x.it.name) ? `<div class="kh" style="padding:8px 12px 4px;font-weight:800;color:#1d4ed8;background:#eef4ff;">▸ ${escHTML(cfgGroupLabel(x.it.name))}</div>` : `
     <button type="button" onclick="stepPricePick(${x.i})" class="kh" style="all:unset; box-sizing:border-box; display:flex; justify-content:space-between; gap:10px; width:100%; padding:10px 12px; border-bottom:1px dashed var(--border); cursor:pointer;">
       <span style="font-weight:700;">${escHTML(x.it.name)}</span>
       <span class="mono" style="color:var(--primary-dark); font-weight:700;">$${x.n.toFixed(2)}</span>
@@ -12899,10 +13187,10 @@ function labDLPanelHTML(o){
   const perVal = perTooth > 0 ? num2(perTooth) : '';
   const total = perTooth > 0 ? num2(perTooth * teethN) : 0;
   const curWork = pr ? pr.name : cleanStr(o.work);
-  let opts = (appLabPrices || []).map(p => {
+  let opts = cfgOptions(appLabPrices || [], p => {
     const v = parseFloat(p.price);
     return `<option value="${escHTML(p.name)}" data-price="${isFinite(v) && v > 0 ? v : ''}"${p.name === curWork ? ' selected' : ''}>${escHTML(p.name)}${isFinite(v) && v > 0 ? ` ($${v}/ធ្មេញ)` : ''}</option>`;
-  }).join('');
+  });
   if(curWork && !(appLabPrices || []).some(p => p.name === curWork)) opts = `<option value="${escHTML(curWork)}" data-price="" selected>${escHTML(curWork)} (គ្មានតម្លៃ)</option>` + opts;
   if(!opts) opts = '<option value="" data-price="">— បន្ថែមតម្លៃក្នុង Settings → Lab Price —</option>';
 
@@ -13127,12 +13415,12 @@ function openLabForm(id){
   el('lab_patient').value = o ? o.patient : '';
 
   const curWork = o ? o.work : '';
-  let workOptions = appLabPrices.map(p => `<option value="${p.name}" data-price="${p.price || ''}">${p.name}${p.price ? ` ($${p.price}/គ្រាប់)` : ''}</option>`).join('');
+  let workOptions = cfgOptions(appLabPrices, p => `<option value="${p.name}" data-price="${p.price || ''}">${p.name}${p.price ? ` ($${p.price}/គ្រាប់)` : ''}</option>`);
   if(curWork && !appLabPrices.some(p => p.name === curWork)){
     workOptions += `<option value="${curWork}">${curWork} (legacy)</option>`;
   }
   el('lab_work').innerHTML = workOptions;
-  el('lab_work').value = curWork || (appLabPrices[0] ? appLabPrices[0].name : '');
+  el('lab_work').value = curWork || (cfgItems(appLabPrices)[0] ? cfgItems(appLabPrices)[0].name : '');
   el('lab_lab').value = o ? (o.lab || '') : (labOrders.length ? (labOrders.slice().sort((a,b)=>(b.created||'').localeCompare(a.created||''))[0].lab || '') : '');
   el('lab_teeth').value = o ? (o.teeth || '') : '';
   el('lab_shade').value = o ? (o.shade || '') : '';
