@@ -502,8 +502,27 @@
   .detail-item .v{font-size:13.5px;color:var(--ink);margin-top:2px;}
 
   /* Tab styles inside settings pop up */
+  .treatment-stats-grid .type-stat-card[data-key]{cursor:pointer;transition:transform .12s, box-shadow .12s, border-color .12s;}
+  .treatment-stats-grid .type-stat-card[data-key]:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:var(--primary);}
+  .sp-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border-soft);cursor:pointer;}
+  .sp-row:last-child{border-bottom:0;}
+  .sp-row:hover{background:var(--surface-2);}
+  .sp-no{width:26px;text-align:right;font-size:11px;color:var(--ink-dim);flex-shrink:0;}
+  .sp-main{flex:1;min-width:0;}
+  .sp-name{font-weight:700;font-size:13.5px;}
+  .sp-sub{font-size:11px;color:var(--ink-dim);margin-top:2px;}
+  .sp-badge{flex-shrink:0;font-size:11px;font-weight:700;color:var(--primary-dark);background:var(--surface-2);border-radius:999px;padding:3px 9px;}
   optgroup{color:#1d4ed8;font-weight:800;font-style:normal;}
   .pl-group .pl-name{color:#1d4ed8;font-weight:800;}
+  .cfg-grp-chk{display:flex;align-items:center;gap:5px;height:38px;font-size:12px;font-weight:700;color:#1d4ed8;white-space:nowrap;cursor:pointer;}
+  .cfg-grp-chk input{width:16px;height:16px;margin:0;accent-color:#1d4ed8;}
+  .cfg-act{display:inline-flex;gap:5px;align-items:center;justify-content:flex-end;white-space:nowrap;}
+  .cfg-act button{width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--border-soft);background:var(--surface);cursor:pointer;font-size:13px;line-height:1;display:inline-flex;align-items:center;justify-content:center;}
+  .cfg-act button:hover:not(:disabled){background:var(--surface-2);border-color:var(--primary);}
+  .cfg-act button:disabled{opacity:.3;cursor:default;}
+  .cfg-act .pin.on{background:#dbeafe;border-color:#1d4ed8;}
+  .cfg-act .del{color:#b42318;}
+  .cfg-edit-in{width:100%;box-sizing:border-box;}
   .cfg-grp-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
   .cfg-grp-row select,.cfg-grp-row input{flex:1 1 140px;min-width:0;}
   .cfg-io{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;}
@@ -2383,6 +2402,13 @@
           </div>
           <div class="treatment-stats-grid" id="treatmentStatsRow"></div>
         </div>
+
+        <div class="card-type-stats-panel" style="margin-top: 15px;">
+          <div class="card-type-stats-head">
+            <h4 class="kh">ស្ថិតិរោគវិនិច្ឆ័យ · Diagnosis (Indication) Statistics</h4>
+          </div>
+          <div class="treatment-stats-grid" id="diagnosisStatsRow"></div>
+        </div>
       </section>
 
       <!-- Dental Lab (standard case workflow: many trips Clinic <-> Lab) -->
@@ -3090,9 +3116,6 @@
         <button type="button" class="btn btn-outline btn-block kh" id="openClinicalConfigBtn" style="border-color: var(--primary); color: var(--primary-dark); font-weight: 700; font-size: 12.5px;">
           ⚙️ កំណត់ Treatment, Diagnosis & Procedures
         </button>
-        <button type="button" class="btn btn-outline btn-block kh" data-open-pricelist style="border-color: var(--primary); color: var(--primary-dark); font-weight: 700; font-size: 12.5px; margin-top:8px;">
-          💲 តារាងតម្លៃ · Price List
-        </button>
         <button type="button" class="btn btn-outline btn-block kh" id="openCpdBtn" style="border-color:#7C3AED; color:#6D28D9; font-weight:700; font-size:12.5px; margin-top:8px;">
           🎓 CPD · វិញ្ញាបនបត្របណ្តុះបណ្តាល (Google Drive)
         </button>
@@ -3280,22 +3303,13 @@
             <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">ឈ្មោះ Treatment ថ្មី</div>
             <input type="text" id="new_tx_name" class="kh" placeholder="ឧ. ប៉ះធ្មេញ Composite, ដកធ្មេញ...">
           </div>
+          <label class="kh cfg-grp-chk" title="ដាក់ជាក្រុម (អក្សរដិតពណ៌ខៀវ)"><input type="checkbox" id="cfgIsGrp_tx"> <span>📌 ក្រុម</span></label>
           <button type="button" class="btn btn-primary btn-sm kh" id="addTxBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
-        <div class="cfg-grp-row">
-          <select id="cfgGrpSel_tx" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
-          <input type="text" id="cfgGrpNew_tx" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
-          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_tx" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
-        </div>
+        <div class="cfg-grp-row"><span class="kh" style="font-size:11px;font-weight:700;color:var(--ink-dim);">ដាក់ធាតុថ្មីក្នុងក្រុម៖</span><select id="cfgGrpSel_tx" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select></div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
-            <thead>
-              <tr>
-                <th style="width:60px;text-align:center;">លំដាប់</th>
-                <th>ឈ្មោះ Treatment</th>
-                <th style="width:45px;text-align:center;">លុប</th>
-              </tr>
-            </thead>
+            <thead><tr><th>ឈ្មោះ Treatment</th><th style="width:182px;"></th></tr></thead>
             <tbody id="treatmentConfigTbody"></tbody>
           </table>
         </div>
@@ -3308,22 +3322,13 @@
             <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">ឈ្មោះ Diagnosis ថ្មី</div>
             <input type="text" id="new_diag_name" class="kh" placeholder="ឧ. ធ្មេញបាក់, ឈឺធ្មេញ...">
           </div>
+          <label class="kh cfg-grp-chk" title="ដាក់ជាក្រុម (អក្សរដិតពណ៌ខៀវ)"><input type="checkbox" id="cfgIsGrp_dg"> <span>📌 ក្រុម</span></label>
           <button type="button" class="btn btn-primary btn-sm kh" id="addDiagBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
-        <div class="cfg-grp-row">
-          <select id="cfgGrpSel_dg" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
-          <input type="text" id="cfgGrpNew_dg" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
-          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_dg" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
-        </div>
+        <div class="cfg-grp-row"><span class="kh" style="font-size:11px;font-weight:700;color:var(--ink-dim);">ដាក់ធាតុថ្មីក្នុងក្រុម៖</span><select id="cfgGrpSel_dg" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select></div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
-            <thead>
-              <tr>
-                <th style="width:60px;text-align:center;">លំដាប់</th>
-                <th>ឈ្មោះ Diagnosis (Indication)</th>
-                <th style="width:45px;text-align:center;">លុប</th>
-              </tr>
-            </thead>
+            <thead><tr><th>ឈ្មោះ Diagnosis (Indication)</th><th style="width:182px;"></th></tr></thead>
             <tbody id="diagnosisConfigTbody"></tbody>
           </table>
         </div>
@@ -3340,23 +3345,13 @@
             <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">តម្លៃ ($ USD)</div>
             <input type="number" id="new_proc_price" class="mono" placeholder="25.00" step="0.5">
           </div>
+          <label class="kh cfg-grp-chk" title="ដាក់ជាក្រុម (អក្សរដិតពណ៌ខៀវ)"><input type="checkbox" id="cfgIsGrp_pr"> <span>📌 ក្រុម</span></label>
           <button type="button" class="btn btn-primary btn-sm kh" id="addProcBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
-        <div class="cfg-grp-row">
-          <select id="cfgGrpSel_pr" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
-          <input type="text" id="cfgGrpNew_pr" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
-          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_pr" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
-        </div>
+        <div class="cfg-grp-row"><span class="kh" style="font-size:11px;font-weight:700;color:var(--ink-dim);">ដាក់ធាតុថ្មីក្នុងក្រុម៖</span><select id="cfgGrpSel_pr" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select></div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
-            <thead>
-              <tr>
-                <th style="width:60px;text-align:center;">លំដាប់</th>
-                <th>ឈ្មោះ Procedure</th>
-                <th style="width:110px;text-align:right;">តម្លៃ ($)</th>
-                <th style="width:45px;text-align:center;">លុប</th>
-              </tr>
-            </thead>
+            <thead><tr><th>ឈ្មោះ Procedure</th><th style="width:110px;text-align:right;">តម្លៃ ($)</th><th style="width:182px;"></th></tr></thead>
             <tbody id="procedureConfigTbody"></tbody>
           </table>
         </div>
@@ -3374,23 +3369,13 @@
             <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">តម្លៃ/គ្រាប់ ($)</div>
             <input type="number" id="new_labprice_price" class="mono" placeholder="15.00" step="0.5">
           </div>
+          <label class="kh cfg-grp-chk" title="ដាក់ជាក្រុម (អក្សរដិតពណ៌ខៀវ)"><input type="checkbox" id="cfgIsGrp_lp"> <span>📌 ក្រុម</span></label>
           <button type="button" class="btn btn-primary btn-sm kh" id="addLabPriceBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
-        <div class="cfg-grp-row">
-          <select id="cfgGrpSel_lp" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
-          <input type="text" id="cfgGrpNew_lp" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
-          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_lp" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
-        </div>
+        <div class="cfg-grp-row"><span class="kh" style="font-size:11px;font-weight:700;color:var(--ink-dim);">ដាក់ធាតុថ្មីក្នុងក្រុម៖</span><select id="cfgGrpSel_lp" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select></div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
-            <thead>
-              <tr>
-                <th style="width:60px;text-align:center;">លំដាប់</th>
-                <th>ប្រភេទ Lab Work</th>
-                <th style="width:110px;text-align:right;">តម្លៃ/គ្រាប់ ($)</th>
-                <th style="width:45px;text-align:center;">លុប</th>
-              </tr>
-            </thead>
+            <thead><tr><th>ប្រភេទ Lab Work</th><th style="width:110px;text-align:right;">តម្លៃ/គ្រាប់ ($)</th><th style="width:182px;"></th></tr></thead>
             <tbody id="labPriceConfigTbody"></tbody>
           </table>
         </div>
@@ -3408,28 +3393,22 @@
             <div style="font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:4px;">តម្លៃ ($ USD)</div>
             <input type="text" id="new_pl_price" class="mono" inputmode="decimal" placeholder="25">
           </div>
+          <label class="kh cfg-grp-chk" title="ដាក់ជាក្រុម (អក្សរដិតពណ៌ខៀវ)"><input type="checkbox" id="cfgIsGrp_pl"> <span>📌 ក្រុម</span></label>
           <button type="button" class="btn btn-primary btn-sm kh" id="addPlCfgBtn" style="height:38px;">＋ បន្ថែម</button>
         </div>
-        <div class="cfg-grp-row">
-          <select id="cfgGrpSel_pl" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select>
-          <input type="text" id="cfgGrpNew_pl" class="kh" placeholder="ឈ្មោះក្រុមថ្មី (បង្ហាញជាអក្សរដិតពណ៌ខៀវ)">
-          <button type="button" class="btn btn-outline btn-sm kh" id="cfgGrpAdd_pl" style="height:38px;color:#1d4ed8;border-color:#1d4ed8;">＋ ក្រុម</button>
-        </div>
+        <div class="cfg-grp-row"><span class="kh" style="font-size:11px;font-weight:700;color:var(--ink-dim);">ដាក់ធាតុថ្មីក្នុងក្រុម៖</span><select id="cfgGrpSel_pl" class="kh" title="ធាតុថ្មីនឹងចូលក្នុងក្រុមនេះ"></select></div>
         <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
           <table class="med-table" style="margin:0;width:100%;">
-            <thead><tr>
-              <th style="width:60px;text-align:center;">លំដាប់</th>
-              <th>ឈ្មោះសេវា</th>
-              <th style="width:110px;text-align:right;">តម្លៃ ($)</th>
-              <th style="width:45px;text-align:center;">លុប</th>
-            </tr></thead>
+            <thead><tr><th>ឈ្មោះសេវា</th><th style="width:110px;text-align:right;">តម្លៃ ($)</th><th style="width:182px;"></th></tr></thead>
             <tbody id="priceListCfgTbody"></tbody>
           </table>
         </div>
       </div>
 
-      <div class="modal-actions" style="margin-top:16px;">
-        <button type="button" class="btn btn-primary btn-sm kh" id="closeClinicalConfigBtn" style="width:100%;justify-content:center;">✓ រួចរាល់ Done</button>
+      <div class="kh" style="font-size:11px;color:var(--ink-dim);margin-top:12px;">Sheet: Treatments, Diagnosis, Procedures, LabPrice, PriceList</div>
+      <div class="modal-actions" style="margin-top:10px;display:flex;gap:8px;justify-content:space-between;">
+        <button type="button" class="btn btn-outline btn-sm kh" id="cfgSyncBtn2">🔄 Sync Sheet</button>
+        <button type="button" class="btn btn-primary btn-sm kh" id="closeClinicalConfigBtn" style="justify-content:center;min-width:140px;">✓ រួចរាល់ Done</button>
       </div>
     </div>
   </div>
@@ -3624,6 +3603,21 @@
         <button type="button" class="btn btn-outline kh" id="plPrintBtn" style="flex:1; justify-content:center;">🖨 Print / PDF</button>
         <button type="button" class="btn btn-primary kh" id="plDoneBtn" style="flex:1; justify-content:center;">✓ រួចរាល់</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- បញ្ជីអ្នកជំងឺតាមក្រុមស្ថិតិ (ចុចលើ Card ក្នុងរបាយការណ៍) -->
+<div class="overlay hidden" id="statPatientsOverlay">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-head">
+      <h2 class="kh" id="statPatientsTitle">អ្នកជំងឺ</h2>
+      <button class="x" id="closeStatPatients">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="kh" id="statPatientsSummary" style="font-size:12.5px;color:var(--ink-soft);margin-bottom:10px;"></div>
+      <input type="text" id="statPatientsSearch" class="kh" placeholder="🔍 ស្វែងរកឈ្មោះ..." style="margin-bottom:10px;">
+      <div id="statPatientsList" style="max-height:58vh;overflow-y:auto;border:1px solid var(--border);border-radius:10px;"></div>
     </div>
   </div>
 </div>
@@ -5455,32 +5449,31 @@ document.querySelectorAll('#view-dashboard [data-dq]').forEach(b => b.addEventLi
   });
 })();
 
-function renderTreatmentStats(){
+function renderStatCards(field, rowId){
   const counts = {};
   allRecords.forEach(r => {
-    let treat = cleanStr(r.treatment);
-    if (!treat || treat === '—') return;
-    if (!counts[treat]) counts[treat] = { total: 0, female: 0 };
-    counts[treat].total++;
-    let sex = String(r.sex || '').toUpperCase();
-    if (sex === 'F' || sex.includes('ស្រី')) {
-      counts[treat].female++;
-    }
+    const key = cleanStr(r[field]);
+    if (!key || key === '—') return;
+    if (!counts[key]) counts[key] = { total: 0, female: 0 };
+    counts[key].total++;
+    const sex = String(r.sex || '').toUpperCase();
+    if (sex === 'F' || sex.includes('ស្រី')) counts[key].female++;
   });
 
-  const row = document.getElementById('treatmentStatsRow');
-  const sortedTreatments = Object.keys(counts).sort((a,b) => counts[b].total - counts[a].total);
+  const row = document.getElementById(rowId);
+  if (!row) return;
+  const sorted = Object.keys(counts).sort((a,b) => counts[b].total - counts[a].total);
 
-  if (sortedTreatments.length === 0) {
+  if (sorted.length === 0) {
      row.innerHTML = `<div style="grid-column:1/-1;text-align:center;font-size:12px;color:var(--ink-dim);padding:14px;">មិនទាន់មានទិន្នន័យទេ</div>`;
      return;
   }
 
-  row.innerHTML = sortedTreatments.map(t => {
+  row.innerHTML = sorted.map(t => {
     const c = counts[t];
     return `
-      <div class="type-stat-card type-default" style="text-align:left; padding:12px; display:flex; flex-direction:column; justify-content:space-between; height:100%;">
-        <span class="type-stat-name kh" style="justify-content:flex-start; text-align:left; font-size:11.5px; margin-bottom:8px; line-height:1.4; color:var(--ink); min-height:auto;">${t}</span>
+      <div class="type-stat-card type-default" data-field="${field}" data-key="${encodeURIComponent(t)}" role="button" tabindex="0" title="ចុចមើលឈ្មោះអ្នកជំងឺ" style="text-align:left; padding:12px; display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+        <span class="type-stat-name kh" style="justify-content:flex-start; text-align:left; font-size:11.5px; margin-bottom:8px; line-height:1.4; color:var(--ink); min-height:auto;">${escHTML(t)}</span>
         <div style="display:flex; justify-content:space-between; align-items:flex-end;">
           <div>
             <div style="font-size:9px; color:var(--ink-dim); margin-bottom:2px; font-weight:700;">សរុប/Total</div>
@@ -5495,6 +5488,61 @@ function renderTreatmentStats(){
     `;
   }).join('');
 }
+function renderTreatmentStats(){ renderStatCards('treatment', 'treatmentStatsRow'); }
+function renderDiagnosisStats(){ renderStatCards('diagnosis', 'diagnosisStatsRow'); }
+
+/* ---------- Click a stat card -> list of the patients in that group ---------- */
+let statPatientsData = [];
+function openStatPatients(field, key){
+  const recs = allRecords.filter(r => cleanStr(r[field]) === key);
+  const groups = new Map();
+  recs.forEach(r => {
+    const k = patientKey(r);
+    if(!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  });
+  statPatientsData = Array.from(groups.values()).map(list => {
+    const sorted = list.slice().sort((a,b) => (parseAnyDate(b.timestamp) || 0) - (parseAnyDate(a.timestamp) || 0));
+    const latest = sorted[0];
+    const pick = f => { const x = sorted.find(r => cleanStr(r[f])); return x ? cleanStr(x[f]) : ''; };
+    return { name: cleanStr(latest.name), sex: pick('sex'), age: pick('age'), phone: pick('phone'), count: list.length, last: latest.timestamp, lastTs: parseAnyDate(latest.timestamp) || 0 };
+  }).sort((a, b) => b.lastTs - a.lastTs);
+
+  document.getElementById('statPatientsTitle').textContent = (field === 'diagnosis' ? '🩺 ' : '🦷 ') + key;
+  document.getElementById('statPatientsSummary').innerHTML =
+    `សរុប/Total <b class="mono">${recs.length}</b> ករណី · <b class="mono">${statPatientsData.length}</b> នាក់`;
+  document.getElementById('statPatientsSearch').value = '';
+  renderStatPatientsList();
+  document.getElementById('statPatientsOverlay').classList.remove('hidden');
+}
+function renderStatPatientsList(){
+  const term = document.getElementById('statPatientsSearch').value.trim().toLowerCase();
+  const list = statPatientsData.filter(p => !term || p.name.toLowerCase().includes(term) || String(p.phone).includes(term));
+  document.getElementById('statPatientsList').innerHTML = list.length ? list.map((p, i) => {
+    const sx = String(p.sex).toUpperCase();
+    const sexTxt = sx === 'M' ? 'ប្រុស' : (sx === 'F' ? 'ស្រី' : '');
+    const sub = [sexTxt, p.age !== '' ? p.age + ' ឆ្នាំ' : '', p.phone ? formatPhoneDisplay(p.phone) : '', 'ចុងក្រោយ ' + formatDateDisplay(p.last)].filter(Boolean).join(' · ');
+    return `<div class="sp-row" data-name="${encodeURIComponent(p.name)}">
+      <div class="sp-no mono">${i + 1}</div>
+      <div class="sp-main"><div class="sp-name kh">${escHTML(p.name)}</div><div class="sp-sub kh">${escHTML(sub)}</div></div>
+      <div class="sp-badge kh">${p.count} ករណី</div></div>`;
+  }).join('') : '<div class="kh" style="text-align:center;color:var(--ink-dim);padding:20px;font-size:12px;">រកមិនឃើញ</div>';
+}
+function closeStatPatients(){ document.getElementById('statPatientsOverlay').classList.add('hidden'); }
+document.getElementById('closeStatPatients').addEventListener('click', closeStatPatients);
+document.getElementById('statPatientsOverlay').addEventListener('click', e => { if(e.target.id === 'statPatientsOverlay') closeStatPatients(); });
+document.getElementById('statPatientsSearch').addEventListener('input', renderStatPatientsList);
+document.getElementById('statPatientsList').addEventListener('click', e => {
+  const row = e.target.closest('.sp-row'); if(!row) return;
+  closeStatPatients();
+  openPatientRecord(decodeURIComponent(row.dataset.name));
+});
+['treatmentStatsRow', 'diagnosisStatsRow'].forEach(id => {
+  const grid = document.getElementById(id);
+  const go = e => { const c = e.target.closest('.type-stat-card[data-key]'); if(c) openStatPatients(c.dataset.field, decodeURIComponent(c.dataset.key)); };
+  grid.addEventListener('click', go);
+  grid.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(e); } });
+});
 
 function matchesSearch(r, term){ 
   if(!term) return true; 
@@ -9803,8 +9851,9 @@ async function cfgImportExcel(file){
 
 async function cfgSyncNow(){
   const btn = document.getElementById('cfgSyncBtn');
+  const btn2 = document.getElementById('cfgSyncBtn2');
   if(!webAppUrl){ cfgIoStatus('⚠️ មិនទាន់មាន Web App URL', 'err'); return; }
-  btn.disabled = true;
+  btn.disabled = true; btn2.disabled = true;
   cfgIoStatus('⏳ កំពុង Sync ជាមួយ Google Sheet...');
   try{
     saveClinicalConfigs();                           // push the 4 lists
@@ -9817,7 +9866,7 @@ async function cfgSyncNow(){
   }catch(e){
     cfgIoStatus('⚠️ Sync មិនជោគជ័យ — សូមព្យាយាមម្តងទៀត', 'err');
   }finally{
-    btn.disabled = false;
+    btn.disabled = false; btn2.disabled = false;
   }
 }
 
@@ -9825,6 +9874,7 @@ document.getElementById('cfgExportBtn').addEventListener('click', cfgExportExcel
 document.getElementById('cfgImportBtn').addEventListener('click', () => document.getElementById('cfgImportFile').click());
 document.getElementById('cfgImportFile').addEventListener('change', e => cfgImportExcel(e.target.files && e.target.files[0]));
 document.getElementById('cfgSyncBtn').addEventListener('click', cfgSyncNow);
+document.getElementById('cfgSyncBtn2').addEventListener('click', cfgSyncNow);
 
 
 /* ---------- Groups in Settings lists: an item named "## Name" is a group heading (bold blue) ---------- */
@@ -9872,22 +9922,53 @@ function cfgRefreshGroupSelect(k){
   if(Array.prototype.some.call(sel.options, o => o.value === cur)) sel.value = cur;
 }
 
+let cfgEdit = null;   // { k, i } while a row is being edited
+
 function renderCfgList(k){
   const L = CFG_LISTS[k], arr = L.get(), tb = document.getElementById(L.tbody);
   if(!tb) return;
   const last = arr.length - 1;
-  const mv = i => `<td style="text-align:center; white-space:nowrap;">
-        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="cfgMove('${k}',${i},-1)" ${i===0?'disabled':''}>▲</button>
-        <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:10px;" onclick="cfgMove('${k}',${i},1)" ${i===last?'disabled':''}>▼</button></td>`;
-  const del = i => `<td style="text-align:center;"><button type="button" class="btn btn-danger btn-sm" style="padding:2px 6px;font-size:10px;" onclick="cfgDel('${k}',${i})">✕</button></td>`;
+  const acts = (i, g) => `<td style="text-align:right;"><span class="cfg-act">
+      <button type="button" class="pin ${g ? 'on' : ''}" title="${g ? 'ដកចេញពីក្រុម (ធ្វើជាធាតុធម្មតា)' : 'ដាក់ជាក្រុម'}" onclick="cfgToggleGroup('${k}',${i})">📌</button>
+      <button type="button" title="ឡើងលើ" onclick="cfgMove('${k}',${i},-1)" ${i===0?'disabled':''}>▲</button>
+      <button type="button" title="ចុះក្រោម" onclick="cfgMove('${k}',${i},1)" ${i===last?'disabled':''}>▼</button>
+      <button type="button" title="កែ" onclick="cfgEditStart('${k}',${i})">✏️</button>
+      <button type="button" class="del" title="លុប" onclick="cfgDel('${k}',${i})">✕</button></span></td>`;
   tb.innerHTML = arr.map((it, i) => {
-    const n = cfgItemName(it);
-    if(cfgIsGroup(n)) return `<tr style="background:#eef4ff;">${mv(i)}<td class="kh" colspan="${L.price ? 2 : 1}" style="color:#1d4ed8;font-weight:800;">▸ ${plAttr(cfgGroupLabel(n))}</td>${del(i)}</tr>`;
+    const n = cfgItemName(it), g = cfgIsGroup(n);
+    if(cfgEdit && cfgEdit.k === k && cfgEdit.i === i){
+      const key = `onkeydown="if(event.key==='Enter'){cfgEditSave('${k}',${i});}else if(event.key==='Escape'){cfgEditCancel('${k}');}"`;
+      const priceIn = L.price ? `<td>${g ? '' : `<input type="text" id="cfgEditPrice" class="mono cfg-edit-in" inputmode="decimal" style="text-align:right;" value="${plAttr(it.price)}" ${key}>`}</td>` : '';
+      return `<tr style="background:${g ? '#eef4ff' : '#fffbe6'};"><td class="kh"><input type="text" id="cfgEditName" class="kh cfg-edit-in" value="${plAttr(g ? cfgGroupLabel(n) : n)}" ${key}></td>${priceIn}
+        <td style="text-align:right;"><span class="cfg-act">
+          <button type="button" title="រក្សាទុក" style="color:#157a3b;" onclick="cfgEditSave('${k}',${i})">✓</button>
+          <button type="button" title="បោះបង់" onclick="cfgEditCancel('${k}')">↩</button></span></td></tr>`;
+    }
+    if(g) return `<tr style="background:#eef4ff;"><td class="kh" colspan="${L.price ? 2 : 1}" style="color:#1d4ed8;font-weight:800;">▸ ${plAttr(cfgGroupLabel(n))}</td>${acts(i, true)}</tr>`;
     const price = L.price ? `<td class="mono" style="text-align:right;color:var(--primary-dark);font-weight:700;">${cfgFmtPrice(it.price)}</td>` : '';
-    return `<tr>${mv(i)}<td class="kh"><b>${plAttr(n)}</b></td>${price}${del(i)}</tr>`;
+    return `<tr><td class="kh"><b>${plAttr(n)}</b></td>${price}${acts(i, false)}</tr>`;
   }).join('');
   cfgRefreshGroupSelect(k);
+  if(cfgEdit && cfgEdit.k === k){ const e = document.getElementById('cfgEditName'); if(e){ e.focus(); e.select(); } }
 }
+
+window.cfgToggleGroup = function(k, i){
+  const L = CFG_LISTS[k], a = L.get(), it = a[i], n = cfgItemName(it);
+  const nn = cfgIsGroup(n) ? cfgGroupLabel(n) : '## ' + n.trim();
+  if(typeof it === 'string') a[i] = nn; else it.name = nn;
+  cfgEdit = null; L.save(); renderCfgList(k);
+};
+window.cfgEditStart = function(k, i){ const prev = cfgEdit && cfgEdit.k; cfgEdit = { k, i }; if(prev && prev !== k) renderCfgList(prev); renderCfgList(k); };
+window.cfgEditCancel = function(k){ cfgEdit = null; renderCfgList(k); };
+window.cfgEditSave = function(k, i){
+  const L = CFG_LISTS[k], a = L.get(), it = a[i], g = cfgIsGroup(cfgItemName(it));
+  const nameEl = document.getElementById('cfgEditName'), priceEl = document.getElementById('cfgEditPrice');
+  const name = (nameEl ? nameEl.value : '').trim().replace(/^#+\s*/, '');
+  if(!name){ cfgIoStatus('⚠️ ឈ្មោះមិនអាចទទេ', 'err'); return; }
+  const full = g ? '## ' + name : name;
+  if(typeof it === 'string') a[i] = full; else { it.name = full; if(priceEl) it.price = priceEl.value.trim().replace(/^\$/, ''); }
+  cfgEdit = null; L.save(); renderCfgList(k);
+};
 
 function renderLabPriceTable(){ renderCfgList('lp'); }
 function renderPriceListCfgTable(){ renderCfgList('pl'); }
@@ -9897,7 +9978,7 @@ window.cfgMove = function(k, i, d){
   const a = CFG_LISTS[k].get(), t = i + d;
   if(t < 0 || t >= a.length) return;
   const x = a[i]; a[i] = a[t]; a[t] = x;
-  CFG_LISTS[k].save(); renderCfgList(k);
+  cfgEdit = null; CFG_LISTS[k].save(); renderCfgList(k);
 };
 window.cfgDel = function(k, i){
   const L = CFG_LISTS[k], a = L.get(), n = cfgItemName(a[i]);
@@ -9923,33 +10004,31 @@ Object.keys(CFG_LISTS).forEach(k => {
   const L = CFG_LISTS[k];
   // replace the old "add" handler with the group-aware one
   const old = document.getElementById(L.btn);
-  if(old){
-    const nb = old.cloneNode(true); old.replaceWith(nb);
-    nb.addEventListener('click', () => {
-      const ni = document.getElementById(L.nameId), pi = L.priceId ? document.getElementById(L.priceId) : null;
-      const name = ni.value.trim();
-      if(!name){ cfgIoStatus('⚠️ សូមបញ្ចូលឈ្មោះ', 'err'); ni.focus(); return; }
-      cfgInsert(k, L.mk(name, pi ? pi.value.trim().replace(/^\$/, '') : ''));
-      L.save(); renderCfgList(k);
-      ni.value = ''; if(pi) pi.value = '';
-    });
-  }
-  const gb = document.getElementById('cfgGrpAdd_' + k);
-  if(gb) gb.addEventListener('click', () => {
-    const gi = document.getElementById('cfgGrpNew_' + k);
-    const name = gi.value.trim().replace(/^#+\s*/, '');
-    if(!name){ cfgIoStatus('⚠️ សូមបញ្ចូលឈ្មោះក្រុម', 'err'); gi.focus(); return; }
-    CFG_LISTS[k].get().push(L.mk('## ' + name, ''));
-    L.save(); renderCfgList(k);
-    gi.value = '';
-    const sel = document.getElementById('cfgGrpSel_' + k); if(sel) sel.value = name;   // next new items go into this group
-  });
+  if(!old) return;
+  const nb = old.cloneNode(true); old.replaceWith(nb);
+  const doAdd = () => {
+    const ni = document.getElementById(L.nameId), pi = L.priceId ? document.getElementById(L.priceId) : null;
+    const ck = document.getElementById('cfgIsGrp_' + k);
+    const name = ni.value.trim().replace(/^#+\s*/, '');
+    if(!name){ cfgIoStatus('⚠️ សូមបញ្ចូលឈ្មោះ', 'err'); ni.focus(); return; }
+    const asGroup = !!(ck && ck.checked);
+    if(asGroup){
+      CFG_LISTS[k].get().push(L.mk('## ' + name, ''));
+      const sel0 = document.getElementById('cfgGrpSel_' + k); if(sel0) sel0.dataset.pick = name;   // next new items go into this group
+    } else cfgInsert(k, L.mk(name, pi ? pi.value.trim().replace(/^\$/, '') : ''));
+    cfgEdit = null; L.save(); renderCfgList(k);
+    if(asGroup){ const sel = document.getElementById('cfgGrpSel_' + k); if(sel) sel.value = name; }
+    ni.value = ''; if(pi) pi.value = ''; if(ck) ck.checked = false;
+  };
+  nb.addEventListener('click', doAdd);
+  [L.nameId, L.priceId].forEach(id => { const el = id && document.getElementById(id); if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); doAdd(); } }); });
 });
 
 function renderAll(){ 
   renderPatientDemographics(); 
   renderDashboardDayStats();
   renderTreatmentStats(); 
+  renderDiagnosisStats(); 
   renderAppointments(); 
   renderList(); 
   updateShell();
