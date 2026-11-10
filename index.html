@@ -502,6 +502,28 @@
   .detail-item .v{font-size:13.5px;color:var(--ink);margin-top:2px;}
 
   /* Tab styles inside settings pop up */
+  .ar-title{text-align:center;margin-bottom:6px;}
+  .ar-title h3{margin:0;color:var(--primary-dark);font-size:21px;font-weight:800;}
+  .ar-title .en{color:var(--ink-soft);font-size:13px;margin-top:2px;}
+  .ar-title .dt{font-weight:800;font-size:14px;margin-top:6px;color:var(--ink);}
+  .ar-title::after{content:"";display:block;height:2px;background:var(--primary);margin-top:10px;border-radius:2px;}
+  .ar-sec{background:var(--primary-dark);color:#fff;font-weight:800;font-size:14px;padding:9px 14px;border-radius:10px;margin:14px 0 10px;}
+  .ar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+  .ar-card{border:1px solid;border-radius:12px;padding:10px 8px;text-align:center;}
+  .ar-card .l{font-size:11.5px;font-weight:700;line-height:1.35;}
+  .ar-card .v{font-size:24px;font-weight:800;margin-top:4px;font-family:var(--mono, ui-monospace, monospace);}
+  .ar-card .s{font-size:11px;margin-top:2px;opacity:.85;}
+  .ar-green{background:#ecfdf3;border-color:#34c759;color:var(--ink);} .ar-green .v{color:var(--ink);}
+  .ar-blue{background:#eaf1fe;border-color:#bcd2f5;color:#0b4a9e;}
+  .ar-amber{background:#fff7e0;border-color:#f6dd8a;color:#8a5a00;}
+  .ar-red{background:#ffeaea;border-color:#f5b5b5;color:#a32a2a;}
+  .ar-teal{background:#e7f8f4;border-color:#9bdccd;color:#0b6b57;}
+  .ar-empty{border:1.5px dashed var(--border);border-radius:12px;padding:20px;text-align:center;color:var(--ink-dim);font-size:13px;background:var(--surface-2);}
+  .ar-appt{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);background:var(--surface-2);border-radius:12px;padding:12px 14px;margin-top:8px;cursor:pointer;}
+  .ar-appt:hover{border-color:var(--primary);}
+  .ar-appt .n{font-weight:800;font-size:15px;} .ar-appt .t{font-weight:800;color:var(--primary-dark);text-align:right;}
+  .ar-appt .tm{font-size:11px;color:var(--ink-dim);font-weight:600;}
+  .ar-exp{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:6px 4px;border-bottom:1px dashed var(--border);}
   .treatment-stats-grid .type-stat-card[data-key]{cursor:pointer;transition:transform .12s, box-shadow .12s, border-color .12s;}
   .treatment-stats-grid .type-stat-card[data-key]:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:var(--primary);}
   .sp-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border-soft);cursor:pointer;}
@@ -2301,6 +2323,7 @@
           </div>
           <div class="dash-quick">
             <button type="button" class="dq kh" data-dq="appointments">📅 ការណាត់</button>
+            <button type="button" class="dq kh" id="allReportBtn" title="របាយការណ៍សរុបប្រចាំថ្ងៃ · All Report">📋 AllReport</button>
           </div>
         </div>
 
@@ -3604,6 +3627,24 @@
         <button type="button" class="btn btn-primary kh" id="plDoneBtn" style="flex:1; justify-content:center;">✓ រួចរាល់</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- AllReport · របាយការណ៍សរុបប្រចាំថ្ងៃ -->
+<div class="overlay hidden" id="allReportOverlay">
+  <div class="modal" style="max-width:880px;">
+    <div class="modal-head">
+      <h2 class="kh">📋 AllReport · របាយការណ៍សរុប</h2>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline btn-sm" id="arPrev" title="ថ្ងៃមុន">‹</button>
+        <input type="date" id="arDate" class="mono" style="height:34px;padding:0 8px;">
+        <button type="button" class="btn btn-outline btn-sm" id="arNext" title="ថ្ងៃបន្ទាប់">›</button>
+        <button type="button" class="btn btn-outline btn-sm kh" id="arToday">ថ្ងៃនេះ</button>
+        <button type="button" class="btn btn-sm kh" id="arTelegram" title="ផ្ញើរបាយការណ៍ទៅ Telegram" style="background:#229ED9;color:#fff;border-color:#229ED9;">✈️ Telegram</button>
+        <button class="x" id="closeAllReport">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" id="allReportBody"></div>
   </div>
 </div>
 
@@ -10022,6 +10063,181 @@ Object.keys(CFG_LISTS).forEach(k => {
   };
   nb.addEventListener('click', doAdd);
   [L.nameId, L.priceId].forEach(id => { const el = id && document.getElementById(id); if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); doAdd(); } }); });
+});
+
+
+/* ---------- AllReport · របាយការណ៍សរុបប្រចាំថ្ងៃ ---------- */
+const AR_MONTHS = ['មករា','កុម្ភៈ','មីនា','មេសា','ឧសភា','មិថុនា','កក្កដា','សីហា','កញ្ញា','តុលា','វិច្ឆិកា','ធ្នូ'];
+let arDay = new Date();
+let arLast = null;
+function arYMD(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function arIsM(v){ const x = String(v || '').toUpperCase(); return x === 'M' || x.includes('ប្រុស'); }
+function arIsF(v){ const x = String(v || '').toUpperCase(); return x === 'F' || x.includes('ស្រី'); }
+
+function renderAllReport(){
+  const d = arDay;
+  document.getElementById('arDate').value = arYMD(d);
+  const ds = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
+  const de = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+  const inDay = v => { const t = parseAnyDate(v); return !!t && t >= ds && t <= de; };
+  const card = (cls, label, val, sub) => `<div class="ar-card ${cls}"><div class="l kh">${label}</div><div class="v">${val}</div>${sub ? `<div class="s kh">${sub}</div>` : ''}</div>`;
+
+  // records with activity that day (created, treated, or a procedure step dated that day)
+  const active = [];
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    const created = inDay(r.timestamp);
+    if(created || inDay(r.doingDateTime) || (r.procedureSteps || []).some(st => st && inDay(st.date))) active.push({ r, created });
+  });
+  const byPatient = new Map();
+  active.forEach(({ r }) => {
+    const k = patientKey(r), cur = byPatient.get(k) || { sex: '', age: '' };
+    if(!cur.sex && cleanStr(r.sex)) cur.sex = r.sex;
+    if(cur.age === '' && cleanStr(r.age) !== '') cur.age = r.age;
+    byPatient.set(k, cur);
+  });
+  const pats = Array.from(byPatient.values());
+  const age = p => parseInt(p.age, 10);
+  const earliest = new Map();
+  allRecords.forEach(r => { if(!cleanStr(r.name)) return; const t = parseAnyDate(r.timestamp); if(!t) return; const k = patientKey(r); if(!earliest.has(k) || t < earliest.get(k)) earliest.set(k, t); });
+  let newPatients = 0; earliest.forEach(t => { if(t >= ds && t <= de) newPatients++; });
+  const newCases = active.filter(x => x.created).length;
+
+  // ២. case types = treatments of the day
+  const byTreat = {};
+  active.forEach(({ r }) => { const t = cleanStr(r.treatment); if(t && t !== '—') byTreat[t] = (byTreat[t] || 0) + 1; });
+  const treatKeys = Object.keys(byTreat).sort((a, b) => byTreat[b] - byTreat[a]);
+
+  // ៣. payment types = how today's payments were made
+  const byPay = {};
+  let payTotal = 0;
+  buildIncomeRows().filter(x => inDay(x.date)).forEach(x => {
+    const k = cleanStr(x.category) || '—';
+    if(!byPay[k]) byPay[k] = { n: 0, amt: 0 };
+    byPay[k].n++; byPay[k].amt += x.amount; payTotal += x.amount;
+  });
+  const payKeys = Object.keys(byPay).sort((a, b) => byPay[b].amt - byPay[a].amt);
+
+  // ៤. appointments of the day
+  const appts = [], seen = new Set();
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    let when = null;
+    if(r.timeLast && inDay(r.timeLast)) when = parseAnyDate(r.timeLast);
+    (r.procedureSteps || []).forEach(st => {
+      const hl = stepHighlightFor(st && st.step);
+      if(hl && hl.id === 'appt' && inDay(st.date)){ const t = parseAnyDate(st.date); if(!when || t < when) when = t; }
+    });
+    if(!when) return;
+    const key = r._id || (r.name + r.timestamp);
+    if(seen.has(key)) return; seen.add(key);
+    appts.push({ r, when });
+  });
+  appts.sort((a, b) => a.when - b.when);
+  const tmStr = t => { if(!t || (t.getHours() === 0 && t.getMinutes() === 0)) return ''; let h = t.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return String(h).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0') + ' ' + ap; };
+
+  // ៥. accounting
+  const S = computeDayStats(d);
+  const income = S.income, expense = S.expense, profit = income - expense;
+  const expItems = (expensesList || []).filter(e => isYMD(e.date) && e.date === arYMD(d));
+
+  arLast = {
+    d, total: pats.length, cases: active.length, newPatients, newCases,
+    female: pats.filter(p => arIsF(p.sex)).length, male: pats.filter(p => arIsM(p.sex)).length,
+    child: pats.filter(p => !isNaN(age(p)) && age(p) <= 15).length,
+    girl: pats.filter(p => arIsF(p.sex) && !isNaN(age(p)) && age(p) <= 15).length,
+    treat: treatKeys.map(k => [k, byTreat[k]]), pay: payKeys.map(k => [k, byPay[k].n, byPay[k].amt]),
+    appts: appts.map(a => ({ name: cleanStr(a.r.name), treat: cleanStr(a.r.treatment) || cleanStr(a.r.doing) || '—', time: tmStr(a.when) })),
+    income, expense, profit, exp: expItems.map(e => ({ t: e.type || '—', desc: e.desc || '', amt: parseFloat(e.amount) || 0 }))
+  };
+  const dmy = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+  document.getElementById('allReportBody').innerHTML = `
+    <div class="ar-title kh"><h3>របាយការណ៍ផ្នែកសេវាជំងឺមាត់ធ្មេញ</h3>
+      <div class="en">Kep Hospital-Dental Service - Dental Brief Reports</div>
+      <div class="dt">ថ្ងៃទី ${d.getDate()} ខែ ${AR_MONTHS[d.getMonth()]} ឆ្នាំ ${d.getFullYear()} · ទិន្នន័យ (${dmy})</div></div>
+
+    <div class="ar-sec kh">១. សរុបរួម</div>
+    <div class="ar-grid">
+      ${card('ar-green', 'សរុបជំងឺ (Total)', pats.length)}
+      ${card('ar-green', 'សរុបករណី (Case)', active.length)}
+      ${card('ar-blue', 'អ្នកជំងឺថ្មី (New Patient)', newPatients)}
+      ${card('ar-amber', 'ករណីថ្មី (New Case)', newCases)}
+      ${card('ar-red', 'ស្រី (Female)', pats.filter(p => arIsF(p.sex)).length)}
+      ${card('ar-blue', 'ប្រុស (Male)', pats.filter(p => arIsM(p.sex)).length)}
+      ${card('ar-amber', 'ក្មេង (ស្មើឬក្រោម១៥)', pats.filter(p => !isNaN(age(p)) && age(p) <= 15).length)}
+      ${card('ar-red', 'ក្មេងស្រី', pats.filter(p => arIsF(p.sex) && !isNaN(age(p)) && age(p) <= 15).length)}
+    </div>
+
+    <div class="ar-sec kh">២. ប្រភេទករណី</div>
+    ${treatKeys.length ? `<div class="ar-grid">${treatKeys.map(k => card('ar-teal', escHTML(k), byTreat[k])).join('')}</div>` : '<div class="ar-empty kh">គ្មានទិន្នន័យ · No data</div>'}
+
+    <div class="ar-sec kh">៣. ប្រភេទទូទាត់</div>
+    ${payKeys.length ? `<div class="ar-grid">${payKeys.map(k => card('ar-blue', escHTML(k), byPay[k].n, finMoney(byPay[k].amt))).join('')}</div>` : '<div class="ar-empty kh">គ្មានទិន្នន័យ · No data</div>'}
+
+    <div class="ar-sec kh">៤. ការណាត់ជួប</div>
+    <div class="ar-card ar-blue" style="padding:14px;"><div class="l kh">ការណាត់ជួប (Appointment)</div><div class="v">${appts.length}</div></div>
+    ${appts.map(a => `<div class="ar-appt" data-name="${encodeURIComponent(a.r.name)}"><div><div class="n kh">${escHTML(a.r.name)}</div>${tmStr(a.when) ? `<div class="tm mono">${tmStr(a.when)}</div>` : ''}</div><div class="t kh">${escHTML(cleanStr(a.r.treatment) || cleanStr(a.r.doing) || '—')}</div></div>`).join('')}
+
+    <div class="ar-sec kh">៥. គណនេយ្យ · Account</div>
+    <div class="ar-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
+      ${card('ar-green', '💰 ចំណូលថ្ងៃនេះ (Income)', finMoney(income))}
+      ${card('ar-red', '💸 ចំណាយថ្ងៃនេះ (Expense)', finMoney(expense))}
+      ${card(profit >= 0 ? 'ar-teal' : 'ar-red', '📈 សរុបចំណេញ (Net Profit)', (profit < 0 ? '-' : '') + finMoney(Math.abs(profit)), profit >= 0 ? 'ចំណូល − ចំណាយ' : 'ខាតបង់ · Loss')}
+    </div>
+    ${expItems.length ? `<div class="kh" style="margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-soft);">ចំណាយក្នុងថ្ងៃ</div>${expItems.map(e => `<div class="ar-exp kh"><span>${escHTML(e.type || '—')} · ${escHTML(e.desc || '')}</span><b class="mono">${finMoney(parseFloat(e.amount) || 0)}</b></div>`).join('')}` : ''}
+  `;
+}
+
+function arBuildText(){
+  const R = arLast; if(!R) return '';
+  const d = R.d, dmy = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+  const m = v => finMoney(v);
+  const L = [];
+  L.push('📋 របាយការណ៍ផ្នែកសេវាជំងឺមាត់ធ្មេញ');
+  L.push('Kep Hospital-Dental Service');
+  L.push('ថ្ងៃទី ' + d.getDate() + ' ខែ ' + AR_MONTHS[d.getMonth()] + ' ឆ្នាំ ' + d.getFullYear() + ' · ទិន្នន័យ (' + dmy + ')');
+  L.push('');
+  L.push('១. សរុបរួម');
+  L.push('• សរុបជំងឺ: ' + R.total + ' · សរុបករណី: ' + R.cases);
+  L.push('• អ្នកជំងឺថ្មី: ' + R.newPatients + ' · ករណីថ្មី: ' + R.newCases);
+  L.push('• ស្រី: ' + R.female + ' · ប្រុស: ' + R.male + ' · ក្មេង(≤១៥): ' + R.child + ' · ក្មេងស្រី: ' + R.girl);
+  L.push('');
+  L.push('២. ប្រភេទករណី');
+  if(R.treat.length) R.treat.forEach(t => L.push('• ' + t[0] + ': ' + t[1])); else L.push('• គ្មានទិន្នន័យ');
+  L.push('');
+  L.push('៣. ប្រភេទទូទាត់');
+  if(R.pay.length) R.pay.forEach(x => L.push('• ' + x[0] + ': ' + x[1] + ' ដង · ' + m(x[2]))); else L.push('• គ្មានទិន្នន័យ');
+  L.push('');
+  L.push('៤. ការណាត់ជួប: ' + R.appts.length);
+  R.appts.forEach(a => L.push('• ' + a.name + ' — ' + a.treat + (a.time ? ' (' + a.time + ')' : '')));
+  L.push('');
+  L.push('៥. គណនេយ្យ · Account');
+  L.push('💰 ចំណូល: ' + m(R.income));
+  L.push('💸 ចំណាយ: ' + m(R.expense));
+  L.push((R.profit >= 0 ? '📈 ចំណេញ: ' : '📉 ខាតបង់: ') + (R.profit < 0 ? '-' : '') + m(Math.abs(R.profit)));
+  let t = L.join('\n');
+  if(t.length > 3900) t = t.slice(0, 3890) + '\n…';
+  return t;
+}
+document.getElementById('arTelegram').addEventListener('click', () => {
+  renderAllReport();                                   // make sure the numbers are current
+  const text = arBuildText();
+  try{ if(navigator.clipboard) navigator.clipboard.writeText(text); }catch(e){}     // backup: paste it manually if Telegram does not fill the text
+  window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(text), '_blank', 'noopener');
+});
+function openAllReport(){ arDay = new Date(); renderAllReport(); document.getElementById('allReportOverlay').classList.remove('hidden'); }
+function arShift(n){ arDay = new Date(arDay.getFullYear(), arDay.getMonth(), arDay.getDate() + n); renderAllReport(); }
+document.getElementById('allReportBtn').addEventListener('click', openAllReport);
+document.getElementById('closeAllReport').addEventListener('click', () => document.getElementById('allReportOverlay').classList.add('hidden'));
+document.getElementById('allReportOverlay').addEventListener('click', e => { if(e.target.id === 'allReportOverlay') e.target.classList.add('hidden'); });
+document.getElementById('arPrev').addEventListener('click', () => arShift(-1));
+document.getElementById('arNext').addEventListener('click', () => arShift(1));
+document.getElementById('arToday').addEventListener('click', () => { arDay = new Date(); renderAllReport(); });
+document.getElementById('arDate').addEventListener('change', e => { const v = e.target.value; if(isYMD(v)){ const [y, m, dd] = v.split('-').map(Number); arDay = new Date(y, m - 1, dd); renderAllReport(); } });
+document.getElementById('allReportBody').addEventListener('click', e => {
+  const row = e.target.closest('.ar-appt'); if(!row) return;
+  document.getElementById('allReportOverlay').classList.add('hidden');
+  openPatientRecord(decodeURIComponent(row.dataset.name));
 });
 
 function renderAll(){ 
