@@ -3644,6 +3644,7 @@
         <button class="x" id="closeAllReport">✕</button>
       </div>
     </div>
+    <div id="arMsg" class="kh" style="display:none;margin:10px 16px 0;padding:9px 12px;border-radius:8px;font-size:12.5px;line-height:1.5;"></div>
     <div class="modal-body" id="allReportBody"></div>
   </div>
 </div>
@@ -10219,13 +10220,80 @@ function arBuildText(){
   if(t.length > 3900) t = t.slice(0, 3890) + '\n…';
   return t;
 }
-document.getElementById('arTelegram').addEventListener('click', () => {
+// Direct send: the app asks Apps Script, which holds the bot token (TG_TOKEN / TG_CHAT_ID in Script properties) and posts to Telegram.
+async function arPostAction(action, data){
+  if(!webAppUrl) throw new Error('មិនទាន់មាន Apps Script URL');
+  let res;
+  try{ res = await fetch(webAppUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, data, timestamp: Date.now() }) }); }
+  catch(e){ throw new Error('ទាក់ទង Apps Script មិនបាន (ពិនិត្យអ៊ីនធឺណិត ឬ Web App URL)'); }
+  const raw = await res.text();
+  let j; try{ j = JSON.parse(raw); }catch(e){ throw new Error('Apps Script មិនទាន់មានកូដ Telegram (ដាក់ Code.gs ថ្មី ហើយ Deploy)'); }
+  if(!j || j.status !== 'success') throw new Error((j && j.message) || 'error');
+}
+function arSendTelegram(text){ return arPostAction('sendTelegram', { text }); }
+
+// Picture of the report (same look as the popup, white background) -> base64 JPEG
+async function arCaptureImage(){
+  const h2c = await s2sLoadHtml2Canvas();
+  const host = document.createElement('div');
+  host.style.cssText = 'position:fixed;left:-10000px;top:0;width:900px;background:#fff;color:#0f172a;padding:24px;box-sizing:border-box;' +
+    '--ink:#0f172a;--ink-soft:#475569;--ink-dim:#64748b;--surface:#ffffff;--surface-2:#f8faf8;--border:#dfe7e1;--primary:#22c55e;--primary-dark:#157a3b;';
+  host.innerHTML = document.getElementById('allReportBody').innerHTML;
+  document.body.appendChild(host);
+  try{
+    const canvas = await h2c(host, { scale: 1.5, backgroundColor: '#ffffff', useCORS: true, logging: false });
+    return canvas.toDataURL('image/jpeg', 0.88).split(',')[1];
+  } finally { host.remove(); }
+}
+function arCaption(){
+  const R = arLast; if(!R) return '';
+  const d = R.d, dmy = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+  return '📋 របាយការណ៍ផ្នែកសេវាជំងឺមាត់ធ្មេញ · ' + dmy + '\n💰 ចំណូល ' + finMoney(R.income) + ' · 💸 ចំណាយ ' + finMoney(R.expense) + '\n' +
+    (R.profit >= 0 ? '📈 ចំណេញ ' : '📉 ខាតបង់ ') + (R.profit < 0 ? '-' : '') + finMoney(Math.abs(R.profit));
+}
+function arMsg(html, kind){
+  const el = document.getElementById('arMsg');
+  if(!html){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.style.background = kind === 'err' ? '#fdecec' : '#e8f7ee';
+  el.style.color = kind === 'err' ? '#b42318' : '#157a3b';
+  el.innerHTML = html;
+}
+document.getElementById('arTelegram').addEventListener('click', async () => {
+  const btn = document.getElementById('arTelegram');
+  const label = '✈️ Telegram';
   renderAllReport();                                   // make sure the numbers are current
   const text = arBuildText();
-  try{ if(navigator.clipboard) navigator.clipboard.writeText(text); }catch(e){}     // backup: paste it manually if Telegram does not fill the text
-  window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(text), '_blank', 'noopener');
+  arMsg('');
+  btn.disabled = true; btn.textContent = '⏳ កំពុងថតរូប...';
+  try{
+    let note = '';
+    try{
+      const image = await arCaptureImage();
+      await arPostAction('sendTelegramPhoto', { image, caption: arCaption() });
+    }catch(imgErr){
+      console.warn('telegram photo', imgErr);
+      await arSendTelegram(text);                      // fallback: plain text
+      note = ' (ផ្ញើជាអក្សរ ព្រោះរូបភាពមិនបាន៖ ' + escHTML((imgErr && imgErr.message) || 'error') + ')';
+    }
+    btn.textContent = '✓ បានផ្ញើ';
+    arMsg('✓ បានផ្ញើទៅ Telegram រួចរាល់' + note, 'ok');
+  }catch(e){
+    console.warn('telegram send', e);
+    btn.textContent = '⚠️ ផ្ញើមិនបាន';
+    const why = (e && e.message) ? e.message : String(e);
+    arMsg('⚠️ ផ្ញើដោយស្វ័យប្រវត្តិមិនបាន៖ <b>' + escHTML(why) + '</b> &nbsp;<a href="#" id="arTgManual" style="color:inherit;text-decoration:underline;font-weight:700;">បើក Telegram ផ្ញើដោយដៃ</a>', 'err');
+    const lnk = document.getElementById('arTgManual');
+    if(lnk) lnk.addEventListener('click', ev => {
+      ev.preventDefault();
+      try{ if(navigator.clipboard) navigator.clipboard.writeText(text); }catch(_){}
+      window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(text), '_blank', 'noopener');
+    });
+  }
+  setTimeout(() => { btn.textContent = label; btn.disabled = false; }, 2500);
 });
-function openAllReport(){ arDay = new Date(); renderAllReport(); document.getElementById('allReportOverlay').classList.remove('hidden'); }
+function openAllReport(){ arDay = new Date(); arMsg(''); renderAllReport(); document.getElementById('allReportOverlay').classList.remove('hidden'); }
 function arShift(n){ arDay = new Date(arDay.getFullYear(), arDay.getMonth(), arDay.getDate() + n); renderAllReport(); }
 document.getElementById('allReportBtn').addEventListener('click', openAllReport);
 document.getElementById('closeAllReport').addEventListener('click', () => document.getElementById('allReportOverlay').classList.add('hidden'));
