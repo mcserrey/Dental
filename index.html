@@ -535,6 +535,7 @@
   .sp-sub{font-size:11px;color:var(--ink-dim);margin-top:2px;}
   .sp-badge{flex-shrink:0;font-size:11px;font-weight:700;color:var(--primary-dark);background:var(--surface-2);border-radius:999px;padding:3px 9px;}
   optgroup{color:#1d4ed8;font-weight:800;font-style:normal;}
+  optgroup option{color:var(--ink, #0f172a);font-weight:400;font-style:normal;padding-left:12px;}
   .pl-group .pl-name{color:#1d4ed8;font-weight:800;}
   .cfg-grp-chk{display:flex;align-items:center;gap:5px;height:38px;font-size:12px;font-weight:700;color:#1d4ed8;white-space:nowrap;cursor:pointer;}
   .cfg-grp-chk input{width:16px;height:16px;margin:0;accent-color:#1d4ed8;}
@@ -3654,9 +3655,18 @@
   <div class="modal" style="max-width:560px;">
     <div class="modal-head">
       <h2 class="kh" id="statPatientsTitle">អ្នកជំងឺ</h2>
-      <button class="x" id="closeStatPatients">✕</button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button type="button" class="btn btn-outline btn-sm kh" id="statEditBtn" title="កែឈ្មោះក្រុមស្ថិតិនេះ">✏️ កែ</button>
+        <button class="x" id="closeStatPatients">✕</button>
+      </div>
     </div>
     <div class="modal-body">
+      <div id="statEditBar" style="display:none;gap:8px;align-items:center;margin-bottom:10px;padding:10px;border-radius:10px;background:#fffbe6;border:1px solid #f6dd8a;flex-wrap:wrap;">
+        <input type="text" id="statEditInput" class="kh" style="flex:1 1 200px;min-width:0;" placeholder="ឈ្មោះថ្មី">
+        <button type="button" class="btn btn-primary btn-sm kh" id="statEditSave">✓ រក្សាទុក</button>
+        <button type="button" class="btn btn-outline btn-sm kh" id="statEditCancel">↩ បោះបង់</button>
+        <div class="kh" id="statEditHint" style="flex-basis:100%;font-size:11.5px;color:var(--ink-soft);"></div>
+      </div>
       <div class="kh" id="statPatientsSummary" style="font-size:12.5px;color:var(--ink-soft);margin-bottom:10px;"></div>
       <input type="text" id="statPatientsSearch" class="kh" placeholder="🔍 ស្វែងរកឈ្មោះ..." style="margin-bottom:10px;">
       <div id="statPatientsList" style="max-height:58vh;overflow-y:auto;border:1px solid var(--border);border-radius:10px;"></div>
@@ -5535,6 +5545,7 @@ function renderDiagnosisStats(){ renderStatCards('diagnosis', 'diagnosisStatsRow
 
 /* ---------- Click a stat card -> list of the patients in that group ---------- */
 let statPatientsData = [];
+let statPatientsCtx = null;   // { field, key } of the card that is open
 function openStatPatients(field, key){
   const recs = allRecords.filter(r => cleanStr(r[field]) === key);
   const groups = new Map();
@@ -5550,6 +5561,8 @@ function openStatPatients(field, key){
     return { name: cleanStr(latest.name), sex: pick('sex'), age: pick('age'), phone: pick('phone'), count: list.length, last: latest.timestamp, lastTs: parseAnyDate(latest.timestamp) || 0 };
   }).sort((a, b) => b.lastTs - a.lastTs);
 
+  statPatientsCtx = { field, key };
+  document.getElementById('statEditBar').style.display = 'none';
   document.getElementById('statPatientsTitle').textContent = (field === 'diagnosis' ? '🩺 ' : '🦷 ') + key;
   document.getElementById('statPatientsSummary').innerHTML =
     `សរុប/Total <b class="mono">${recs.length}</b> ករណី · <b class="mono">${statPatientsData.length}</b> នាក់`;
@@ -5579,6 +5592,49 @@ document.getElementById('statPatientsList').addEventListener('click', e => {
   closeStatPatients();
   openPatientRecord(decodeURIComponent(row.dataset.name));
 });
+
+/* ---------- ✏️ កែ: rename a Treatment / Diagnosis group on all its cases ---------- */
+function statEditOpen(){
+  if(!statPatientsCtx) return;
+  const bar = document.getElementById('statEditBar'), inp = document.getElementById('statEditInput');
+  const n = allRecords.filter(r => cleanStr(r[statPatientsCtx.field]) === statPatientsCtx.key).length;
+  inp.value = statPatientsCtx.key;
+  document.getElementById('statEditHint').textContent = 'ការប្តូរនេះនឹងកែលើ ' + n + ' ករណី ហើយ Sync ទៅ Sheet។ បើឈ្មោះដូចក្រុមផ្សេងដែលមានស្រាប់ ពួកវានឹងបូកបញ្ចូលគ្នា។';
+  bar.style.display = 'flex';
+  inp.focus(); inp.select();
+}
+function statEditSave(){
+  const ctx = statPatientsCtx; if(!ctx) return;
+  const newName = document.getElementById('statEditInput').value.trim();
+  if(!newName){ document.getElementById('statEditHint').textContent = '⚠️ ឈ្មោះមិនអាចទទេ'; return; }
+  if(newName === ctx.key){ document.getElementById('statEditBar').style.display = 'none'; return; }
+  const targets = allRecords.filter(r => cleanStr(r[ctx.field]) === ctx.key);
+  showConfirm('ប្តូរ "' + escHTML(ctx.key) + '" → "' + escHTML(newName) + '"\nសម្រាប់ ' + targets.length + ' ករណី?', () => {
+    targets.forEach(r => {
+      r[ctx.field] = newName;
+      const payload = { ...r, payments: JSON.stringify(r.payments || []), procedureStepsJSON: JSON.stringify(r.procedureSteps || []), txPriceItemsJSON: JSON.stringify(r.txPriceItems || []) };
+      try{ pushToSheet('updateRecord', payload); }catch(err){ console.warn('Sync queue error:', err); }
+    });
+    saveLocalRecords();
+    // keep the Settings list consistent (only if the old name is there and the new name is not)
+    try{
+      if(ctx.field === 'treatment'){
+        const i = appTreatments.findIndex(t => cleanStr(t.name) === ctx.key);
+        if(i >= 0 && !appTreatments.some(t => cleanStr(t.name) === newName)){ appTreatments[i].name = newName; saveClinicalConfigs(); }
+      } else {
+        const i = appDiagnosis.findIndex(x => cleanStr(x) === ctx.key);
+        if(i >= 0 && !appDiagnosis.some(x => cleanStr(x) === newName)){ appDiagnosis[i] = newName; saveClinicalConfigs(); }
+      }
+    }catch(e){}
+    try{ renderAll(); }catch(e){ renderTreatmentStats(); renderDiagnosisStats(); }
+    openStatPatients(ctx.field, newName);
+  }, 'ប្តូរ Rename');
+}
+document.getElementById('statEditBtn').addEventListener('click', statEditOpen);
+document.getElementById('statEditSave').addEventListener('click', statEditSave);
+document.getElementById('statEditCancel').addEventListener('click', () => { document.getElementById('statEditBar').style.display = 'none'; });
+document.getElementById('statEditInput').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); statEditSave(); } else if(e.key === 'Escape'){ document.getElementById('statEditBar').style.display = 'none'; } });
+
 ['treatmentStatsRow', 'diagnosisStatsRow'].forEach(id => {
   const grid = document.getElementById(id);
   const go = e => { const c = e.target.closest('.type-stat-card[data-key]'); if(c) openStatPatients(c.dataset.field, decodeURIComponent(c.dataset.key)); };
