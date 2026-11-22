@@ -11,21 +11,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Khmer:wght@400;500;600;700&family=Moul&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F5F9FC; --surface:#FFFFFF; --surface-2:#EDF3FA;
-    --border:#D9E6F2; --border-soft:#E8F1FA;
-    --ink:#132539; --ink-soft:#4C6178; --ink-dim:#8DA0B3;
-    --primary:#54b754; --primary-dark:#2F7D32; --primary-soft:#CDEBCD; --primary-softer:#EDF8ED;
-    --amber:#E0B424; --amber-soft:#F7EFCF; --amber-dark:#7A5E00;
+    --bg:#F1F7FC; --surface:#FFFFFF; --surface-2:#F6FAFE;
+    --border:#D2E3F2; --border-soft:#E3EEF8;
+    --ink:#0E2238; --ink-soft:#425F7A; --ink-dim:#6E8AA5;
+    --primary:#2F80ED; --primary-strong:#1F66D6; --primary-dark:#134B9E; --primary-soft:#DBEAFE; --primary-softer:#EFF6FF;
+    --accent:#4ADE80; --accent-strong:#22C55E; --accent-dark:#15803D; --accent-soft:#DCFCE7; --accent-softer:#F0FDF4;
+    --amber:#E8A33D; --amber-soft:#FBEBD2; --amber-dark:#8A5C16;
     --coral:#E4574C; --coral-soft:#FBE1DE; --coral-dark:#A43227;
-    --shadow:0 12px 30px -16px rgba(19,37,57,0.16);
-    --shadow-sm:0 4px 14px -8px rgba(19,37,57,0.14);
+    --shadow:0 12px 30px -16px rgba(10,40,85,0.20);
+    --shadow-sm:0 4px 14px -8px rgba(10,40,85,0.18);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(1000px 460px at 8% -8%, rgba(84,183,84,0.08), transparent 55%),
-      radial-gradient(800px 400px at 105% 0%, rgba(232,163,23,0.07), transparent 55%),
+      radial-gradient(1000px 460px at 8% -8%, rgba(47,128,237,0.08), transparent 55%),
+      radial-gradient(800px 400px at 105% 0%, rgba(74,222,128,0.11), transparent 55%),
       var(--bg);
     color:var(--ink);
     font-family:'Inter','Noto Sans Khmer',sans-serif;
@@ -69,7 +70,7 @@
 
   .btn{border:none;cursor:pointer;font-weight:600;font-size:13.5px;padding:9px 15px;border-radius:9px;display:inline-flex;align-items:center;gap:7px;transition:all .13s ease;}
   .btn:active{transform:translateY(1px);}
-  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 6px 16px -6px rgba(84,183,84,0.5);}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 6px 16px -6px rgba(47,128,237,0.5);}
   .btn-primary:hover{background:var(--primary-dark);}
   .btn-outline{background:var(--surface);color:var(--ink);border:1.5px solid var(--border);}
   .btn-outline:hover{border-color:var(--primary);background:var(--primary-softer);}
@@ -275,7 +276,7 @@
   .xray-item:hover {
     transform: translateY(-3px);
     border-color: var(--primary);
-    box-shadow: 0 6px 14px -6px rgba(84,183,84,0.4);
+    box-shadow: 0 6px 14px -6px rgba(47,128,237,0.4);
   }
   .xray-item img {
     width: 100%;
@@ -377,7 +378,7 @@
   .tooth-cell.treated {
     background: var(--primary) !important; border-color: var(--primary-dark) !important;
     color: #fff !important; font-weight: 800 !important;
-    box-shadow: 0 4px 10px -3px rgba(84,183,84,0.4); transform: translateY(-2px);
+    box-shadow: 0 4px 10px -3px rgba(47,128,237,0.4); transform: translateY(-2px);
   }
   .tooth-cell.treated:hover:not(.invisible) { transform: scale(1.15) translateY(-2px); background: var(--primary-dark) !important; }
   .tooth-cell.planned:not(.treated) {
@@ -649,13 +650,13 @@
    APP SHELL — left sidebar (EMR layout)
    ===================================================================== */
 :root{
-  --sb-w:264px; --sb-w-min:76px;
-  --sb-bg:#3F8F43; /* ពណ៌ផ្ទៃ Sidebar (បៃតង · មាសជាពណ៌បន្លិច) */
-  --sb-ink:#FFFFFF; /* ពណ៌អក្សរធម្មតា */
-  --sb-dim:#DCEFDD; /* ពណ៌អក្សររាងព្រាល */
-  --sb-line:rgba(255,255,255,.2); 
-  --sb-hover:rgba(255,255,255,.15); 
-  --sb-active:rgba(0,0,0,.15);
+  --sb-w:252px; --sb-w-min:72px;
+  --sb-bg:linear-gradient(180deg,#0B3C85 0%,#0E5A9E 58%,#12806F 100%); /* ពណ៌ផ្ទៃ Sidebar ដូច Index 7 */
+    --sb-ink:#EAF4FF;
+    --sb-dim:#A8CBEC;
+    --sb-line:rgba(255,255,255,.12);
+    --sb-hover:rgba(255,255,255,.09);
+    --sb-active:rgba(255,255,255,.16);
 }
   .sidebar{
     position:fixed; top:0; left:0; bottom:0; width:var(--sb-w); z-index:50;
@@ -686,15 +687,15 @@
   .sb-item:focus-visible{ outline:2px solid var(--amber); outline-offset:2px; }
   .sb-item[aria-current="page"]{ background:var(--sb-active); color:#fff; }
   .sb-item[aria-current="page"]::before{
-    content:""; position:absolute; left:-10px; top:9px; bottom:9px; width:3px; border-radius:0 3px 3px 0; background:var(--amber);
+    content:""; position:absolute; left:-10px; top:9px; bottom:9px; width:3px; border-radius:0 3px 3px 0; background:#4ADE80;
   }
-  .sb-ico{ width:20px; height:20px; flex:none; display:grid; place-items:center; color:#F2D675; }
-  .sb-item[aria-current="page"] .sb-ico{ color:var(--amber); }
+  .sb-ico{ width:20px; height:20px; flex:none; display:grid; place-items:center; color:currentColor; }
+  .sb-item[aria-current="page"] .sb-ico{ color:currentColor; }
   .sb-ico svg{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
   .sb-label{ display:flex; flex-direction:column; line-height:1.3; min-width:0; flex:1; }
   .sb-kh{ font-family:'Noto Sans Khmer','Inter',sans-serif; font-size:13.5px; font-weight:600; }
   .sb-en{ font-family:'Inter',sans-serif; font-size:10.5px; color:var(--sb-dim); }
-  .sb-item[aria-current="page"] .sb-en{ color:#B9D6C8; }
+  .sb-item[aria-current="page"] .sb-en{ color:#D6F7E3; }
   .sb-badge{
     font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; line-height:1;
     padding:4px 7px; border-radius:999px; min-width:24px; text-align:center;
@@ -765,7 +766,7 @@
   .chip[aria-pressed="true"] .chip-dot{ box-shadow:0 0 0 2px rgba(255,255,255,.85); }
 
   /* ---- Patients: highlight each card by its category ---- */
-  .record-card[data-state]:not([data-state="done"]){ --st:var(--primary); --st-bg:rgba(84,183,84,0.06); --st-sh:rgba(84,183,84,0.28);
+  .record-card[data-state]:not([data-state="done"]){ --st:var(--primary); --st-bg:rgba(47,128,237,0.06); --st-sh:rgba(47,128,237,0.28);
     border:1.8px solid var(--st) !important; border-left-width:6px !important;
     background:linear-gradient(90deg, var(--st-bg) 0%, var(--surface) 55%) !important;
     box-shadow:0 4px 14px -8px var(--st-sh) !important; }
@@ -867,7 +868,7 @@
   .icon-btn:hover{ border-color:var(--primary); color:var(--ink); background:var(--primary-softer); }
   .icon-btn.danger:hover{ border-color:#f5b5af; background:var(--coral-soft); color:var(--coral-dark); }
   .icon-btn:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
-  .pt-link{ color:var(--primary-dark); cursor:pointer; font-weight:700; text-decoration:underline; text-decoration-color:rgba(84,183,84,.35); text-underline-offset:3px; }
+  .pt-link{ color:var(--primary-dark); cursor:pointer; font-weight:700; text-decoration:underline; text-decoration-color:rgba(47,128,237,.35); text-underline-offset:3px; }
   .qty-big{ font-family:'IBM Plex Mono',monospace; font-weight:800; font-size:15px; color:var(--ink); }
   .form-error{ color:var(--coral-dark); background:var(--coral-soft); border:1px solid #f5b5af; border-radius:8px; padding:8px 10px; font-size:12px; margin-top:12px; }
 
@@ -1084,7 +1085,7 @@
 
   /* ===== Dashboard (EMR overview) ===== */
   .dash-hero{ display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; padding:18px 20px; margin-bottom:16px; border-radius:16px;
-    background:linear-gradient(120deg, #3F8F43 0%, #5FA34A 60%, #B8962A 100%); color:#fff; box-shadow:var(--shadow); }
+    background:linear-gradient(120deg, #134B9E 0%, #2F80ED 60%, #12806F 100%); color:#fff; box-shadow:var(--shadow); }
   .dash-greet{ font-size:20px; font-weight:700; }
   .dash-date{ font-size:12.5px; opacity:.9; margin-top:3px; }
   .dash-quick{ display:flex; gap:8px; flex-wrap:wrap; }
@@ -1713,7 +1714,7 @@
   .lib-cont-b{ min-width:0; flex:1; }
   .lib-cont-t{ font-size:13.5px; font-weight:800; color:var(--lb-ink); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .lib-cont-m{ font-size:11.5px; color:var(--lb-dim); margin-top:3px; } .lib-cont-m b{ color:var(--lb-acc); }
-  .lib-cont-p{ height:5px; border-radius:99px; background:#E2E8F0; overflow:hidden; margin-top:9px; } .lib-cont-p i{ display:block; height:100%; background:linear-gradient(90deg,#54b754,#4F46E5); border-radius:99px; }
+  .lib-cont-p{ height:5px; border-radius:99px; background:#E2E8F0; overflow:hidden; margin-top:9px; } .lib-cont-p i{ display:block; height:100%; background:linear-gradient(90deg,#2F80ED,#4F46E5); border-radius:99px; }
 
   /* media cards / rows */
   #view-library .lib-card, #view-library .lib-row{ border-color:var(--lb-line); border-radius:16px; box-shadow:0 6px 18px -14px rgba(15,23,42,.35); }
@@ -1725,7 +1726,7 @@
   .lib-eb{ background:#FCFBF7 !important; }
   .lib-eb-bar{ background:#fff !important; border-top:1px solid #E2E8F0 !important; color:#475569 !important; }
   .lib-eb-bar button{ border-color:#E2E8F0 !important; background:#F8FAFC !important; color:#0F172A !important; border-radius:999px !important; }
-  .lib-eb-prog{ background:#E2E8F0 !important; } .lib-eb-prog i{ background:linear-gradient(90deg,#54b754,#4F46E5) !important; }
+  .lib-eb-prog{ background:#E2E8F0 !important; } .lib-eb-prog i{ background:linear-gradient(90deg,#2F80ED,#4F46E5) !important; }
   .lib-eb-nav{ background:rgba(15,23,42,.06) !important; color:#0F172A !important; border-radius:999px !important; width:44px !important; height:44px !important; }
   .lib-eb-nav:hover{ background:rgba(15,23,42,.14) !important; }
   .lib-eb-load{ background:linear-gradient(135deg,#0F766E,#4338CA) !important; }
@@ -2184,6 +2185,203 @@
   #view-dashboard .tk-num:not(.tk-old) b{ color:#FFE9A0; }
   #view-dashboard .d2-title::before{ content:''; width:4px; height:18px; border-radius:2px; background:var(--gold); align-self:center; }
   #view-dashboard .fin-card-head{ border-bottom:2px solid var(--gold-soft); }
+  .sidebar{ border-right:1px solid rgba(74,222,128,.25); }
+</style>
+<style id="dash7Style">
+/* ===== ported from Index (7): dashboard ===== */
+  .link-btn{background:none;border:none;padding:2px 4px;font:inherit;font-size:12px;font-weight:600;color:var(--primary-dark);cursor:pointer;border-radius:6px;}
+  .link-btn:hover{text-decoration:underline;}
+
+  /* dashboard KPIs */
+  .kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+  @media (max-width:1180px){ .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .kpi-grid > :last-child:nth-child(odd){grid-column:1 / -1;} }
+  .appt-daytag{display:inline-block;font-family:inherit;font-size:9.5px;font-weight:700;line-height:1.4;padding:0 6px;border-radius:999px;background:var(--surface-2);color:var(--ink-soft);margin-bottom:2px;}
+  .appt-daytag.today{background:var(--primary-soft);color:var(--primary-dark);}
+  .appt-daytag.tomorrow{background:var(--amber-soft);color:var(--amber-dark);}
+  .kpi{flex:1;
+    display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;
+    padding:14px 16px;border-radius:14px;border:1px solid var(--border-soft);
+    background:var(--surface);box-shadow:var(--shadow-sm);font:inherit;color:inherit;
+  }
+  .kpi:hover{border-color:var(--primary);}
+  .kpi-ico{width:42px;height:42px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--primary-soft);color:var(--primary-dark);}
+  .kpi-ico svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .kpi.amber .kpi-ico{background:var(--amber-soft);color:var(--amber-dark);}
+  .kpi.coral .kpi-ico{background:var(--coral-soft);color:var(--coral-dark);}
+  .kpi.blue .kpi-ico{background:#E1EFFF;color:#0B5ED7;}
+  .kpi-txt{min-width:0;}
+  .kpi-val,.kpi-lbl{display:block;}
+  .kpi-val{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:700;line-height:1;color:var(--ink);}
+  .kpi-lbl{font-size:12px;color:var(--ink-soft);margin-top:5px;line-height:1.3;}
+  /* ---------- Dashboard (EMR layout) ---------- */
+  .dash-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    padding:16px 20px;margin-bottom:16px;border-radius:16px;color:#fff;
+    background:linear-gradient(118deg,#134B9E 0%,#1F7BD6 52%,#3CCF7B 100%);box-shadow:var(--shadow);}
+  .dash-hero-text{flex:1 1 320px;min-width:0;}
+  .dash-greet{font-size:18px;font-weight:700;line-height:1.4;overflow:hidden;white-space:nowrap;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);}
+  .dash-ticker-track{display:inline-flex;width:max-content;animation:dashTick var(--tick-dur,45s) linear infinite;will-change:transform;}
+  .dash-ticker-track:hover{animation-play-state:paused;}
+  .tk-group{display:inline-flex;align-items:center;gap:26px;padding-right:26px;}
+  .tk-greet{font-size:18px;font-weight:700;}
+  .tk-chip{display:inline-flex;align-items:center;gap:8px;color:var(--ink);background:rgba(255,255,255,.94);border-radius:999px;padding:3px 12px;font-size:12.5px;font-weight:600;line-height:1.5;}
+  .tk-chip b{font-weight:800;}
+  .tk-org{display:inline-flex;align-items:center;gap:8px;color:var(--ink);background:rgba(255,255,255,.94);border-radius:999px;padding:3px 14px 3px 3px;line-height:1.15;}
+  .tk-ph{width:30px;height:30px;border-radius:50%;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.9);}
+  .tk-ph img{width:100%;height:100%;object-fit:cover;display:block;}
+  .tk-ph svg{width:16px;height:16px;stroke:var(--ink-soft);fill:none;stroke-width:2;}
+  .tk-org .tk-on{font-size:12.5px;font-weight:800;display:block;}
+  .tk-org .tk-or{font-size:10.5px;font-weight:600;opacity:.75;display:block;}
+  .tk-chip .tk-up{color:#137A47;font-weight:800;} .tk-chip .tk-down{color:#B3261E;font-weight:800;} .tk-chip .tk-flat{color:#3A5578;font-weight:800;}
+  @keyframes dashTick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @media (prefers-reduced-motion:reduce){ .dash-ticker-track{animation:none;} .tk-group[aria-hidden="true"]{display:none;} .dash-greet{overflow-x:auto;} }
+  .dash-date{font-size:12.5px;color:rgba(255,255,255,.9);margin-top:2px;}
+  .dash-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .dash-hero .btn-outline{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.45);}
+  .dash-hero .btn-outline:hover{background:rgba(255,255,255,.3);border-color:#fff;}
+  .dash-hero .btn-primary{background:#fff;color:var(--primary-dark);box-shadow:none;}
+  .dash-hero .btn-primary:hover{background:var(--primary-softer);}
+  .dash-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    margin:22px 0 10px;font-size:14px;font-weight:700;color:var(--ink);}
+  .dash-section-title > span{display:inline-flex;align-items:center;gap:8px;}
+  .dash-section-title > span::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--primary);}
+  .dash-section-title small{font-size:11.5px;font-weight:500;color:var(--ink-dim);margin-right:auto;}
+  .dash-scroll{max-height:360px;overflow-y:auto;scrollbar-width:thin;}
+  .dash-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:4px;}
+  .dash-card{margin-bottom:0;display:flex;flex-direction:column;}
+  .dash-bars{display:flex;flex-direction:column;gap:9px;}
+  .dbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;}
+  .dbar-label{font-size:12.5px;font-weight:600;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:7px;}
+  .dbar-label .dot{flex:none;}
+  .dbar-val{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:700;color:var(--ink);text-align:right;white-space:nowrap;}
+  .dbar-val small{font-weight:500;color:var(--ink-dim);margin-left:4px;}
+  .dbar-track{grid-column:1 / -1;height:8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border-soft);overflow:hidden;}
+  .dbar-fill{height:100%;border-radius:999px;background:var(--primary);min-width:3px;transition:width .3s ease;}
+  .dbar-more{align-self:flex-start;margin-top:2px;}
+  .dash-empty{text-align:center;font-size:12px;color:var(--ink-dim);padding:22px 10px;background:var(--surface-2);border-radius:12px;border:1px dashed var(--border);}
+  @media (max-width:1024px){ .dash-split{grid-template-columns:1fr;} }
+  @media (max-width:640px){ .dash-hero{padding:14px;} .dash-actions .btn{flex:1 1 calc(50% - 8px);justify-content:center;} .dash-scroll{max-height:none;} }
+  @media print{
+    body.printing-panel .print-isolate{position:absolute !important;left:0;top:0;width:100%;visibility:visible !important;}
+    body.printing-panel .print-isolate *{visibility:visible !important;}
+    body.printing-panel .dbar-fill{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  }
+
+  .trend-panel{margin-bottom:20px;padding:14px 16px !important;}
+  .trend-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px;}
+  .trend-stat{border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:var(--surface-2);}
+  .trend-stat .ts-l{font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .trend-stat .ts-v{font:800 22px/1.15 'IBM Plex Mono',monospace;color:var(--ink);margin-top:5px;}
+  .trend-stat .ts-v.rev{color:#B4690E;}
+  .trend-stat .ts-s{font-size:10.5px;color:var(--ink-dim);margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  .trend-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-soft);font-weight:600;margin:2px 0 6px;}
+  .trend-legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;}
+  .trend-legend .lg-bar::before{background:var(--primary);}
+  .trend-legend .lg-pat::before{background:var(--primary-dark);height:3px;vertical-align:3px;border-radius:2px;}
+  .trend-legend .lg-rev::before{background:#E8A33D;border-radius:50%;}
+  .trend-chart{position:relative;width:100%;}
+  .trend-chart svg{display:block;width:100%;height:auto;overflow:visible;}
+  .trend-chart .tc-grid{stroke:var(--border-soft);stroke-width:1;}
+  .trend-chart .tc-axis{fill:var(--ink-dim);font:600 10px 'IBM Plex Mono',monospace;}
+  .trend-chart .tc-axis.kh{font-family:'Noto Sans Khmer',sans-serif;}
+  .trend-chart .tc-bar{fill:var(--primary);opacity:.82;}
+  .trend-chart .tc-bar.today{fill:var(--primary-dark);opacity:1;}
+  .trend-chart .tc-bar.sun{opacity:.45;}
+  .trend-chart .tc-val{fill:var(--ink-soft);font:700 9.5px 'IBM Plex Mono',monospace;text-anchor:middle;}
+  .trend-chart .tc-pat{fill:none;stroke:var(--primary-dark);stroke-width:2;stroke-dasharray:4 3;}
+  .trend-chart .tc-rev{fill:none;stroke:#E8A33D;stroke-width:2.5;stroke-linejoin:round;}
+  .trend-chart .tc-rev-area{fill:#E8A33D;opacity:.10;}
+  .trend-chart .tc-dot{fill:#fff;stroke:#E8A33D;stroke-width:2;}
+  .trend-chart .tc-hit{fill:transparent;cursor:pointer;}
+  .trend-chart .tc-hit.on{fill:var(--primary-softer);opacity:.7;}
+  .trend-tip{font-size:11.5px;color:var(--ink-dim);text-align:center;padding:8px 10px;margin-top:6px;border-radius:10px;background:var(--surface-2);border:1px dashed var(--border);min-height:34px;}
+  .trend-tip b{color:var(--ink);font-family:'IBM Plex Mono',monospace;}
+  .trend-tip .rv{color:#B4690E;}
+  .trend-empty{text-align:center;font-size:12px;color:var(--ink-dim);padding:28px 10px;}
+  @media (max-width:900px){ .trend-stats{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media (max-width:640px){
+    .trend-panel{padding:12px !important;}
+    .trend-stat .ts-v{font-size:19px;}
+    .trend-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .trend-chart svg{min-width:520px;}
+  }
+  .dd-step-fee{font-size:11px;color:#B4690E;font-weight:700;margin-top:2px;}
+
+
+  /* ===== Daily Census (Today vs Yesterday) — EMR style ===== */
+  .census-panel{margin-bottom:20px;padding:0 !important;overflow:hidden;}
+  .census-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--border-soft);background:linear-gradient(90deg,var(--primary-softer),var(--surface));}
+  .census-head h4{margin:0;font-size:14px;color:var(--ink);font-weight:700;}
+  .census-legend{display:flex;gap:12px;margin-top:5px;font-size:10.5px;color:var(--ink-dim);font-weight:600;}
+  .census-legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle;}
+  .census-legend .lg-y::before{background:var(--ink-dim);opacity:.45;}
+  .census-legend .lg-t::before{background:var(--primary-dark);}
+  .census-legend .lg-d::before{background:var(--amber);}
+  #combinedTodayYesterdayStatsRow{padding:14px 16px 16px;}
+  .census-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px;}
+  .census-tile{border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:var(--surface);border-top:3px solid var(--primary);}
+  .census-tile.t-case{border-top-color:#0E9F8E;}
+  .census-tile.t-new{border-top-color:#16A34A;}
+  .census-tile.t-fu{border-top-color:var(--amber);}
+  .census-tile .ct-label{font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .census-tile .ct-row{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin-top:6px;}
+  .census-tile .ct-today{font:800 26px/1 'IBM Plex Mono',monospace;color:var(--ink);}
+  .census-tile .ct-yest{font-size:10.5px;color:var(--ink-dim);margin-top:4px;}
+  .census-tile .ct-yest b{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);}
+  .cd{display:inline-flex;align-items:center;gap:2px;font:700 11px 'IBM Plex Mono',monospace;padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  .cd.up{background:var(--primary-soft);color:var(--primary-dark);}
+  .cd.down{background:var(--amber-soft);color:var(--amber-dark);}
+  .cd.same{background:var(--surface-2);color:var(--ink-dim);}
+  .census-tables{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+  .census-tbl{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);}
+  .census-tbl h5{margin:0;padding:9px 12px;font-size:12px;font-weight:700;color:var(--ink);background:var(--surface-2);border-bottom:1px solid var(--border);}
+  .census-tbl table{width:100%;border-collapse:collapse;font-size:12px;}
+  .census-tbl th{font-size:10px;font-weight:700;color:var(--ink-dim);text-align:right;padding:6px 10px;border-bottom:1px solid var(--border-soft);white-space:nowrap;}
+  .census-tbl th:first-child{text-align:left;}
+  .census-tbl td{padding:7px 10px;border-bottom:1px solid var(--border-soft);text-align:right;vertical-align:middle;}
+  .census-tbl tr:last-child td{border-bottom:none;}
+  .census-tbl td:first-child{text-align:left;color:var(--ink);font-weight:600;width:46%;word-break:break-word;}
+  .census-tbl td.cy{font-family:'IBM Plex Mono',monospace;color:var(--ink-dim);}
+  .census-tbl td.ctd{font-family:'IBM Plex Mono',monospace;font-weight:800;color:var(--primary-dark);}
+  .census-bar{display:block;height:3px;border-radius:2px;background:var(--border-soft);margin-top:4px;overflow:hidden;}
+  .census-bar i{display:block;height:100%;background:var(--primary);border-radius:2px;}
+  .census-tbl .c-empty{text-align:center !important;color:var(--ink-dim);font-weight:400 !important;padding:14px !important;}
+  .census-empty{text-align:center;font-size:12px;color:var(--ink-dim);padding:18px;background:var(--surface-2);border-radius:12px;border:1px dashed var(--border);}
+  @media (max-width:1100px){ .census-tables{grid-template-columns:repeat(2,minmax(0,1fr));} .census-tables > :last-child:nth-child(odd){grid-column:1 / -1;} }
+  @media (max-width:640px){
+    .census-tiles{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .census-tables{grid-template-columns:1fr;}
+    .census-head, #combinedTodayYesterdayStatsRow{padding-left:12px;padding-right:12px;}
+    .census-tile .ct-today{font-size:22px;}
+  }
+  @media print{
+    .census-tables{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .census-tiles{grid-template-columns:repeat(4,minmax(0,1fr));}
+  }
+
+.cd{display:inline-flex;align-items:center;gap:2px;font:700 11px 'IBM Plex Mono',monospace;padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  .cd.up{background:var(--primary-soft);color:var(--primary-dark);}
+  .cd.down{background:var(--amber-soft);color:var(--amber-dark);}
+  .cd.same{background:var(--surface-2);color:var(--ink-dim);}
+
+/* ===== Dashboard 8 -> follows Index (7) look ===== */
+#view-dashboard .d2-hero{background:linear-gradient(118deg,#134B9E 0%,#1F7BD6 52%,#3CCF7B 100%); border-bottom:0; border-radius:16px; padding:16px 20px; margin-bottom:16px;}
+#view-dashboard .d2-hero .dq{border-radius:10px; font-size:12.5px; padding:8px 14px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.45);}
+#view-dashboard .d2-hero .dq:hover{background:rgba(255,255,255,.3); border-color:#fff;}
+#view-dashboard .tk-head{color:#fff;} #view-dashboard .tk-card{border-color:rgba(255,255,255,.35);} #view-dashboard .tk-num:not(.tk-old) b{color:#fff;}
+#view-dashboard .d2-title::before{background:var(--primary);} #view-dashboard .fin-card-head{border-bottom:1px solid var(--border-soft);}
+#view-dashboard .dash-section-title{font-family:'Noto Sans Khmer','Sora',sans-serif;}
+#view-dashboard .kpi-grid .kpi{cursor:pointer;}
+#view-dashboard .appt-panel .dash-list{padding:0; max-height:360px;}
+#view-dashboard .dash-more{margin-top:22px;}
+#view-dashboard .dash-more > summary{cursor:pointer; list-style:none; font-size:14px; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:8px; margin:0 0 10px;}
+#view-dashboard .dash-more > summary::-webkit-details-marker{display:none;}
+#view-dashboard .dash-more > summary::before{content:""; width:4px; height:16px; border-radius:2px; background:var(--primary);}
+#view-dashboard .dash-more > summary small{font-size:11.5px; font-weight:500; color:var(--ink-dim);}
+#view-dashboard .dash-more > summary::after{content:"▾"; margin-left:auto; color:var(--ink-dim);}
+#view-dashboard .dash-more[open] > summary::after{content:"▴";}
+
 </style>
 <style id="dynamicPageStyle">@page{ size: A4 portrait; margin: 15mm; }</style>
 </head>
@@ -2317,74 +2515,117 @@
 
       <!-- Dashboard -->
       <section class="view active fin dash" id="view-dashboard">
-        <!-- 1) សួស្តី + ប៊ូតុងរហ័ស -->
+        <!-- Welcome strip + quick actions (ដូច Index 7) -->
         <div class="d2-hero">
           <div class="d2-ticker" title="ទិន្នន័យតាម Treatment · ខែនេះ ធៀបនឹងខែមុន (ដាក់កណ្តុរលើដើម្បីផ្អាក)">
             <div class="d2-ticker-track" id="dashTicker"></div>
           </div>
           <div class="dash-quick">
-            <button type="button" class="dq kh" data-dq="appointments">📅 ការណាត់</button>
+            <button type="button" class="dq kh" data-dq="appointments">🗓️ ការណាត់ជួប</button>
+            <button type="button" class="dq kh" data-dq="patients">👥 អ្នកជំងឺ</button>
             <button type="button" class="dq kh" id="allReportBtn" title="របាយការណ៍សរុបប្រចាំថ្ងៃ · All Report">📋 AllReport</button>
           </div>
         </div>
 
-        <!-- 2) សង្ខេបថ្ងៃនេះ (ធៀបម្សិលមិញ) -->
-        <div class="d2-title kh">📊 សង្ខេបថ្ងៃនេះ <small>ធៀបនឹងម្សិលមិញ</small></div>
-        <div class="fin-kpis dash-kpis d2-kpis" id="dashSummaryStrip"></div>
+        <!-- 1. Key indicators -->
+        <div class="kpi-grid" id="dashKpis"></div>
 
-        <!-- 3) ការងារថ្ងៃនេះ -->
-        <div class="d2-title kh">🩺 ការងារថ្ងៃនេះ</div>
-        <div class="fin-card">
-          <div class="fin-card-head">
-            <div class="fin-title kh">អ្នកជំងឺថ្ងៃនេះ <span class="fin-count mono" id="queueTodayCount">0</span></div>
-          </div>
-          <div class="dash-list dash-list-wide" id="queueTodayBody"></div>
-        </div>
-        <div class="d2-trio d2-trio-work">
-          <div class="fin-card">
-            <div class="fin-card-head">
-              <div class="fin-title kh">📅 ការណាត់ថ្ងៃនេះ <span class="fin-count mono" id="apptTodayCount">0</span></div>
+        <!-- 2. Schedule -->
+        <div class="dash-section-title kh"><span>កាលវិភាគ · Schedule</span><small>ថ្ងៃនេះ</small></div>
+        <div class="appt-grid">
+          <div class="appt-panel">
+            <div class="appt-panel-head">
+              <h3 class="kh">ការណាត់ជួប · Appointments</h3>
+              <span style="display:inline-flex;align-items:center;gap:8px;">
+                <button type="button" class="link-btn kh" data-dq="appointments">មើលទាំងអស់</button>
+                <span class="count-pill" id="apptTodayCount">0</span>
+              </span>
             </div>
-            <div class="dash-list" id="apptTodayBody"></div>
+            <div class="dash-scroll dash-list" id="apptTodayBody"></div>
           </div>
-          <div class="fin-card">
-            <div class="fin-card-head">
-              <div class="fin-title kh">⏭️ ការណាត់ ២ ថ្ងៃខាងមុខ <span class="fin-count mono" id="apptUpcomingCount">0</span></div>
+          <div class="appt-panel">
+            <div class="appt-panel-head">
+              <h3 class="kh">អ្នកជំងឺថ្ងៃនេះ · Patients today</h3>
+              <span class="count-pill" id="queueTodayCount">0</span>
             </div>
-            <div class="dash-list" id="apptUpcomingBody"></div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-card-head">
-              <div class="fin-title kh">🔔 ត្រូវយកចិត្តទុកដាក់</div>
-            </div>
-            <div class="dash-list" id="dashAlerts" style="padding:0 0 6px;"></div>
+            <div class="dash-scroll dash-list" id="queueTodayBody"></div>
           </div>
         </div>
 
-        <!-- 4) ទិដ្ឋភាពខែនេះ -->
-        <div class="d2-title kh">📈 ទិដ្ឋភាពខែនេះ</div>
-        <div class="d2-trio">
-          <div class="fin-card">
-            <div class="fin-card-head"><div class="fin-title kh">💰 ហិរញ្ញវត្ថុ</div></div>
-            <div id="dashFinance" style="padding:16px 18px;"></div>
+        <!-- 3. Daily comparison -->
+        <div class="dash-section-title kh"><span>ប្រៀបធៀបប្រចាំថ្ងៃ · Today vs Yesterday</span><small id="censusDates"></small></div>
+        <div class="card-type-stats-panel census-panel">
+          <div class="census-head">
+            <div>
+              <h4 class="kh">ជំរឿនអ្នកជំងឺប្រចាំថ្ងៃ · Daily Census</h4>
+              <div class="census-legend kh"><span class="lg-y">ម្សិលមិញ</span><span class="lg-t">ថ្ងៃនេះ</span><span class="lg-d">Δ ប្រែប្រួល</span></div>
+            </div>
           </div>
-          <div class="fin-card">
-            <div class="fin-card-head"><div class="fin-title kh">🦷 ការព្យាបាលច្រើនជាងគេ</div></div>
-            <div id="dashTopTx" style="padding:16px 18px;"></div>
-          </div>
-          <div class="fin-card">
-            <div class="fin-card-head"><div class="fin-title kh">👥 អ្នកជំងឺ</div></div>
-            <div id="dashDemo" style="padding:16px 18px;"></div>
+          <div id="combinedTodayYesterdayStatsRow"></div>
+        </div>
+
+        <!-- 4. Analytics -->
+        <div class="dash-section-title kh">
+          <span>ស្ថិតិ · Analytics</span>
+          <div class="chips kh" id="dashScopeChips" role="group" aria-label="រយៈពេលស្ថិតិ">
+            <button type="button" class="chip" data-scope="month">ខែនេះ</button>
+            <button type="button" class="chip" data-scope="year">ឆ្នាំនេះ</button>
+            <button type="button" class="chip active" data-scope="all">ទាំងអស់</button>
           </div>
         </div>
-        <div class="fin-card">
-          <div class="fin-card-head">
-            <div class="fin-title kh">និន្នាការ <span id="dashTrendDays">១៤</span> ថ្ងៃចុងក្រោយ</div>
-            <span style="display:none;" id="dashTrendDaysEn">14</span>
-            <div class="dash-legend kh"><span><i style="background:var(--primary)"></i>អ្នកជំងឺ</span><span><i style="background:#0E9F6E; height:3px;"></i>ចំណូល ($)</span></div>
+        <div class="dash-split">
+          <div class="card-type-stats-panel dash-card">
+            <div class="card-type-stats-head">
+              <h4 class="kh">ស្ថិតិហិរញ្ញវត្ថុ · Finance <small style="font-weight:500;color:var(--ink-dim);">📈 ទិដ្ឋភាពខែនេះ</small></h4>
+            </div>
+            <div id="dashFinance" style="padding:4px 2px 2px;"></div>
           </div>
-          <div id="dashTrend" style="padding:14px 18px 8px;"></div>
+          <div class="card-type-stats-panel dash-card">
+            <div class="card-type-stats-head">
+              <h4 class="kh">ស្ថិតិការព្យាបាលសរុប · Total Treatment Statistics</h4>
+              <span class="count-pill mono" id="treatmentTotal">0</span>
+            </div>
+            <div class="dash-bars" id="treatmentStatsRow7"></div>
+          </div>
         </div>
+
+        <!-- 5. 14-day trend (at the bottom, like Index 7) -->
+        <div class="dash-section-title kh"><span>📈 និន្នាការ ១៤ ថ្ងៃចុងក្រោយ</span><small>Patient visits · last 14 days</small></div>
+        <div class="card-type-stats-panel trend-panel">
+          <div class="trend-stats" id="trendStats"></div>
+          <div class="trend-legend kh">
+            <span class="lg-bar">ករណី · Visits</span>
+            <span class="lg-pat">អ្នកជំងឺ · Patients</span>
+          </div>
+          <div class="trend-chart" id="trendChart"></div>
+          <div class="trend-tip kh" id="trendTip">ចុច ឬដាក់ cursor លើថ្ងៃណាមួយ ដើម្បីមើលព័ត៌មានលម្អិត</div>
+        </div>
+
+        <!-- Extra panels of Index 8 (finance, alerts, next 2 days) -->
+        <details class="dash-more">
+          <summary class="kh">ព័ត៌មានបន្ថែម · More <small>ហិរញ្ញវត្ថុ · ការជូនដំណឹង · ការណាត់ ២ ថ្ងៃខាងមុខ</small></summary>
+          <div class="fin-kpis dash-kpis d2-kpis" id="dashSummaryStrip"></div>
+          <div class="d2-trio d2-trio-work">
+            <div class="fin-card">
+              <div class="fin-card-head"><div class="fin-title kh">⏭️ ការណាត់ ២ ថ្ងៃខាងមុខ <span class="fin-count mono" id="apptUpcomingCount">0</span></div></div>
+              <div class="dash-list" id="apptUpcomingBody"></div>
+            </div>
+            <div class="fin-card">
+              <div class="fin-card-head"><div class="fin-title kh">🔔 ត្រូវយកចិត្តទុកដាក់</div></div>
+              <div class="dash-list" id="dashAlerts" style="padding:0 0 6px;"></div>
+            </div>
+          </div>
+          <div class="d2-trio">
+            <div class="fin-card">
+              <div class="fin-card-head"><div class="fin-title kh">🦷 ការព្យាបាលច្រើនជាងគេ</div></div>
+              <div id="dashTopTx" style="padding:16px 18px;"></div>
+            </div>
+            <div class="fin-card">
+              <div class="fin-card-head"><div class="fin-title kh">👥 អ្នកជំងឺ</div></div>
+              <div id="dashDemo" style="padding:16px 18px;"></div>
+            </div>
+          </div>
+        </details>
       </section>
 
       <!-- Patients + Appointments -->
@@ -4958,7 +5199,7 @@ function renderProcRow(item){
         <div class="appt-name kh">${r.name}</div>
         <div class="appt-meta">${formatPhoneDisplay(r.phone)||'គ្មានលេខ'} · <span class="kh">${r.treatment||r.diagnosis||'—'}</span></div>
       </div>
-      <div class="appt-plan-badge kh" style="background:var(--primary-soft);color:var(--primary-dark);border-color:rgba(84,183,84,0.4);" title="Procedure: ${planText}">
+      <div class="appt-plan-badge kh" style="background:var(--primary-soft);color:var(--primary-dark);border-color:rgba(47,128,237,0.4);" title="Procedure: ${planText}">
         📋 ${planText}
       </div>
     </div>`;
@@ -5423,7 +5664,7 @@ function renderDashOverview(){
     monthRecs.forEach(r => { const t = cleanStr(r.treatment); if(t && t !== '—') cnt[t] = (cnt[t] || 0) + 1; });
     const top = Object.entries(cnt).sort((a,b) => b[1] - a[1]).slice(0, 6);
     const max = top.length ? top[0][1] : 1;
-    const colors = ['#54b754','#4A7FB5','#7C3AED','#D97706','#0E9F6E','#E4574C'];
+    const colors = ['#2F80ED','#4A7FB5','#7C3AED','#D97706','#0E9F6E','#E4574C'];
     txEl.innerHTML = top.length ? top.map(([name, n], i) => `
       <div class="dash-bar-row"><div class="bl kh"><span title="${escHTML(name)}">${escHTML(name)}</span><b>${n}</b></div>
       <div class="dash-meter" style="margin:0; height:7px;"><i style="width:${Math.round(n / max * 100)}%; background:${colors[i]};"></i></div></div>`).join('')
@@ -5767,7 +6008,7 @@ function buildPatientRowHTML(p, startOfToday){
     } else if (stateKey === 'planning') {
         badgeStyle = 'background:#EDE9FE; color:#6D28D9; border-color:rgba(109,40,217,0.4);';
     } else {
-        badgeStyle = 'background:var(--primary-soft); color:var(--primary-dark); border-color:rgba(84,183,84,0.4);';
+        badgeStyle = 'background:var(--primary-soft); color:var(--primary-dark); border-color:rgba(47,128,237,0.4);';
     }
 
     return `
@@ -7718,7 +7959,7 @@ const LIB_KINDS = [
 // leather book colours: [top, bottom, ink]
 // modern cover gradients: [from, to, ink]
 const LIB_GRADS = [
-  ['#6366F1','#8B5CF6','#fff'], ['#0EA5E9','#2563EB','#fff'], ['#54b754','#0F766E','#fff'], ['#F59E0B','#EA580C','#fff'],
+  ['#6366F1','#8B5CF6','#fff'], ['#0EA5E9','#2563EB','#fff'], ['#2F80ED','#0F766E','#fff'], ['#F59E0B','#EA580C','#fff'],
   ['#F43F5E','#BE123C','#fff'], ['#10B981','#047857','#fff'], ['#64748B','#1E293B','#fff'], ['#EC4899','#9333EA','#fff'],
   ['#F1F5F9','#CBD5E1','#0F172A'], ['#FDE68A','#F59E0B','#3B2412'], ['#A5B4FC','#6366F1','#fff'], ['#22D3EE','#0891B2','#fff']
 ];
@@ -15007,6 +15248,321 @@ document.getElementById('printInvCartBtn')?.addEventListener('click', () => {
 });
 
 updateCartBadge();
+
+
+/* ===================== Dashboard ported from Index (7) ===================== */
+const KH_DOW = ['អា','ច','អ','ពុ','ព្រ','សុ','ស'];
+function recordVisitDates(r){ const d = parseAnyDate(r.timestamp); return d ? [d] : []; }
+function recordTreatments(r){ const t = cleanStr(r.treatment); return (t && t !== '—') ? [t] : []; }
+function renderTrend14P7(){
+  const host = document.getElementById('trendChart');
+  if(!host) return;
+  const dayKey = d => d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 27); // 28 days: this period + previous for comparison
+  const days = [];
+  for(let i = 0; i < 28; i++){
+    const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+    days.push({ d, key: dayKey(d), visits: 0, pats: new Set() });
+  }
+  const byKey = new Map(days.map(x => [x.key, x]));
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    const pk = patientKey(r);
+    recordVisitDates(r).forEach(d => {
+      const b = byKey.get(dayKey(d));
+      if(b){ b.visits++; b.pats.add(pk); }
+    });
+  });
+  const prev = days.slice(0, 14), cur = days.slice(14);
+  const sum = (arr, f) => arr.reduce((a, x) => a + f(x), 0);
+  const curVisits = sum(cur, x => x.visits), prevVisits = sum(prev, x => x.visits);
+  const curPats = new Set(); cur.forEach(x => x.pats.forEach(p => curPats.add(p)));
+  const workDays = cur.filter(x => x.visits > 0).length;
+  const busiest = cur.reduce((a, x) => x.visits > a.visits ? x : a, cur[0]);
+  /* new patients = first-ever visit falls inside the window */
+  const firstSeen = new Map();
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    const pk = patientKey(r);
+    recordVisitDates(r).forEach(d => { const t = d.getTime(); if(!firstSeen.has(pk) || t < firstSeen.get(pk)) firstSeen.set(pk, t); });
+  });
+  const curStartT = cur[0].d.getTime(), prevStartT = prev[0].d.getTime(), endT = cur[cur.length - 1].d.getTime() + 86400000;
+  let curNew = 0, prevNew = 0;
+  firstSeen.forEach(t => { if(t >= curStartT && t < endT) curNew++; else if(t >= prevStartT && t < curStartT) prevNew++; });
+  const fmtD = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+  const pct = (c, p) => {
+    if(!p) return c ? '<span class="cd up">▲ ថ្មី</span>' : '<span class="cd same">= 0</span>';
+    const v = Math.round((c - p) / p * 100);
+    return v > 0 ? `<span class="cd up">▲ ${v}%</span>` : v < 0 ? `<span class="cd down">▼ ${Math.abs(v)}%</span>` : '<span class="cd same">= 0%</span>';
+  };
+
+  document.getElementById('trendStats').innerHTML = `
+    <div class="trend-stat"><div class="ts-l kh">ករណីសរុប · Visits</div><div class="ts-v">${curVisits}</div>
+      <div class="ts-s kh">${pct(curVisits, prevVisits)} ធៀប ១៤ ថ្ងៃមុន</div></div>
+    <div class="trend-stat"><div class="ts-l kh">អ្នកជំងឺ · Patients</div><div class="ts-v">${curPats.size}</div>
+      <div class="ts-s kh">ខុសៗគ្នា ក្នុង ១៤ ថ្ងៃ</div></div>
+    <div class="trend-stat"><div class="ts-l kh">មធ្យម/ថ្ងៃធ្វើការ · Avg/day</div><div class="ts-v">${workDays ? (curVisits / workDays).toFixed(1) : '0'}</div>
+      <div class="ts-s kh">${workDays} ថ្ងៃមានអ្នកជំងឺ${busiest.visits ? ` · ច្រើនបំផុត ${fmtD(busiest.d)} (${busiest.visits})` : ''}</div></div>
+    <div class="trend-stat"><div class="ts-l kh">អ្នកជំងឺថ្មី · New patients</div><div class="ts-v">${curNew}</div>
+      <div class="ts-s kh">${pct(curNew, prevNew)} ធៀប ១៤ ថ្ងៃមុន · មកលើកដំបូង</div></div>`;
+
+  // ---- SVG chart ----
+  const W = 760, H = 230, L = 34, R = 50, T = 18, B = 40;
+  const pw = W - L - R, ph = H - T - B, n = cur.length, slot = pw / n, bw = Math.min(30, slot * 0.58);
+  const niceMax = v => { if(v <= 4) return 4; const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m <= 2 ? 2 : m <= 5 ? 5 : 10) * p; };
+  const vMax = niceMax(Math.max(1, ...cur.map(x => x.visits)));
+  const x = i => L + slot * i + slot / 2;
+  const yV = v => T + ph - (v / vMax) * ph;
+  let g = '';
+  for(let k = 0; k <= 4; k++){
+    const yy = T + ph * k / 4;
+    g += `<line class="tc-grid" x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}"/>`;
+    g += `<text class="tc-axis" x="${L - 6}" y="${yy + 3}" text-anchor="end">${Math.round(vMax * (4 - k) / 4)}</text>`;
+  }
+  let bars = '', labels = '', hits = '';
+  cur.forEach((b, i) => {
+    const isToday = i === n - 1, isSun = b.d.getDay() === 0;
+    const h = (b.visits / vMax) * ph;
+    if(b.visits){
+      bars += `<rect class="tc-bar${isToday ? ' today' : ''}${isSun ? ' sun' : ''}" x="${x(i) - bw/2}" y="${T + ph - h}" width="${bw}" height="${h}" rx="4"/>`;
+      bars += `<text class="tc-val" x="${x(i)}" y="${T + ph - h - 4}">${b.visits}</text>`;
+    }
+    labels += `<text class="tc-axis" x="${x(i)}" y="${H - B + 15}" text-anchor="middle"${isToday ? ' style="fill:var(--primary-dark)"' : ''}>${fmtD(b.d)}</text>`;
+    labels += `<text class="tc-axis kh" x="${x(i)}" y="${H - B + 29}" text-anchor="middle"${isSun ? ' style="fill:var(--coral)"' : ''}>${isToday ? 'ថ្ងៃនេះ' : KH_DOW[b.d.getDay()]}</text>`;
+    hits += `<rect class="tc-hit" data-i="${i}" x="${L + slot * i}" y="${T}" width="${slot}" height="${ph}"/>`;
+  });
+  const patPath = cur.map((b, i) => `${i ? 'L' : 'M'}${x(i)},${yV(b.pats.size)}`).join(' ');
+  host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="និន្នាការ ១៤ ថ្ងៃ">
+    ${g}<g>${hits}</g>${bars}<path class="tc-pat" d="${patPath}"/>${labels}</svg>`;
+
+  const tip = document.getElementById('trendTip');
+  const show = i => {
+    const b = cur[i];
+    host.querySelectorAll('.tc-hit').forEach(h => h.classList.toggle('on', +h.dataset.i === i));
+    const dn = ['អាទិត្យ','ច័ន្ទ','អង្គារ','ពុធ','ព្រហស្បតិ៍','សុក្រ','សៅរ៍'][b.d.getDay()];
+    tip.innerHTML = `ថ្ងៃ${dn} ${fmtD(b.d)}/${b.d.getFullYear()} · ករណី <b>${b.visits}</b> · អ្នកជំងឺ <b>${b.pats.size}</b>`;
+  };
+  host.querySelectorAll('.tc-hit').forEach(h => {
+    h.addEventListener('mouseenter', () => show(+h.dataset.i));
+    h.addEventListener('click', () => show(+h.dataset.i));
+  });
+  show(n - 1);
+  requestAnimationFrame(() => { host.scrollLeft = host.scrollWidth; }); // phones: start on today
+}
+function renderCensusP7() {
+  const row = document.getElementById('combinedTodayYesterdayStatsRow');
+  if (!row) return;
+  const dayKeyOf = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const now = new Date();
+  const yest = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  const tKey = dayKeyOf(now), yKey = dayKeyOf(yest);
+  const fmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  const datesEl = document.getElementById('censusDates');
+  if(datesEl) datesEl.textContent = `${fmt(yest)} → ${fmt(now)}`;
+
+  // first-ever visit day per patient (to split New vs Follow-up)
+  const firstVisit = new Map();
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    const k = patientKey(r);
+    recordVisitDates(r).forEach(d => {
+      const prev = firstVisit.get(k);
+      if(!prev || d < prev) firstVisit.set(k, d);
+    });
+  });
+
+  const blank = () => ({ cases:0, patients:new Map(), treat:{}, card:{} });
+  const T = blank(), Y = blank();
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    const keys = recordVisitDates(r).map(dayKeyOf);
+    [[tKey, T], [yKey, Y]].forEach(([key, bucket]) => {
+      if(!keys.includes(key)) return;
+      bucket.cases++;
+      bucket.patients.set(patientKey(r), r);
+      recordTreatments(r).forEach(tr => { bucket.treat[tr] = (bucket.treat[tr] || 0) + 1; });
+      const ty = cleanStr(r.type) || 'បង់ពេញថ្លៃ';
+      bucket.card[ty] = (bucket.card[ty] || 0) + 1;
+    });
+  });
+  const demo = (bucket, dayKey) => {
+    const o = { male:0, female:0, kids:0, girls:0, newP:0, fu:0 };
+    bucket.patients.forEach((p, k) => {
+      const sex = String(p.sex || '').toUpperCase();
+      const isMale = sex === 'M' || sex.includes('ប្រុស');
+      if(isMale) o.male++; else o.female++;
+      const a = parseInt(p.age, 10);
+      if(!isNaN(a) && a <= 15){ o.kids++; if(!isMale) o.girls++; }
+      const fv = firstVisit.get(k);
+      if(fv && dayKeyOf(fv) === dayKey) o.newP++; else o.fu++;
+    });
+    return o;
+  };
+  const tD = demo(T, tKey), yD = demo(Y, yKey);
+
+  if(T.cases === 0 && Y.cases === 0){
+    row.innerHTML = `<div class="census-empty kh">មិនទាន់មានអ្នកជំងឺមកពិនិត្យនៅថ្ងៃនេះ និងម្សិលមិញទេ · No visits yesterday or today</div>`;
+    return;
+  }
+
+  const delta = (t, y) => {
+    const d = t - y;
+    if(d > 0) return `<span class="cd up" title="ធៀបនឹងម្សិលមិញ">▲ ${d}</span>`;
+    if(d < 0) return `<span class="cd down" title="ធៀបនឹងម្សិលមិញ">▼ ${Math.abs(d)}</span>`;
+    return `<span class="cd same" title="ដូចម្សិលមិញ">= 0</span>`;
+  };
+  const tile = (cls, label, t, y) => `
+    <div class="census-tile ${cls}">
+      <div class="ct-label kh">${label}</div>
+      <div class="ct-row"><span class="ct-today">${t}</span>${delta(t, y)}</div>
+      <div class="ct-yest kh">ម្សិលមិញ <b>${y}</b></div>
+    </div>`;
+  const table = (title, rows) => {
+    const max = Math.max(1, ...rows.map(r => Math.max(r[1], r[2])));
+    const body = rows.length ? rows.map(([label, t, y]) => `
+      <tr>
+        <td class="kh" title="${escHTML(label)}">${escHTML(label)}<span class="census-bar"><i style="width:${Math.round(t / max * 100)}%"></i></span></td>
+        <td class="cy">${y}</td><td class="ctd">${t}</td><td>${delta(t, y)}</td>
+      </tr>`).join('') : `<tr><td colspan="4" class="c-empty kh">គ្មានទិន្នន័យ</td></tr>`;
+    return `<div class="census-tbl">
+      <h5 class="kh">${title}</h5>
+      <table><thead><tr><th class="kh">ធាតុ</th><th class="kh">ម្សិលមិញ</th><th class="kh">ថ្ងៃនេះ</th><th>Δ</th></tr></thead><tbody>${body}</tbody></table>
+    </div>`;
+  };
+  const merge = (a, b) => Array.from(new Set([...Object.keys(a), ...Object.keys(b)]))
+    .map(k => [k, a[k] || 0, b[k] || 0])
+    .sort((p, q) => (q[1] + q[2]) - (p[1] + p[2]));
+
+  row.innerHTML = `
+    <div class="census-tiles">
+      ${tile('t-pat', 'អ្នកជំងឺ · Patients', T.patients.size, Y.patients.size)}
+      ${tile('t-case', 'ករណី · Visits', T.cases, Y.cases)}
+      ${tile('t-new', 'អ្នកជំងឺថ្មី · New', tD.newP, yD.newP)}
+      ${tile('t-fu', 'តាមដាន · Follow-up', tD.fu, yD.fu)}
+    </div>
+    <div class="census-tables">
+      ${table('👥 ប្រជាសាស្ត្រ · Demographics', [
+        ['ប្រុស (Male)', tD.male, yD.male],
+        ['ស្រី (Female)', tD.female, yD.female],
+        ['ក្មេង ≤15 (Child)', tD.kids, yD.kids],
+        ['ក្មេងស្រី ≤15 (Girl)', tD.girls, yD.girls]
+      ])}
+      ${table('🦷 តាមការព្យាបាល · By Treatment', merge(T.treat, Y.treat))}
+      ${table('💳 តាមប្រភេទប័ណ្ណ · Registration Card', merge(T.card, Y.card))}
+    </div>`;
+}
+
+let dashStatScope = 'all';
+const dashBarsExpanded = { card:false, tx:false };
+const DASH_BARS_LIMIT = 8;
+const DASH_BAR_PALETTE = ['#2F80ED','#12806F','#E8A33D','#7C5CDB','#E4574C','#0E9F6E','#0B5ED7','#D97706'];
+function dashScopedRecords7(){
+  const now = new Date();
+  return allRecords.filter(r => {
+    if(!cleanStr(r.name)) return false;
+    if(dashStatScope === 'all') return true;
+    const d = parseAnyDate(r.timestamp); if(!d) return false;
+    return d.getFullYear() === now.getFullYear() && (dashStatScope === 'year' || d.getMonth() === now.getMonth());
+  });
+}
+function dashScopeLabel7(){ return dashStatScope === 'month' ? 'ខែនេះ' : dashStatScope === 'year' ? 'ឆ្នាំនេះ' : 'ទាំងអស់'; }
+function renderDashBars7(hostId, totalId, counts, key){
+  const host = document.getElementById(hostId); if(!host) return;
+  const total = Object.values(counts).reduce((a,b)=>a+b, 0);
+  const totalEl = document.getElementById(totalId); if(totalEl) totalEl.textContent = total;
+  if(!total){ host.innerHTML = `<div class="dash-empty kh">មិនទាន់មានទិន្នន័យ (${dashScopeLabel7()})</div>`; return; }
+  const keys = Object.keys(counts).sort((a,b)=> counts[b] - counts[a]);
+  const max = counts[keys[0]];
+  const shown = dashBarsExpanded[key] ? keys : keys.slice(0, DASH_BARS_LIMIT);
+  let html = shown.map((k, i) => {
+    const n = counts[k], pct = Math.round(n / total * 100), color = DASH_BAR_PALETTE[i % DASH_BAR_PALETTE.length];
+    return `<div class="dbar" title="${escHTML(k)}: ${n} (${pct}%)">
+      <div class="dbar-label kh"><i class="dot" style="background:${color};"></i>${escHTML(k)}</div>
+      <div class="dbar-val">${n}<small>${pct}%</small></div>
+      <div class="dbar-track"><div class="dbar-fill" style="width:${(n / max * 100).toFixed(1)}%;background:${color};"></div></div>
+    </div>`;
+  }).join('');
+  if(keys.length > DASH_BARS_LIMIT){
+    html += `<button type="button" class="link-btn kh dbar-more" data-bars-toggle="${key}">${dashBarsExpanded[key] ? '▲ បង្ហាញតិច' : '▼ មើលទាំងអស់ (' + keys.length + ')'}</button>`;
+  }
+  host.innerHTML = html;
+}
+function renderAnalyticsP7(){
+  const card = {}, tx = {};
+  dashScopedRecords7().forEach(r => {
+    const t = cleanStr(r.type) || 'បង់ពេញថ្លៃ'; card[t] = (card[t] || 0) + 1;
+    recordTreatments(r).forEach(x => { tx[x] = (tx[x] || 0) + 1; });
+  });
+  renderDashBars7('cardTypeStatsRow7', 'cardTypeTotal', card, 'card');
+  renderDashBars7('treatmentStatsRow7', 'treatmentTotal', tx, 'tx');
+}
+function renderKpisP7(){
+  const host = document.getElementById('dashKpis'); if(!host) return;
+  const now = new Date(), todayKey = now.toDateString();
+  const {monday, sunday} = getWeekRange(now);
+  const monthKey = now.getFullYear() + '-' + (now.getMonth() + 1);
+  const names = new Set(), todaySet = new Set(), weekSet = new Set(), monthSet = new Set();
+  let todayVisits = 0, weekVisits = 0, monthVisits = 0;
+  allRecords.forEach(r => {
+    if(!cleanStr(r.name)) return;
+    const k = patientKey(r); names.add(k);
+    const d = parseAnyDate(r.timestamp); if(!d) return;
+    if(d.toDateString() === todayKey){ todaySet.add(k); todayVisits++; }
+    if(d >= monday && d <= sunday){ weekSet.add(k); weekVisits++; }
+    if((d.getFullYear() + '-' + (d.getMonth() + 1)) === monthKey){ monthSet.add(k); monthVisits++; }
+  });
+  let apptToday = 0, missed = 0;
+  try{
+    const items = getTodayAppointments(); apptToday = items.length;
+    missed = items.filter(x => !x.arrived && x.d && x.d < now).length;
+  }catch(e){}
+  const split = (icon, title, c1, l1, c2, l2, go, o) => {
+    o = o || {};
+    return `<div class="kpi" data-dq="${go}" style="flex-direction:column; align-items:flex-start; gap:12px; padding:14px;${o.border ? 'border-color:' + o.border + ';' : ''}">
+      <div style="display:flex; align-items:center; gap:10px; width:100%;">
+        <span class="kpi-ico" style="width:36px;height:36px;background:${o.bg || 'var(--primary-softer)'};color:${o.fg || 'var(--primary-dark)'};"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;">${icon}</svg></span>
+        <span class="kh" style="font-weight:700; font-size:13.5px; color:var(--ink);">${title}</span>
+      </div>
+      <div style="display:flex; width:100%; justify-content:space-between; align-items:center; background:var(--surface-2); padding:10px 8px; border-radius:10px; border:1px solid var(--border-soft);">
+        <div style="flex:1; text-align:center;"><div class="kpi-val" style="font-size:20px; color:${o.fg || 'var(--primary-dark)'};">${c1}</div><div class="kh" style="font-size:10px; color:var(--ink-dim); margin-top:4px;">${l1}</div></div>
+        <div style="width:1px; height:24px; background:var(--border);"></div>
+        <div style="flex:1; text-align:center;"><div class="kpi-val" style="font-size:20px; color:${o.fg2 || o.fg || 'var(--primary-dark)'};">${c2}</div><div class="kh" style="font-size:10px; color:${o.fg2 || 'var(--ink-dim)'}; margin-top:4px;">${l2}</div></div>
+      </div>
+    </div>`;
+  };
+  const P = 'អ្នកជំងឺ (Patients)', C = 'ករណី (Cases)';
+  host.innerHTML =
+    split('<path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>', 'ស្ថិតិសរុប', names.size, P, allRecords.filter(r => cleanStr(r.name)).length, C, 'patients') +
+    split('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>', 'ថ្ងៃនេះ', todaySet.size, P, todayVisits, C, 'patients') +
+    split('<path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/>', 'សប្តាហ៍នេះ', weekSet.size, P, weekVisits, C, 'patients') +
+    split('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', 'ខែនេះ', monthSet.size, P, monthVisits, C, 'patients') +
+    split('<path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/>', 'ការណាត់ជួប', apptToday, 'ថ្ងៃនេះ (Today)', missed, 'មិនទាន់មក (Pending)', 'appointments', { bg:'var(--amber-soft)', fg:'var(--amber-dark)', fg2:'var(--coral-dark)', border:'var(--amber-soft)' });
+}
+function renderDashboard7(){
+  try{ renderKpisP7(); }catch(e){ console.warn('KPI7', e); }
+  try{ renderCensusP7(); }catch(e){ console.warn('Census7', e); }
+  try{ renderAnalyticsP7(); }catch(e){ console.warn('Analytics7', e); }
+  try{ renderTrend14P7(); }catch(e){ console.warn('Trend7', e); }
+}
+(function(){
+  const orig = renderDashboardDayStats;
+  renderDashboardDayStats = function(){ orig.apply(this, arguments); renderDashboard7(); };
+  const dv = document.getElementById('view-dashboard');
+  dv.addEventListener('click', e => {
+    const k = e.target.closest('#dashKpis [data-dq]');
+    if(k){ dashGo(k.dataset.dq); return; }
+    const t = e.target.closest('[data-bars-toggle]');
+    if(t){ const key = t.dataset.barsToggle; dashBarsExpanded[key] = !dashBarsExpanded[key]; renderAnalyticsP7(); }
+  });
+  document.getElementById('dashScopeChips').addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if(!c) return;
+    dashStatScope = c.dataset.scope;
+    document.querySelectorAll('#dashScopeChips .chip').forEach(x => x.classList.toggle('active', x === c));
+    renderAnalyticsP7();
+  });
+  renderDashboard7();
+})();
 
 </script>
 </body>
