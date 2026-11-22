@@ -2373,6 +2373,10 @@
 #view-dashboard .d2-title::before{background:var(--primary);} #view-dashboard .fin-card-head{border-bottom:1px solid var(--border-soft);}
 #view-dashboard .dash-section-title{font-family:'Noto Sans Khmer','Sora',sans-serif;}
 #view-dashboard .kpi-grid .kpi{cursor:pointer;}
+#view-dashboard .kpi-grid{grid-template-columns:repeat(6,minmax(0,1fr));}
+@media (max-width:1400px){ #view-dashboard .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
+@media (max-width:700px){ #view-dashboard .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+
 #view-dashboard .appt-panel .dash-list{padding:0; max-height:360px;}
 #view-dashboard .dash-more{margin-top:22px;}
 #view-dashboard .dash-more > summary{cursor:pointer; list-style:none; font-size:14px; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:8px; margin:0 0 10px;}
@@ -2601,31 +2605,8 @@
           <div class="trend-tip kh" id="trendTip">ចុច ឬដាក់ cursor លើថ្ងៃណាមួយ ដើម្បីមើលព័ត៌មានលម្អិត</div>
         </div>
 
-        <!-- Extra panels of Index 8 (finance, alerts, next 2 days) -->
-        <details class="dash-more">
-          <summary class="kh">ព័ត៌មានបន្ថែម · More <small>ហិរញ្ញវត្ថុ · ការជូនដំណឹង · ការណាត់ ២ ថ្ងៃខាងមុខ</small></summary>
-          <div class="fin-kpis dash-kpis d2-kpis" id="dashSummaryStrip"></div>
-          <div class="d2-trio d2-trio-work">
-            <div class="fin-card">
-              <div class="fin-card-head"><div class="fin-title kh">⏭️ ការណាត់ ២ ថ្ងៃខាងមុខ <span class="fin-count mono" id="apptUpcomingCount">0</span></div></div>
-              <div class="dash-list" id="apptUpcomingBody"></div>
-            </div>
-            <div class="fin-card">
-              <div class="fin-card-head"><div class="fin-title kh">🔔 ត្រូវយកចិត្តទុកដាក់</div></div>
-              <div class="dash-list" id="dashAlerts" style="padding:0 0 6px;"></div>
-            </div>
-          </div>
-          <div class="d2-trio">
-            <div class="fin-card">
-              <div class="fin-card-head"><div class="fin-title kh">🦷 ការព្យាបាលច្រើនជាងគេ</div></div>
-              <div id="dashTopTx" style="padding:16px 18px;"></div>
-            </div>
-            <div class="fin-card">
-              <div class="fin-card-head"><div class="fin-title kh">👥 អ្នកជំងឺ</div></div>
-              <div id="dashDemo" style="padding:16px 18px;"></div>
-            </div>
-          </div>
-        </details>
+        <!-- hidden hooks used by the appointment renderer -->
+        <div hidden><div id="apptUpcomingBody"></div><span id="apptUpcomingCount">0</span></div>
       </section>
 
       <!-- Patients + Appointments -->
@@ -15449,7 +15430,7 @@ function renderCensusP7() {
         ['ក្មេងស្រី ≤15 (Girl)', tD.girls, yD.girls]
       ])}
       ${table('🦷 តាមការព្យាបាល · By Treatment', merge(T.treat, Y.treat))}
-      ${table('💳 តាមប្រភេទប័ណ្ណ · Registration Card', merge(T.card, Y.card))}
+      <div class="census-tbl"><h5 class="kh">👥 អ្នកជំងឺ · Patients <small style="font-weight:500;color:var(--ink-dim);">ខែនេះ</small></h5><div id="dashDemo" style="padding:10px 12px 12px;"></div></div>
     </div>`;
 }
 
@@ -15497,6 +15478,7 @@ function renderAnalyticsP7(){
   renderDashBars7('cardTypeStatsRow7', 'cardTypeTotal', card, 'card');
   renderDashBars7('treatmentStatsRow7', 'treatmentTotal', tx, 'tx');
 }
+const moneyP7 = v => { v = Number(v) || 0; const r = Math.round(v * 100) / 100; return '$' + r.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(r) ? 0 : 2, maximumFractionDigits: 2 }); };
 function renderKpisP7(){
   const host = document.getElementById('dashKpis'); if(!host) return;
   const now = new Date(), todayKey = now.toDateString();
@@ -15517,6 +15499,8 @@ function renderKpisP7(){
     const items = getTodayAppointments(); apptToday = items.length;
     missed = items.filter(x => !x.arrived && x.d && x.d < now).length;
   }catch(e){}
+  let inc = { incomeToday:0, incomeMonth:0 };
+  try{ loadExpenses(); inc = getIncomeExpenseStats(); }catch(e){}
   const split = (icon, title, c1, l1, c2, l2, go, o) => {
     o = o || {};
     return `<div class="kpi" data-dq="${go}" style="flex-direction:column; align-items:flex-start; gap:12px; padding:14px;${o.border ? 'border-color:' + o.border + ';' : ''}">
@@ -15525,9 +15509,9 @@ function renderKpisP7(){
         <span class="kh" style="font-weight:700; font-size:13.5px; color:var(--ink);">${title}</span>
       </div>
       <div style="display:flex; width:100%; justify-content:space-between; align-items:center; background:var(--surface-2); padding:10px 8px; border-radius:10px; border:1px solid var(--border-soft);">
-        <div style="flex:1; text-align:center;"><div class="kpi-val" style="font-size:20px; color:${o.fg || 'var(--primary-dark)'};">${c1}</div><div class="kh" style="font-size:10px; color:var(--ink-dim); margin-top:4px;">${l1}</div></div>
+        <div style="flex:1; text-align:center;"><div class="kpi-val" style="font-size:${o.vs || 20}px; white-space:nowrap; color:${o.fg || 'var(--primary-dark)'};">${c1}</div><div class="kh" style="font-size:10px; color:var(--ink-dim); margin-top:4px;">${l1}</div></div>
         <div style="width:1px; height:24px; background:var(--border);"></div>
-        <div style="flex:1; text-align:center;"><div class="kpi-val" style="font-size:20px; color:${o.fg2 || o.fg || 'var(--primary-dark)'};">${c2}</div><div class="kh" style="font-size:10px; color:${o.fg2 || 'var(--ink-dim)'}; margin-top:4px;">${l2}</div></div>
+        <div style="flex:1; text-align:center;"><div class="kpi-val" style="font-size:${o.vs || 20}px; white-space:nowrap; color:${o.fg2 || o.fg || 'var(--primary-dark)'};">${c2}</div><div class="kh" style="font-size:10px; color:${o.fg2 || 'var(--ink-dim)'}; margin-top:4px;">${l2}</div></div>
       </div>
     </div>`;
   };
@@ -15537,11 +15521,13 @@ function renderKpisP7(){
     split('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>', 'ថ្ងៃនេះ', todaySet.size, P, todayVisits, C, 'patients') +
     split('<path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/>', 'សប្តាហ៍នេះ', weekSet.size, P, weekVisits, C, 'patients') +
     split('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', 'ខែនេះ', monthSet.size, P, monthVisits, C, 'patients') +
-    split('<path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/>', 'ការណាត់ជួប', apptToday, 'ថ្ងៃនេះ (Today)', missed, 'មិនទាន់មក (Pending)', 'appointments', { bg:'var(--amber-soft)', fg:'var(--amber-dark)', fg2:'var(--coral-dark)', border:'var(--amber-soft)' });
+    split('<path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/>', 'ការណាត់ជួប', apptToday, 'ថ្ងៃនេះ (Today)', missed, 'មិនទាន់មក (Pending)', 'appointments', { bg:'var(--amber-soft)', fg:'var(--amber-dark)', fg2:'var(--coral-dark)', border:'var(--amber-soft)' }) +
+    split('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>', 'ចំណូល', moneyP7(inc.incomeToday), 'ថ្ងៃនេះ (Today)', moneyP7(inc.incomeMonth), 'ខែនេះ (Month)', 'income-expense', { bg:'#DEF7EC', fg:'#0E9F6E', border:'#DEF7EC', vs:16 });
 }
 function renderDashboard7(){
   try{ renderKpisP7(); }catch(e){ console.warn('KPI7', e); }
   try{ renderCensusP7(); }catch(e){ console.warn('Census7', e); }
+  try{ renderDashOverview(); }catch(e){ console.warn('Overview7', e); }   /* refill #dashDemo inside the census */
   try{ renderAnalyticsP7(); }catch(e){ console.warn('Analytics7', e); }
   try{ renderTrend14P7(); }catch(e){ console.warn('Trend7', e); }
 }
